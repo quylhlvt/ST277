@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.anime.oc.characters.avatar.ExampleUnitTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-09-11T11:23:01.406Z" hostname="lequy-lh" time="0.006">
-  <properties/>
-  <testcase name="addition_isCorrect" classname="com.anime.oc.characters.avatar.ExampleUnitTest" time="0.006"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

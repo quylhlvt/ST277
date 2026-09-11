@@ -1,1 +1,0 @@
--keep,allowobfuscation,allowshrinking class com.anime.oc.characters.avatar.ui.main.cosplay.CosplayViewModel

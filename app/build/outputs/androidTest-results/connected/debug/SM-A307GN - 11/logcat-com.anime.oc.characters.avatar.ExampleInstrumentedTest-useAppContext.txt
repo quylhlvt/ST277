@@ -1,4 +1,0 @@
-09-11 18:32:47.560  1156  1237 I TestRunner: started: useAppContext(com.anime.oc.characters.avatar.ExampleInstrumentedTest)
-09-11 18:32:47.561  3978  3978 I Layer   : id=9827[1] Destroyed ActivityRecord{7b397a2 u0 com.anime.oc.characters.avatar/.ui.main.home.HomeActivity t2246}#0
-09-11 18:32:47.571  1156  1156 D LifecycleMonitor: Lifecycle status change: com.anime.oc.characters.avatar.ui.language.LanguageActivity@ce66150 in: DESTROYED
-09-11 18:32:47.573  1156  1237 I TestRunner: finished: useAppContext(com.anime.oc.characters.avatar.ExampleInstrumentedTest)
