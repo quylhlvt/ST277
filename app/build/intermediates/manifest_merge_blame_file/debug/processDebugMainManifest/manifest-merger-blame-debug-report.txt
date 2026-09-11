@@ -1,0 +1,894 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.anime.oc.characters.avatar"
+4    android:versionCode="1"
+5    android:versionName="1.0.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="24"
+9        android:targetSdkVersion="36" />
+10
+11    <uses-permission android:name="android.permission.INTERNET" />
+11-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:5:5-67
+11-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:5:22-64
+12    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+12-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:6:5-77
+12-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:6:22-74
+13    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+13-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:7:5-8:68
+13-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:8:9-65
+14    <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
+14-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:9:5-78
+14-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:9:22-76
+15
+16    <queries>
+16-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:10:5-18:15
+17        <package android:name="org.telegram.messenger" />
+17-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:11:9-58
+17-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:11:18-55
+18        <package android:name="org.telegram.messenger.web" />
+18-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:12:9-62
+18-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:12:18-59
+19        <package android:name="org.telegram.plus" />
+19-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:13:9-53
+19-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:13:18-50
+20
+21        <intent>
+21-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:14:9-17:18
+22            <action android:name="org.telegram.messenger.CREATE_STICKER_PACK" />
+22-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:15:13-81
+22-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:15:21-78
+23
+24            <data android:mimeType="image/*" />
+24-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:16:13-48
+24-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:16:19-45
+25        </intent>
+26    </queries>
+27
+28    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+28-->[androidx.media3:media3-exoplayer:1.5.0] /home/lequy/.gradle/caches/8.13/transforms/08658bab113f72268342a4e1e5152262/transformed/media3-exoplayer-1.5.0/AndroidManifest.xml:22:5-79
+28-->[androidx.media3:media3-exoplayer:1.5.0] /home/lequy/.gradle/caches/8.13/transforms/08658bab113f72268342a4e1e5152262/transformed/media3-exoplayer-1.5.0/AndroidManifest.xml:22:22-76
+29    <uses-permission android:name="android.permission.WAKE_LOCK" /> <!-- Required by older versions of Google Play services to create IID tokens -->
+29-->[com.google.firebase:firebase-messaging:24.1.0] /home/lequy/.gradle/caches/8.13/transforms/d00634e722e18083199145ba361d1e0a/transformed/firebase-messaging-24.1.0/AndroidManifest.xml:24:5-68
+29-->[com.google.firebase:firebase-messaging:24.1.0] /home/lequy/.gradle/caches/8.13/transforms/d00634e722e18083199145ba361d1e0a/transformed/firebase-messaging-24.1.0/AndroidManifest.xml:24:22-65
+30    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+30-->[com.google.firebase:firebase-messaging:24.1.0] /home/lequy/.gradle/caches/8.13/transforms/d00634e722e18083199145ba361d1e0a/transformed/firebase-messaging-24.1.0/AndroidManifest.xml:26:5-82
+30-->[com.google.firebase:firebase-messaging:24.1.0] /home/lequy/.gradle/caches/8.13/transforms/d00634e722e18083199145ba361d1e0a/transformed/firebase-messaging-24.1.0/AndroidManifest.xml:26:22-79
+31    <uses-permission android:name="android.permission.ACCESS_ADSERVICES_ATTRIBUTION" />
+31-->[com.google.android.gms:play-services-measurement-api:22.1.2] /home/lequy/.gradle/caches/8.13/transforms/94b24c0dbe1b4cd4bd2554650663c998/transformed/play-services-measurement-api-22.1.2/AndroidManifest.xml:26:5-88
+31-->[com.google.android.gms:play-services-measurement-api:22.1.2] /home/lequy/.gradle/caches/8.13/transforms/94b24c0dbe1b4cd4bd2554650663c998/transformed/play-services-measurement-api-22.1.2/AndroidManifest.xml:26:22-85
+32    <uses-permission android:name="android.permission.ACCESS_ADSERVICES_AD_ID" />
+32-->[com.google.android.gms:play-services-measurement-api:22.1.2] /home/lequy/.gradle/caches/8.13/transforms/94b24c0dbe1b4cd4bd2554650663c998/transformed/play-services-measurement-api-22.1.2/AndroidManifest.xml:27:5-82
+32-->[com.google.android.gms:play-services-measurement-api:22.1.2] /home/lequy/.gradle/caches/8.13/transforms/94b24c0dbe1b4cd4bd2554650663c998/transformed/play-services-measurement-api-22.1.2/AndroidManifest.xml:27:22-79
+33    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+33-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:25:5-81
+33-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:25:22-78
+34    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+34-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:26:5-77
+34-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:26:22-74
+35    <uses-permission android:name="com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE" />
+35-->[com.google.android.gms:play-services-measurement:22.1.2] /home/lequy/.gradle/caches/8.13/transforms/2cd9f4f0350c6c0ea969498bd81002c1/transformed/play-services-measurement-22.1.2/AndroidManifest.xml:26:5-110
+35-->[com.google.android.gms:play-services-measurement:22.1.2] /home/lequy/.gradle/caches/8.13/transforms/2cd9f4f0350c6c0ea969498bd81002c1/transformed/play-services-measurement-22.1.2/AndroidManifest.xml:26:22-107
+36
+37    <permission
+37-->[androidx.core:core:1.17.0] /home/lequy/.gradle/caches/8.13/transforms/788904248d9c36269e26c18634c56b3d/transformed/core-1.17.0/AndroidManifest.xml:22:5-24:47
+38        android:name="com.anime.oc.characters.avatar.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+38-->[androidx.core:core:1.17.0] /home/lequy/.gradle/caches/8.13/transforms/788904248d9c36269e26c18634c56b3d/transformed/core-1.17.0/AndroidManifest.xml:23:9-81
+39        android:protectionLevel="signature" />
+39-->[androidx.core:core:1.17.0] /home/lequy/.gradle/caches/8.13/transforms/788904248d9c36269e26c18634c56b3d/transformed/core-1.17.0/AndroidManifest.xml:24:9-44
+40
+41    <uses-permission android:name="com.anime.oc.characters.avatar.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+41-->[androidx.core:core:1.17.0] /home/lequy/.gradle/caches/8.13/transforms/788904248d9c36269e26c18634c56b3d/transformed/core-1.17.0/AndroidManifest.xml:26:5-97
+41-->[androidx.core:core:1.17.0] /home/lequy/.gradle/caches/8.13/transforms/788904248d9c36269e26c18634c56b3d/transformed/core-1.17.0/AndroidManifest.xml:26:22-94
+42
+43    <application
+43-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:20:5-153:19
+44        android:name="com.anime.oc.characters.avatar.MyApplication"
+44-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:21:9-68
+45        android:allowBackup="true"
+45-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:22:9-35
+46        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+46-->[androidx.core:core:1.17.0] /home/lequy/.gradle/caches/8.13/transforms/788904248d9c36269e26c18634c56b3d/transformed/core-1.17.0/AndroidManifest.xml:28:18-86
+47        android:dataExtractionRules="@xml/data_extraction_rules"
+47-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:24:9-65
+48        android:debuggable="true"
+49        android:extractNativeLibs="false"
+50        android:fullBackupContent="@xml/backup_rules"
+50-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:25:9-54
+51        android:hardwareAccelerated="true"
+51-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:32:9-43
+52        android:icon="@mipmap/ic_launcher"
+52-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:26:9-43
+53        android:label="@string/app_name"
+53-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:27:9-41
+54        android:largeHeap="true"
+54-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:33:9-33
+55        android:networkSecurityConfig="@xml/network_security_config"
+55-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:23:9-69
+56        android:roundIcon="@mipmap/ic_launcher_round"
+56-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:28:9-54
+57        android:supportsRtl="true"
+57-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:29:9-35
+58        android:theme="@style/Base.Theme.BaseActivity" >
+58-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:31:9-55
+59        <meta-data
+59-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:35:9-37:37
+60            android:name="google_analytics_automatic_screen_reporting_enabled"
+60-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:36:13-79
+61            android:value="false" />
+61-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:37:13-34
+62        <meta-data
+62-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:38:9-40:37
+63            android:name="com.google.android.gms.ads.flag.NATIVE_AD_DEBUGGER_ENABLED"
+63-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:39:13-86
+64            android:value="false" />
+64-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:40:13-34
+65        <meta-data
+65-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:41:9-43:46
+66            android:name="com.google.android.gms.ads.APPLICATION_ID"
+66-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:42:13-69
+67            android:value="@string/app_id" />
+67-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:43:13-43
+68        <meta-data
+68-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:44:9-46:36
+69            android:name="com.google.android.gms.ads.flag.OPTIMIZE_INITIALIZATION"
+69-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:45:13-83
+70            android:value="true" />
+70-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:46:13-33
+71        <meta-data
+71-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:47:9-49:36
+72            android:name="com.google.android.gms.ads.flag.OPTIMIZE_AD_LOADING"
+72-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:48:13-79
+73            android:value="true" />
+73-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:49:13-33
+74
+75        <activity
+75-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:50:9-54:70
+76            android:name="com.anime.oc.characters.avatar.ui.language.LanguageActivity"
+76-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:51:13-87
+77            android:exported="false"
+77-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:52:13-37
+78            android:screenOrientation="portrait"
+78-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:53:13-49
+79            android:windowSoftInputMode="adjustResize|stateHidden" />
+79-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:54:13-67
+80        <activity
+80-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:55:9-59:70
+81            android:name="com.anime.oc.characters.avatar.ui.main.createPony.ChoosePonyActivity"
+81-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:56:13-96
+82            android:exported="false"
+82-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:57:13-37
+83            android:screenOrientation="portrait"
+83-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:58:13-49
+84            android:windowSoftInputMode="adjustResize|stateHidden" />
+84-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:59:13-67
+85        <activity
+85-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:60:9-64:70
+86            android:name="com.anime.oc.characters.avatar.ui.main.successcosplay.SuccessCosplayActivity"
+86-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:61:13-104
+87            android:exported="false"
+87-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:62:13-37
+88            android:screenOrientation="portrait"
+88-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:63:13-49
+89            android:windowSoftInputMode="adjustResize|stateHidden" />
+89-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:64:13-67
+90        <activity
+90-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:65:9-69:70
+91            android:name="com.anime.oc.characters.avatar.ui.main.home.HomeActivity"
+91-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:66:13-84
+92            android:exported="false"
+92-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:67:13-37
+93            android:screenOrientation="portrait"
+93-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:68:13-49
+94            android:windowSoftInputMode="adjustResize|stateHidden" />
+94-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:69:13-67
+95        <activity
+95-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:70:9-74:70
+96            android:name="com.anime.oc.characters.avatar.ui.main.view.ViewActivity"
+96-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:71:13-84
+97            android:exported="false"
+97-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:72:13-37
+98            android:screenOrientation="portrait"
+98-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:73:13-49
+99            android:windowSoftInputMode="adjustResize|stateHidden" />
+99-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:74:13-67
+100        <activity
+100-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:75:9-79:70
+101            android:name="com.anime.oc.characters.avatar.ui.main.show.ShowActivity"
+101-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:76:13-84
+102            android:exported="false"
+102-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:77:13-37
+103            android:screenOrientation="portrait"
+103-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:78:13-49
+104            android:windowSoftInputMode="adjustResize|stateHidden" />
+104-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:79:13-67
+105        <activity
+105-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:80:9-84:70
+106            android:name="com.anime.oc.characters.avatar.ui.main.add_character.AddCharacterActivity"
+106-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:81:13-101
+107            android:exported="false"
+107-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:82:13-37
+108            android:screenOrientation="portrait"
+108-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:83:13-49
+109            android:windowSoftInputMode="adjustResize|stateHidden" />
+109-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:84:13-67
+110        <activity
+110-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:85:9-89:70
+111            android:name="com.anime.oc.characters.avatar.ui.main.cosplay.CosplayActivity"
+111-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:86:13-90
+112            android:exported="false"
+112-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:87:13-37
+113            android:screenOrientation="portrait"
+113-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:88:13-49
+114            android:windowSoftInputMode="adjustResize|stateHidden" />
+114-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:89:13-67
+115        <activity
+115-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:90:9-94:70
+116            android:name="com.anime.oc.characters.avatar.ui.main.success.SuccessActivity"
+116-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:91:13-90
+117            android:exported="false"
+117-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:92:13-37
+118            android:screenOrientation="portrait"
+118-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:93:13-49
+119            android:windowSoftInputMode="adjustResize|stateHidden" />
+119-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:94:13-67
+120        <activity
+120-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:95:9-99:70
+121            android:name="com.anime.oc.characters.avatar.ui.main.setting.SettingActivity"
+121-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:96:13-90
+122            android:exported="false"
+122-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:97:13-37
+123            android:screenOrientation="portrait"
+123-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:98:13-49
+124            android:windowSoftInputMode="adjustResize|stateHidden" />
+124-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:99:13-67
+125        <activity
+125-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:100:9-104:70
+126            android:name="com.anime.oc.characters.avatar.ui.main.random.RandomActivity"
+126-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:101:13-88
+127            android:exported="false"
+127-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:102:13-37
+128            android:screenOrientation="portrait"
+128-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:103:13-49
+129            android:windowSoftInputMode="adjustResize|stateHidden" />
+129-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:104:13-67
+130        <activity
+130-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:105:9-109:70
+131            android:name="com.anime.oc.characters.avatar.ui.main.customize.CustomizeActivity"
+131-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:106:13-94
+132            android:exported="false"
+132-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:107:13-37
+133            android:screenOrientation="portrait"
+133-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:108:13-49
+134            android:windowSoftInputMode="adjustResize|stateHidden" />
+134-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:109:13-67
+135        <activity
+135-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:110:9-114:70
+136            android:name="com.anime.oc.characters.avatar.ui.main.myPony.MyPonyActivity"
+136-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:111:13-88
+137            android:exported="false"
+137-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:112:13-37
+138            android:screenOrientation="portrait"
+138-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:113:13-49
+139            android:windowSoftInputMode="adjustResize|stateHidden" />
+139-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:114:13-67
+140        <activity
+140-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:115:9-119:70
+141            android:name="com.anime.oc.characters.avatar.ui.onboarding.intro.IntroActivity"
+141-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:116:13-92
+142            android:exported="false"
+142-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:117:13-37
+143            android:screenOrientation="portrait"
+143-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:118:13-49
+144            android:windowSoftInputMode="adjustResize|stateHidden" />
+144-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:119:13-67
+145        <activity
+145-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:120:9-124:70
+146            android:name="com.anime.oc.characters.avatar.ui.onboarding.permission.PermissionActivity"
+146-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:121:13-102
+147            android:exported="false"
+147-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:122:13-37
+148            android:screenOrientation="portrait"
+148-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:123:13-49
+149            android:windowSoftInputMode="adjustResize|stateHidden" />
+149-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:124:13-67
+150        <activity
+150-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:125:9-129:70
+151            android:name="com.anime.oc.characters.avatar.ui.onboarding.splash.SplashActivity"
+151-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:126:13-94
+152            android:exported="false"
+152-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:127:13-37
+153            android:screenOrientation="portrait"
+153-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:128:13-49
+154            android:windowSoftInputMode="adjustResize|stateHidden" />
+154-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:129:13-67
+155
+156        <activity-alias
+156-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:130:9-138:26
+157            android:name="com.anime.oc.characters.avatar.MainActivity"
+157-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:131:13-71
+158            android:exported="true"
+158-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:133:13-36
+159            android:targetActivity="com.anime.oc.characters.avatar.ui.onboarding.splash.SplashActivity" >
+159-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:132:13-104
+160            <intent-filter>
+160-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:134:13-137:29
+161                <action android:name="android.intent.action.MAIN" />
+161-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:135:17-69
+161-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:135:25-66
+162
+163                <category android:name="android.intent.category.LAUNCHER" />
+163-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:136:17-77
+163-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:136:27-74
+164            </intent-filter>
+165        </activity-alias>
+166
+167        <provider
+168            android:name="androidx.core.content.FileProvider"
+168-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:140:13-62
+169            android:authorities="com.anime.oc.characters.avatar.provider"
+169-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:141:13-60
+170            android:exported="false"
+170-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:142:13-37
+171            android:grantUriPermissions="true" >
+171-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:143:13-47
+172            <meta-data
+172-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:144:13-146:52
+173                android:name="android.support.FILE_PROVIDER_PATHS"
+173-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:145:17-67
+174                android:resource="@xml/provider" />
+174-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:146:17-49
+175        </provider>
+176        <provider
+176-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:148:9-152:66
+177            android:name="com.anime.oc.characters.avatar.utils.share.whatsapp.StickerContentProvider"
+177-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:149:13-102
+178            android:authorities="com.anime.oc.characters.avatar.utils.share.whatsapp.StickerContentProvider"
+178-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:150:13-109
+179            android:exported="true"
+179-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:151:13-36
+180            android:readPermission="com.whatsapp.sticker.READ" />
+180-->/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/src/main/AndroidManifest.xml:152:13-63
+181
+182        <service
+182-->[com.google.firebase:firebase-crashlytics-ktx:19.3.0] /home/lequy/.gradle/caches/8.13/transforms/16ac7c5272baf34e2165851eb45e370a/transformed/firebase-crashlytics-ktx-19.3.0/AndroidManifest.xml:21:9-27:19
+183            android:name="com.google.firebase.components.ComponentDiscoveryService"
+183-->[com.google.firebase:firebase-crashlytics-ktx:19.3.0] /home/lequy/.gradle/caches/8.13/transforms/16ac7c5272baf34e2165851eb45e370a/transformed/firebase-crashlytics-ktx-19.3.0/AndroidManifest.xml:22:13-84
+184            android:directBootAware="true"
+184-->[com.google.firebase:firebase-common:21.0.0] /home/lequy/.gradle/caches/8.13/transforms/044674cd0a5ef18b33dc3dda4d0926f8/transformed/firebase-common-21.0.0/AndroidManifest.xml:32:13-43
+185            android:exported="false" >
+185-->[com.google.firebase:firebase-crashlytics-ktx:19.3.0] /home/lequy/.gradle/caches/8.13/transforms/16ac7c5272baf34e2165851eb45e370a/transformed/firebase-crashlytics-ktx-19.3.0/AndroidManifest.xml:23:13-37
+186            <meta-data
+186-->[com.google.firebase:firebase-crashlytics-ktx:19.3.0] /home/lequy/.gradle/caches/8.13/transforms/16ac7c5272baf34e2165851eb45e370a/transformed/firebase-crashlytics-ktx-19.3.0/AndroidManifest.xml:24:13-26:85
+187                android:name="com.google.firebase.components:com.google.firebase.crashlytics.ktx.FirebaseCrashlyticsKtxRegistrar"
+187-->[com.google.firebase:firebase-crashlytics-ktx:19.3.0] /home/lequy/.gradle/caches/8.13/transforms/16ac7c5272baf34e2165851eb45e370a/transformed/firebase-crashlytics-ktx-19.3.0/AndroidManifest.xml:25:17-130
+188                android:value="com.google.firebase.components.ComponentRegistrar" />
+188-->[com.google.firebase:firebase-crashlytics-ktx:19.3.0] /home/lequy/.gradle/caches/8.13/transforms/16ac7c5272baf34e2165851eb45e370a/transformed/firebase-crashlytics-ktx-19.3.0/AndroidManifest.xml:26:17-82
+189            <meta-data
+189-->[com.google.firebase:firebase-crashlytics:19.3.0] /home/lequy/.gradle/caches/8.13/transforms/b9a22c35d278157d74e3e9e2340d3472/transformed/firebase-crashlytics-19.3.0/AndroidManifest.xml:15:13-17:85
+190                android:name="com.google.firebase.components:com.google.firebase.crashlytics.FirebaseCrashlyticsKtxRegistrar"
+190-->[com.google.firebase:firebase-crashlytics:19.3.0] /home/lequy/.gradle/caches/8.13/transforms/b9a22c35d278157d74e3e9e2340d3472/transformed/firebase-crashlytics-19.3.0/AndroidManifest.xml:16:17-126
+191                android:value="com.google.firebase.components.ComponentRegistrar" />
+191-->[com.google.firebase:firebase-crashlytics:19.3.0] /home/lequy/.gradle/caches/8.13/transforms/b9a22c35d278157d74e3e9e2340d3472/transformed/firebase-crashlytics-19.3.0/AndroidManifest.xml:17:17-82
+192            <meta-data
+192-->[com.google.firebase:firebase-crashlytics:19.3.0] /home/lequy/.gradle/caches/8.13/transforms/b9a22c35d278157d74e3e9e2340d3472/transformed/firebase-crashlytics-19.3.0/AndroidManifest.xml:18:13-20:85
+193                android:name="com.google.firebase.components:com.google.firebase.crashlytics.CrashlyticsRegistrar"
+193-->[com.google.firebase:firebase-crashlytics:19.3.0] /home/lequy/.gradle/caches/8.13/transforms/b9a22c35d278157d74e3e9e2340d3472/transformed/firebase-crashlytics-19.3.0/AndroidManifest.xml:19:17-115
+194                android:value="com.google.firebase.components.ComponentRegistrar" />
+194-->[com.google.firebase:firebase-crashlytics:19.3.0] /home/lequy/.gradle/caches/8.13/transforms/b9a22c35d278157d74e3e9e2340d3472/transformed/firebase-crashlytics-19.3.0/AndroidManifest.xml:20:17-82
+195            <meta-data
+195-->[com.google.firebase:firebase-sessions:2.0.7] /home/lequy/.gradle/caches/8.13/transforms/6d5b95cf29d8b210fd49c679d9f35034/transformed/firebase-sessions-2.0.7/AndroidManifest.xml:29:13-31:85
+196                android:name="com.google.firebase.components:com.google.firebase.sessions.FirebaseSessionsRegistrar"
+196-->[com.google.firebase:firebase-sessions:2.0.7] /home/lequy/.gradle/caches/8.13/transforms/6d5b95cf29d8b210fd49c679d9f35034/transformed/firebase-sessions-2.0.7/AndroidManifest.xml:30:17-117
+197                android:value="com.google.firebase.components.ComponentRegistrar" />
+197-->[com.google.firebase:firebase-sessions:2.0.7] /home/lequy/.gradle/caches/8.13/transforms/6d5b95cf29d8b210fd49c679d9f35034/transformed/firebase-sessions-2.0.7/AndroidManifest.xml:31:17-82
+198            <meta-data
+198-->[com.google.firebase:firebase-config-ktx:22.0.1] /home/lequy/.gradle/caches/8.13/transforms/185c419703052c4c93cc22b68a4b36e4/transformed/firebase-config-ktx-22.0.1/AndroidManifest.xml:12:13-14:85
+199                android:name="com.google.firebase.components:com.google.firebase.remoteconfig.ktx.FirebaseConfigLegacyRegistrar"
+199-->[com.google.firebase:firebase-config-ktx:22.0.1] /home/lequy/.gradle/caches/8.13/transforms/185c419703052c4c93cc22b68a4b36e4/transformed/firebase-config-ktx-22.0.1/AndroidManifest.xml:13:17-129
+200                android:value="com.google.firebase.components.ComponentRegistrar" />
+200-->[com.google.firebase:firebase-config-ktx:22.0.1] /home/lequy/.gradle/caches/8.13/transforms/185c419703052c4c93cc22b68a4b36e4/transformed/firebase-config-ktx-22.0.1/AndroidManifest.xml:14:17-82
+201            <meta-data
+201-->[com.google.firebase:firebase-config:22.0.1] /home/lequy/.gradle/caches/8.13/transforms/3ec737f9c75c9ed7c6296dc2b688e94b/transformed/firebase-config-22.0.1/AndroidManifest.xml:29:13-31:85
+202                android:name="com.google.firebase.components:com.google.firebase.remoteconfig.FirebaseRemoteConfigKtxRegistrar"
+202-->[com.google.firebase:firebase-config:22.0.1] /home/lequy/.gradle/caches/8.13/transforms/3ec737f9c75c9ed7c6296dc2b688e94b/transformed/firebase-config-22.0.1/AndroidManifest.xml:30:17-128
+203                android:value="com.google.firebase.components.ComponentRegistrar" />
+203-->[com.google.firebase:firebase-config:22.0.1] /home/lequy/.gradle/caches/8.13/transforms/3ec737f9c75c9ed7c6296dc2b688e94b/transformed/firebase-config-22.0.1/AndroidManifest.xml:31:17-82
+204            <meta-data
+204-->[com.google.firebase:firebase-config:22.0.1] /home/lequy/.gradle/caches/8.13/transforms/3ec737f9c75c9ed7c6296dc2b688e94b/transformed/firebase-config-22.0.1/AndroidManifest.xml:32:13-34:85
+205                android:name="com.google.firebase.components:com.google.firebase.remoteconfig.RemoteConfigRegistrar"
+205-->[com.google.firebase:firebase-config:22.0.1] /home/lequy/.gradle/caches/8.13/transforms/3ec737f9c75c9ed7c6296dc2b688e94b/transformed/firebase-config-22.0.1/AndroidManifest.xml:33:17-117
+206                android:value="com.google.firebase.components.ComponentRegistrar" />
+206-->[com.google.firebase:firebase-config:22.0.1] /home/lequy/.gradle/caches/8.13/transforms/3ec737f9c75c9ed7c6296dc2b688e94b/transformed/firebase-config-22.0.1/AndroidManifest.xml:34:17-82
+207            <meta-data
+207-->[com.google.firebase:firebase-analytics-ktx:22.1.2] /home/lequy/.gradle/caches/8.13/transforms/876bb2f135ceb20a3ea671c0d48acecf/transformed/firebase-analytics-ktx-22.1.2/AndroidManifest.xml:11:13-13:85
+208                android:name="com.google.firebase.components:com.google.firebase.analytics.ktx.FirebaseAnalyticsLegacyRegistrar"
+208-->[com.google.firebase:firebase-analytics-ktx:22.1.2] /home/lequy/.gradle/caches/8.13/transforms/876bb2f135ceb20a3ea671c0d48acecf/transformed/firebase-analytics-ktx-22.1.2/AndroidManifest.xml:12:17-129
+209                android:value="com.google.firebase.components.ComponentRegistrar" />
+209-->[com.google.firebase:firebase-analytics-ktx:22.1.2] /home/lequy/.gradle/caches/8.13/transforms/876bb2f135ceb20a3ea671c0d48acecf/transformed/firebase-analytics-ktx-22.1.2/AndroidManifest.xml:13:17-82
+210            <meta-data
+210-->[com.google.firebase:firebase-messaging-ktx:24.1.0] /home/lequy/.gradle/caches/8.13/transforms/933396bdcbcf8c4f538fd0397bee4bb4/transformed/firebase-messaging-ktx-24.1.0/AndroidManifest.xml:26:13-28:85
+211                android:name="com.google.firebase.components:com.google.firebase.messaging.ktx.FirebaseMessagingLegacyRegistrar"
+211-->[com.google.firebase:firebase-messaging-ktx:24.1.0] /home/lequy/.gradle/caches/8.13/transforms/933396bdcbcf8c4f538fd0397bee4bb4/transformed/firebase-messaging-ktx-24.1.0/AndroidManifest.xml:27:17-129
+212                android:value="com.google.firebase.components.ComponentRegistrar" />
+212-->[com.google.firebase:firebase-messaging-ktx:24.1.0] /home/lequy/.gradle/caches/8.13/transforms/933396bdcbcf8c4f538fd0397bee4bb4/transformed/firebase-messaging-ktx-24.1.0/AndroidManifest.xml:28:17-82
+213            <meta-data
+213-->[com.google.firebase:firebase-messaging:24.1.0] /home/lequy/.gradle/caches/8.13/transforms/d00634e722e18083199145ba361d1e0a/transformed/firebase-messaging-24.1.0/AndroidManifest.xml:57:13-59:85
+214                android:name="com.google.firebase.components:com.google.firebase.messaging.FirebaseMessagingKtxRegistrar"
+214-->[com.google.firebase:firebase-messaging:24.1.0] /home/lequy/.gradle/caches/8.13/transforms/d00634e722e18083199145ba361d1e0a/transformed/firebase-messaging-24.1.0/AndroidManifest.xml:58:17-122
+215                android:value="com.google.firebase.components.ComponentRegistrar" />
+215-->[com.google.firebase:firebase-messaging:24.1.0] /home/lequy/.gradle/caches/8.13/transforms/d00634e722e18083199145ba361d1e0a/transformed/firebase-messaging-24.1.0/AndroidManifest.xml:59:17-82
+216            <meta-data
+216-->[com.google.firebase:firebase-messaging:24.1.0] /home/lequy/.gradle/caches/8.13/transforms/d00634e722e18083199145ba361d1e0a/transformed/firebase-messaging-24.1.0/AndroidManifest.xml:60:13-62:85
+217                android:name="com.google.firebase.components:com.google.firebase.messaging.FirebaseMessagingRegistrar"
+217-->[com.google.firebase:firebase-messaging:24.1.0] /home/lequy/.gradle/caches/8.13/transforms/d00634e722e18083199145ba361d1e0a/transformed/firebase-messaging-24.1.0/AndroidManifest.xml:61:17-119
+218                android:value="com.google.firebase.components.ComponentRegistrar" />
+218-->[com.google.firebase:firebase-messaging:24.1.0] /home/lequy/.gradle/caches/8.13/transforms/d00634e722e18083199145ba361d1e0a/transformed/firebase-messaging-24.1.0/AndroidManifest.xml:62:17-82
+219            <meta-data
+219-->[com.google.android.gms:play-services-measurement-api:22.1.2] /home/lequy/.gradle/caches/8.13/transforms/94b24c0dbe1b4cd4bd2554650663c998/transformed/play-services-measurement-api-22.1.2/AndroidManifest.xml:37:13-39:85
+220                android:name="com.google.firebase.components:com.google.firebase.analytics.connector.internal.AnalyticsConnectorRegistrar"
+220-->[com.google.android.gms:play-services-measurement-api:22.1.2] /home/lequy/.gradle/caches/8.13/transforms/94b24c0dbe1b4cd4bd2554650663c998/transformed/play-services-measurement-api-22.1.2/AndroidManifest.xml:38:17-139
+221                android:value="com.google.firebase.components.ComponentRegistrar" />
+221-->[com.google.android.gms:play-services-measurement-api:22.1.2] /home/lequy/.gradle/caches/8.13/transforms/94b24c0dbe1b4cd4bd2554650663c998/transformed/play-services-measurement-api-22.1.2/AndroidManifest.xml:39:17-82
+222            <meta-data
+222-->[com.google.firebase:firebase-installations:18.0.0] /home/lequy/.gradle/caches/8.13/transforms/01c76256e26d06e7435ecbc7ba9fd18b/transformed/firebase-installations-18.0.0/AndroidManifest.xml:15:13-17:85
+223                android:name="com.google.firebase.components:com.google.firebase.installations.FirebaseInstallationsKtxRegistrar"
+223-->[com.google.firebase:firebase-installations:18.0.0] /home/lequy/.gradle/caches/8.13/transforms/01c76256e26d06e7435ecbc7ba9fd18b/transformed/firebase-installations-18.0.0/AndroidManifest.xml:16:17-130
+224                android:value="com.google.firebase.components.ComponentRegistrar" />
+224-->[com.google.firebase:firebase-installations:18.0.0] /home/lequy/.gradle/caches/8.13/transforms/01c76256e26d06e7435ecbc7ba9fd18b/transformed/firebase-installations-18.0.0/AndroidManifest.xml:17:17-82
+225            <meta-data
+225-->[com.google.firebase:firebase-installations:18.0.0] /home/lequy/.gradle/caches/8.13/transforms/01c76256e26d06e7435ecbc7ba9fd18b/transformed/firebase-installations-18.0.0/AndroidManifest.xml:18:13-20:85
+226                android:name="com.google.firebase.components:com.google.firebase.installations.FirebaseInstallationsRegistrar"
+226-->[com.google.firebase:firebase-installations:18.0.0] /home/lequy/.gradle/caches/8.13/transforms/01c76256e26d06e7435ecbc7ba9fd18b/transformed/firebase-installations-18.0.0/AndroidManifest.xml:19:17-127
+227                android:value="com.google.firebase.components.ComponentRegistrar" />
+227-->[com.google.firebase:firebase-installations:18.0.0] /home/lequy/.gradle/caches/8.13/transforms/01c76256e26d06e7435ecbc7ba9fd18b/transformed/firebase-installations-18.0.0/AndroidManifest.xml:20:17-82
+228            <meta-data
+228-->[com.google.firebase:firebase-common-ktx:21.0.0] /home/lequy/.gradle/caches/8.13/transforms/31a824e940a4599ea90b463c772385d1/transformed/firebase-common-ktx-21.0.0/AndroidManifest.xml:12:13-14:85
+229                android:name="com.google.firebase.components:com.google.firebase.ktx.FirebaseCommonLegacyRegistrar"
+229-->[com.google.firebase:firebase-common-ktx:21.0.0] /home/lequy/.gradle/caches/8.13/transforms/31a824e940a4599ea90b463c772385d1/transformed/firebase-common-ktx-21.0.0/AndroidManifest.xml:13:17-116
+230                android:value="com.google.firebase.components.ComponentRegistrar" />
+230-->[com.google.firebase:firebase-common-ktx:21.0.0] /home/lequy/.gradle/caches/8.13/transforms/31a824e940a4599ea90b463c772385d1/transformed/firebase-common-ktx-21.0.0/AndroidManifest.xml:14:17-82
+231            <meta-data
+231-->[com.google.firebase:firebase-common:21.0.0] /home/lequy/.gradle/caches/8.13/transforms/044674cd0a5ef18b33dc3dda4d0926f8/transformed/firebase-common-21.0.0/AndroidManifest.xml:35:13-37:85
+232                android:name="com.google.firebase.components:com.google.firebase.FirebaseCommonKtxRegistrar"
+232-->[com.google.firebase:firebase-common:21.0.0] /home/lequy/.gradle/caches/8.13/transforms/044674cd0a5ef18b33dc3dda4d0926f8/transformed/firebase-common-21.0.0/AndroidManifest.xml:36:17-109
+233                android:value="com.google.firebase.components.ComponentRegistrar" />
+233-->[com.google.firebase:firebase-common:21.0.0] /home/lequy/.gradle/caches/8.13/transforms/044674cd0a5ef18b33dc3dda4d0926f8/transformed/firebase-common-21.0.0/AndroidManifest.xml:37:17-82
+234            <meta-data
+234-->[com.google.firebase:firebase-abt:21.1.1] /home/lequy/.gradle/caches/8.13/transforms/6460dffd723d6958fa4a02b7d747f66a/transformed/firebase-abt-21.1.1/AndroidManifest.xml:12:13-14:85
+235                android:name="com.google.firebase.components:com.google.firebase.abt.component.AbtRegistrar"
+235-->[com.google.firebase:firebase-abt:21.1.1] /home/lequy/.gradle/caches/8.13/transforms/6460dffd723d6958fa4a02b7d747f66a/transformed/firebase-abt-21.1.1/AndroidManifest.xml:13:17-109
+236                android:value="com.google.firebase.components.ComponentRegistrar" />
+236-->[com.google.firebase:firebase-abt:21.1.1] /home/lequy/.gradle/caches/8.13/transforms/6460dffd723d6958fa4a02b7d747f66a/transformed/firebase-abt-21.1.1/AndroidManifest.xml:14:17-82
+237            <meta-data
+237-->[com.google.firebase:firebase-datatransport:19.0.0] /home/lequy/.gradle/caches/8.13/transforms/07b7cd0b34e643564fd1bf5a090fb831/transformed/firebase-datatransport-19.0.0/AndroidManifest.xml:25:13-27:85
+238                android:name="com.google.firebase.components:com.google.firebase.datatransport.TransportRegistrar"
+238-->[com.google.firebase:firebase-datatransport:19.0.0] /home/lequy/.gradle/caches/8.13/transforms/07b7cd0b34e643564fd1bf5a090fb831/transformed/firebase-datatransport-19.0.0/AndroidManifest.xml:26:17-115
+239                android:value="com.google.firebase.components.ComponentRegistrar" />
+239-->[com.google.firebase:firebase-datatransport:19.0.0] /home/lequy/.gradle/caches/8.13/transforms/07b7cd0b34e643564fd1bf5a090fb831/transformed/firebase-datatransport-19.0.0/AndroidManifest.xml:27:17-82
+240        </service>
+241        <service
+241-->[com.google.firebase:firebase-sessions:2.0.7] /home/lequy/.gradle/caches/8.13/transforms/6d5b95cf29d8b210fd49c679d9f35034/transformed/firebase-sessions-2.0.7/AndroidManifest.xml:22:9-25:40
+242            android:name="com.google.firebase.sessions.SessionLifecycleService"
+242-->[com.google.firebase:firebase-sessions:2.0.7] /home/lequy/.gradle/caches/8.13/transforms/6d5b95cf29d8b210fd49c679d9f35034/transformed/firebase-sessions-2.0.7/AndroidManifest.xml:23:13-80
+243            android:enabled="true"
+243-->[com.google.firebase:firebase-sessions:2.0.7] /home/lequy/.gradle/caches/8.13/transforms/6d5b95cf29d8b210fd49c679d9f35034/transformed/firebase-sessions-2.0.7/AndroidManifest.xml:24:13-35
+244            android:exported="false" />
+244-->[com.google.firebase:firebase-sessions:2.0.7] /home/lequy/.gradle/caches/8.13/transforms/6d5b95cf29d8b210fd49c679d9f35034/transformed/firebase-sessions-2.0.7/AndroidManifest.xml:25:13-37
+245
+246        <receiver
+246-->[com.google.firebase:firebase-messaging:24.1.0] /home/lequy/.gradle/caches/8.13/transforms/d00634e722e18083199145ba361d1e0a/transformed/firebase-messaging-24.1.0/AndroidManifest.xml:29:9-40:20
+247            android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver"
+247-->[com.google.firebase:firebase-messaging:24.1.0] /home/lequy/.gradle/caches/8.13/transforms/d00634e722e18083199145ba361d1e0a/transformed/firebase-messaging-24.1.0/AndroidManifest.xml:30:13-78
+248            android:exported="true"
+248-->[com.google.firebase:firebase-messaging:24.1.0] /home/lequy/.gradle/caches/8.13/transforms/d00634e722e18083199145ba361d1e0a/transformed/firebase-messaging-24.1.0/AndroidManifest.xml:31:13-36
+249            android:permission="com.google.android.c2dm.permission.SEND" >
+249-->[com.google.firebase:firebase-messaging:24.1.0] /home/lequy/.gradle/caches/8.13/transforms/d00634e722e18083199145ba361d1e0a/transformed/firebase-messaging-24.1.0/AndroidManifest.xml:32:13-73
+250            <intent-filter>
+250-->[com.google.firebase:firebase-messaging:24.1.0] /home/lequy/.gradle/caches/8.13/transforms/d00634e722e18083199145ba361d1e0a/transformed/firebase-messaging-24.1.0/AndroidManifest.xml:33:13-35:29
+251                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+251-->[com.google.firebase:firebase-messaging:24.1.0] /home/lequy/.gradle/caches/8.13/transforms/d00634e722e18083199145ba361d1e0a/transformed/firebase-messaging-24.1.0/AndroidManifest.xml:34:17-81
+251-->[com.google.firebase:firebase-messaging:24.1.0] /home/lequy/.gradle/caches/8.13/transforms/d00634e722e18083199145ba361d1e0a/transformed/firebase-messaging-24.1.0/AndroidManifest.xml:34:25-78
+252            </intent-filter>
+253
+254            <meta-data
+254-->[com.google.firebase:firebase-messaging:24.1.0] /home/lequy/.gradle/caches/8.13/transforms/d00634e722e18083199145ba361d1e0a/transformed/firebase-messaging-24.1.0/AndroidManifest.xml:37:13-39:40
+255                android:name="com.google.android.gms.cloudmessaging.FINISHED_AFTER_HANDLED"
+255-->[com.google.firebase:firebase-messaging:24.1.0] /home/lequy/.gradle/caches/8.13/transforms/d00634e722e18083199145ba361d1e0a/transformed/firebase-messaging-24.1.0/AndroidManifest.xml:38:17-92
+256                android:value="true" />
+256-->[com.google.firebase:firebase-messaging:24.1.0] /home/lequy/.gradle/caches/8.13/transforms/d00634e722e18083199145ba361d1e0a/transformed/firebase-messaging-24.1.0/AndroidManifest.xml:39:17-37
+257        </receiver>
+258        <!--
+259             FirebaseMessagingService performs security checks at runtime,
+260             but set to not exported to explicitly avoid allowing another app to call it.
+261        -->
+262        <service
+262-->[com.google.firebase:firebase-messaging:24.1.0] /home/lequy/.gradle/caches/8.13/transforms/d00634e722e18083199145ba361d1e0a/transformed/firebase-messaging-24.1.0/AndroidManifest.xml:46:9-53:19
+263            android:name="com.google.firebase.messaging.FirebaseMessagingService"
+263-->[com.google.firebase:firebase-messaging:24.1.0] /home/lequy/.gradle/caches/8.13/transforms/d00634e722e18083199145ba361d1e0a/transformed/firebase-messaging-24.1.0/AndroidManifest.xml:47:13-82
+264            android:directBootAware="true"
+264-->[com.google.firebase:firebase-messaging:24.1.0] /home/lequy/.gradle/caches/8.13/transforms/d00634e722e18083199145ba361d1e0a/transformed/firebase-messaging-24.1.0/AndroidManifest.xml:48:13-43
+265            android:exported="false" >
+265-->[com.google.firebase:firebase-messaging:24.1.0] /home/lequy/.gradle/caches/8.13/transforms/d00634e722e18083199145ba361d1e0a/transformed/firebase-messaging-24.1.0/AndroidManifest.xml:49:13-37
+266            <intent-filter android:priority="-500" >
+266-->[com.google.firebase:firebase-messaging:24.1.0] /home/lequy/.gradle/caches/8.13/transforms/d00634e722e18083199145ba361d1e0a/transformed/firebase-messaging-24.1.0/AndroidManifest.xml:50:13-52:29
+266-->[com.google.firebase:firebase-messaging:24.1.0] /home/lequy/.gradle/caches/8.13/transforms/d00634e722e18083199145ba361d1e0a/transformed/firebase-messaging-24.1.0/AndroidManifest.xml:50:28-51
+267                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+267-->[com.google.firebase:firebase-messaging:24.1.0] /home/lequy/.gradle/caches/8.13/transforms/d00634e722e18083199145ba361d1e0a/transformed/firebase-messaging-24.1.0/AndroidManifest.xml:51:17-78
+267-->[com.google.firebase:firebase-messaging:24.1.0] /home/lequy/.gradle/caches/8.13/transforms/d00634e722e18083199145ba361d1e0a/transformed/firebase-messaging-24.1.0/AndroidManifest.xml:51:25-75
+268            </intent-filter>
+269        </service>
+270
+271        <property
+271-->[com.google.android.gms:play-services-measurement-api:22.1.2] /home/lequy/.gradle/caches/8.13/transforms/94b24c0dbe1b4cd4bd2554650663c998/transformed/play-services-measurement-api-22.1.2/AndroidManifest.xml:30:9-32:61
+272            android:name="android.adservices.AD_SERVICES_CONFIG"
+272-->[com.google.android.gms:play-services-measurement-api:22.1.2] /home/lequy/.gradle/caches/8.13/transforms/94b24c0dbe1b4cd4bd2554650663c998/transformed/play-services-measurement-api-22.1.2/AndroidManifest.xml:31:13-65
+273            android:resource="@xml/ga_ad_services_config" />
+273-->[com.google.android.gms:play-services-measurement-api:22.1.2] /home/lequy/.gradle/caches/8.13/transforms/94b24c0dbe1b4cd4bd2554650663c998/transformed/play-services-measurement-api-22.1.2/AndroidManifest.xml:32:13-58
+274
+275        <provider
+275-->[com.google.firebase:firebase-common:21.0.0] /home/lequy/.gradle/caches/8.13/transforms/044674cd0a5ef18b33dc3dda4d0926f8/transformed/firebase-common-21.0.0/AndroidManifest.xml:23:9-28:39
+276            android:name="com.google.firebase.provider.FirebaseInitProvider"
+276-->[com.google.firebase:firebase-common:21.0.0] /home/lequy/.gradle/caches/8.13/transforms/044674cd0a5ef18b33dc3dda4d0926f8/transformed/firebase-common-21.0.0/AndroidManifest.xml:24:13-77
+277            android:authorities="com.anime.oc.characters.avatar.firebaseinitprovider"
+277-->[com.google.firebase:firebase-common:21.0.0] /home/lequy/.gradle/caches/8.13/transforms/044674cd0a5ef18b33dc3dda4d0926f8/transformed/firebase-common-21.0.0/AndroidManifest.xml:25:13-72
+278            android:directBootAware="true"
+278-->[com.google.firebase:firebase-common:21.0.0] /home/lequy/.gradle/caches/8.13/transforms/044674cd0a5ef18b33dc3dda4d0926f8/transformed/firebase-common-21.0.0/AndroidManifest.xml:26:13-43
+279            android:exported="false"
+279-->[com.google.firebase:firebase-common:21.0.0] /home/lequy/.gradle/caches/8.13/transforms/044674cd0a5ef18b33dc3dda4d0926f8/transformed/firebase-common-21.0.0/AndroidManifest.xml:27:13-37
+280            android:initOrder="100" />
+280-->[com.google.firebase:firebase-common:21.0.0] /home/lequy/.gradle/caches/8.13/transforms/044674cd0a5ef18b33dc3dda4d0926f8/transformed/firebase-common-21.0.0/AndroidManifest.xml:28:13-36
+281        <provider
+281-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:29:9-37:20
+282            android:name="androidx.startup.InitializationProvider"
+282-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:30:13-67
+283            android:authorities="com.anime.oc.characters.avatar.androidx-startup"
+283-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:31:13-68
+284            android:exported="false" >
+284-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:32:13-37
+285            <meta-data
+285-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:34:13-36:52
+286                android:name="androidx.work.WorkManagerInitializer"
+286-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:35:17-68
+287                android:value="androidx.startup" />
+287-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:36:17-49
+288            <meta-data
+288-->[androidx.emoji2:emoji2:1.4.0] /home/lequy/.gradle/caches/8.13/transforms/7d7c97ddbedd384e68ade1139a7be13e/transformed/emoji2-1.4.0/AndroidManifest.xml:29:13-31:52
+289                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+289-->[androidx.emoji2:emoji2:1.4.0] /home/lequy/.gradle/caches/8.13/transforms/7d7c97ddbedd384e68ade1139a7be13e/transformed/emoji2-1.4.0/AndroidManifest.xml:30:17-75
+290                android:value="androidx.startup" />
+290-->[androidx.emoji2:emoji2:1.4.0] /home/lequy/.gradle/caches/8.13/transforms/7d7c97ddbedd384e68ade1139a7be13e/transformed/emoji2-1.4.0/AndroidManifest.xml:31:17-49
+291            <meta-data
+291-->[androidx.lifecycle:lifecycle-process:2.9.4] /home/lequy/.gradle/caches/8.13/transforms/133fa9698bd80115d3fa08c3b75fadfc/transformed/lifecycle-process-2.9.4/AndroidManifest.xml:29:13-31:52
+292                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+292-->[androidx.lifecycle:lifecycle-process:2.9.4] /home/lequy/.gradle/caches/8.13/transforms/133fa9698bd80115d3fa08c3b75fadfc/transformed/lifecycle-process-2.9.4/AndroidManifest.xml:30:17-78
+293                android:value="androidx.startup" />
+293-->[androidx.lifecycle:lifecycle-process:2.9.4] /home/lequy/.gradle/caches/8.13/transforms/133fa9698bd80115d3fa08c3b75fadfc/transformed/lifecycle-process-2.9.4/AndroidManifest.xml:31:17-49
+294            <meta-data
+294-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/lequy/.gradle/caches/8.13/transforms/eb177d1ba6715276742c1ea2dc57a0a8/transformed/profileinstaller-1.4.0/AndroidManifest.xml:29:13-31:52
+295                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+295-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/lequy/.gradle/caches/8.13/transforms/eb177d1ba6715276742c1ea2dc57a0a8/transformed/profileinstaller-1.4.0/AndroidManifest.xml:30:17-85
+296                android:value="androidx.startup" />
+296-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/lequy/.gradle/caches/8.13/transforms/eb177d1ba6715276742c1ea2dc57a0a8/transformed/profileinstaller-1.4.0/AndroidManifest.xml:31:17-49
+297        </provider>
+298
+299        <service
+299-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:39:9-45:35
+300            android:name="androidx.work.impl.background.systemalarm.SystemAlarmService"
+300-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:40:13-88
+301            android:directBootAware="false"
+301-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:41:13-44
+302            android:enabled="@bool/enable_system_alarm_service_default"
+302-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:42:13-72
+303            android:exported="false" />
+303-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:43:13-37
+304        <service
+304-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:46:9-52:35
+305            android:name="androidx.work.impl.background.systemjob.SystemJobService"
+305-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:47:13-84
+306            android:directBootAware="false"
+306-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:48:13-44
+307            android:enabled="@bool/enable_system_job_service_default"
+307-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:49:13-70
+308            android:exported="true"
+308-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:50:13-36
+309            android:permission="android.permission.BIND_JOB_SERVICE" />
+309-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:51:13-69
+310        <service
+310-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:53:9-59:35
+311            android:name="androidx.work.impl.foreground.SystemForegroundService"
+311-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:54:13-81
+312            android:directBootAware="false"
+312-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:55:13-44
+313            android:enabled="@bool/enable_system_foreground_service_default"
+313-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:56:13-77
+314            android:exported="false" />
+314-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:57:13-37
+315
+316        <receiver
+316-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:61:9-66:35
+317            android:name="androidx.work.impl.utils.ForceStopRunnable$BroadcastReceiver"
+317-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:62:13-88
+318            android:directBootAware="false"
+318-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:63:13-44
+319            android:enabled="true"
+319-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:64:13-35
+320            android:exported="false" />
+320-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:65:13-37
+321        <receiver
+321-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:67:9-77:20
+322            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryChargingProxy"
+322-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:68:13-106
+323            android:directBootAware="false"
+323-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:69:13-44
+324            android:enabled="false"
+324-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:70:13-36
+325            android:exported="false" >
+325-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:71:13-37
+326            <intent-filter>
+326-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:73:13-76:29
+327                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+327-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:74:17-87
+327-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:74:25-84
+328                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+328-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:75:17-90
+328-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:75:25-87
+329            </intent-filter>
+330        </receiver>
+331        <receiver
+331-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:78:9-88:20
+332            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryNotLowProxy"
+332-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:79:13-104
+333            android:directBootAware="false"
+333-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:80:13-44
+334            android:enabled="false"
+334-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:81:13-36
+335            android:exported="false" >
+335-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:82:13-37
+336            <intent-filter>
+336-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:84:13-87:29
+337                <action android:name="android.intent.action.BATTERY_OKAY" />
+337-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:85:17-77
+337-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:85:25-74
+338                <action android:name="android.intent.action.BATTERY_LOW" />
+338-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:86:17-76
+338-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:86:25-73
+339            </intent-filter>
+340        </receiver>
+341        <receiver
+341-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:89:9-99:20
+342            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$StorageNotLowProxy"
+342-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:90:13-104
+343            android:directBootAware="false"
+343-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:91:13-44
+344            android:enabled="false"
+344-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:92:13-36
+345            android:exported="false" >
+345-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:93:13-37
+346            <intent-filter>
+346-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:95:13-98:29
+347                <action android:name="android.intent.action.DEVICE_STORAGE_LOW" />
+347-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:96:17-83
+347-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:96:25-80
+348                <action android:name="android.intent.action.DEVICE_STORAGE_OK" />
+348-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:97:17-82
+348-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:97:25-79
+349            </intent-filter>
+350        </receiver>
+351        <receiver
+351-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:100:9-109:20
+352            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$NetworkStateProxy"
+352-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:101:13-103
+353            android:directBootAware="false"
+353-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:102:13-44
+354            android:enabled="false"
+354-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:103:13-36
+355            android:exported="false" >
+355-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:104:13-37
+356            <intent-filter>
+356-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:106:13-108:29
+357                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+357-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:107:17-79
+357-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:107:25-76
+358            </intent-filter>
+359        </receiver>
+360        <receiver
+360-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:110:9-121:20
+361            android:name="androidx.work.impl.background.systemalarm.RescheduleReceiver"
+361-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:111:13-88
+362            android:directBootAware="false"
+362-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:112:13-44
+363            android:enabled="false"
+363-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:113:13-36
+364            android:exported="false" >
+364-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:114:13-37
+365            <intent-filter>
+365-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:116:13-120:29
+366                <action android:name="android.intent.action.BOOT_COMPLETED" />
+366-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:117:17-79
+366-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:117:25-76
+367                <action android:name="android.intent.action.TIME_SET" />
+367-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:118:17-73
+367-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:118:25-70
+368                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+368-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:119:17-81
+368-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:119:25-78
+369            </intent-filter>
+370        </receiver>
+371        <receiver
+371-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:122:9-131:20
+372            android:name="androidx.work.impl.background.systemalarm.ConstraintProxyUpdateReceiver"
+372-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:123:13-99
+373            android:directBootAware="false"
+373-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:124:13-44
+374            android:enabled="@bool/enable_system_alarm_service_default"
+374-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:125:13-72
+375            android:exported="false" >
+375-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:126:13-37
+376            <intent-filter>
+376-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:128:13-130:29
+377                <action android:name="androidx.work.impl.background.systemalarm.UpdateProxies" />
+377-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:129:17-98
+377-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:129:25-95
+378            </intent-filter>
+379        </receiver>
+380        <receiver
+380-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:132:9-142:20
+381            android:name="androidx.work.impl.diagnostics.DiagnosticsReceiver"
+381-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:133:13-78
+382            android:directBootAware="false"
+382-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:134:13-44
+383            android:enabled="true"
+383-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:135:13-35
+384            android:exported="true"
+384-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:136:13-36
+385            android:permission="android.permission.DUMP" >
+385-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:137:13-57
+386            <intent-filter>
+386-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:139:13-141:29
+387                <action android:name="androidx.work.diagnostics.REQUEST_DIAGNOSTICS" />
+387-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:140:17-88
+387-->[androidx.work:work-runtime:2.9.1] /home/lequy/.gradle/caches/8.13/transforms/93c2f1f75347c22bd8cf03a711265606/transformed/work-runtime-2.9.1/AndroidManifest.xml:140:25-85
+388            </intent-filter>
+389        </receiver>
+390        <receiver
+390-->[com.google.android.gms:play-services-measurement:22.1.2] /home/lequy/.gradle/caches/8.13/transforms/2cd9f4f0350c6c0ea969498bd81002c1/transformed/play-services-measurement-22.1.2/AndroidManifest.xml:29:9-33:20
+391            android:name="com.google.android.gms.measurement.AppMeasurementReceiver"
+391-->[com.google.android.gms:play-services-measurement:22.1.2] /home/lequy/.gradle/caches/8.13/transforms/2cd9f4f0350c6c0ea969498bd81002c1/transformed/play-services-measurement-22.1.2/AndroidManifest.xml:30:13-85
+392            android:enabled="true"
+392-->[com.google.android.gms:play-services-measurement:22.1.2] /home/lequy/.gradle/caches/8.13/transforms/2cd9f4f0350c6c0ea969498bd81002c1/transformed/play-services-measurement-22.1.2/AndroidManifest.xml:31:13-35
+393            android:exported="false" >
+393-->[com.google.android.gms:play-services-measurement:22.1.2] /home/lequy/.gradle/caches/8.13/transforms/2cd9f4f0350c6c0ea969498bd81002c1/transformed/play-services-measurement-22.1.2/AndroidManifest.xml:32:13-37
+394        </receiver>
+395
+396        <service
+396-->[com.google.android.gms:play-services-measurement:22.1.2] /home/lequy/.gradle/caches/8.13/transforms/2cd9f4f0350c6c0ea969498bd81002c1/transformed/play-services-measurement-22.1.2/AndroidManifest.xml:35:9-38:40
+397            android:name="com.google.android.gms.measurement.AppMeasurementService"
+397-->[com.google.android.gms:play-services-measurement:22.1.2] /home/lequy/.gradle/caches/8.13/transforms/2cd9f4f0350c6c0ea969498bd81002c1/transformed/play-services-measurement-22.1.2/AndroidManifest.xml:36:13-84
+398            android:enabled="true"
+398-->[com.google.android.gms:play-services-measurement:22.1.2] /home/lequy/.gradle/caches/8.13/transforms/2cd9f4f0350c6c0ea969498bd81002c1/transformed/play-services-measurement-22.1.2/AndroidManifest.xml:37:13-35
+399            android:exported="false" />
+399-->[com.google.android.gms:play-services-measurement:22.1.2] /home/lequy/.gradle/caches/8.13/transforms/2cd9f4f0350c6c0ea969498bd81002c1/transformed/play-services-measurement-22.1.2/AndroidManifest.xml:38:13-37
+400        <service
+400-->[com.google.android.gms:play-services-measurement:22.1.2] /home/lequy/.gradle/caches/8.13/transforms/2cd9f4f0350c6c0ea969498bd81002c1/transformed/play-services-measurement-22.1.2/AndroidManifest.xml:39:9-43:72
+401            android:name="com.google.android.gms.measurement.AppMeasurementJobService"
+401-->[com.google.android.gms:play-services-measurement:22.1.2] /home/lequy/.gradle/caches/8.13/transforms/2cd9f4f0350c6c0ea969498bd81002c1/transformed/play-services-measurement-22.1.2/AndroidManifest.xml:40:13-87
+402            android:enabled="true"
+402-->[com.google.android.gms:play-services-measurement:22.1.2] /home/lequy/.gradle/caches/8.13/transforms/2cd9f4f0350c6c0ea969498bd81002c1/transformed/play-services-measurement-22.1.2/AndroidManifest.xml:41:13-35
+403            android:exported="false"
+403-->[com.google.android.gms:play-services-measurement:22.1.2] /home/lequy/.gradle/caches/8.13/transforms/2cd9f4f0350c6c0ea969498bd81002c1/transformed/play-services-measurement-22.1.2/AndroidManifest.xml:42:13-37
+404            android:permission="android.permission.BIND_JOB_SERVICE" />
+404-->[com.google.android.gms:play-services-measurement:22.1.2] /home/lequy/.gradle/caches/8.13/transforms/2cd9f4f0350c6c0ea969498bd81002c1/transformed/play-services-measurement-22.1.2/AndroidManifest.xml:43:13-69
+405
+406        <activity
+406-->[com.google.android.gms:play-services-base:18.5.0] /home/lequy/.gradle/caches/8.13/transforms/fa1b825fbed75c61e9b7c6caaa6991dd/transformed/play-services-base-18.5.0/AndroidManifest.xml:5:9-173
+407            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+407-->[com.google.android.gms:play-services-base:18.5.0] /home/lequy/.gradle/caches/8.13/transforms/fa1b825fbed75c61e9b7c6caaa6991dd/transformed/play-services-base-18.5.0/AndroidManifest.xml:5:19-85
+408            android:exported="false"
+408-->[com.google.android.gms:play-services-base:18.5.0] /home/lequy/.gradle/caches/8.13/transforms/fa1b825fbed75c61e9b7c6caaa6991dd/transformed/play-services-base-18.5.0/AndroidManifest.xml:5:146-170
+409            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+409-->[com.google.android.gms:play-services-base:18.5.0] /home/lequy/.gradle/caches/8.13/transforms/fa1b825fbed75c61e9b7c6caaa6991dd/transformed/play-services-base-18.5.0/AndroidManifest.xml:5:86-145
+410
+411        <uses-library
+411-->[androidx.privacysandbox.ads:ads-adservices:1.0.0-beta05] /home/lequy/.gradle/caches/8.13/transforms/c7ac5e149dea3f9973c3cfde0fd02660/transformed/ads-adservices-1.0.0-beta05/AndroidManifest.xml:23:9-25:40
+412            android:name="android.ext.adservices"
+412-->[androidx.privacysandbox.ads:ads-adservices:1.0.0-beta05] /home/lequy/.gradle/caches/8.13/transforms/c7ac5e149dea3f9973c3cfde0fd02660/transformed/ads-adservices-1.0.0-beta05/AndroidManifest.xml:24:13-50
+413            android:required="false" />
+413-->[androidx.privacysandbox.ads:ads-adservices:1.0.0-beta05] /home/lequy/.gradle/caches/8.13/transforms/c7ac5e149dea3f9973c3cfde0fd02660/transformed/ads-adservices-1.0.0-beta05/AndroidManifest.xml:25:13-37
+414
+415        <meta-data
+415-->[com.google.android.gms:play-services-basement:18.4.0] /home/lequy/.gradle/caches/8.13/transforms/631ee4e8f69b9daa052ee2bc76382d60/transformed/play-services-basement-18.4.0/AndroidManifest.xml:6:9-122
+416            android:name="com.google.android.gms.version"
+416-->[com.google.android.gms:play-services-basement:18.4.0] /home/lequy/.gradle/caches/8.13/transforms/631ee4e8f69b9daa052ee2bc76382d60/transformed/play-services-basement-18.4.0/AndroidManifest.xml:6:20-65
+417            android:value="@integer/google_play_services_version" />
+417-->[com.google.android.gms:play-services-basement:18.4.0] /home/lequy/.gradle/caches/8.13/transforms/631ee4e8f69b9daa052ee2bc76382d60/transformed/play-services-basement-18.4.0/AndroidManifest.xml:6:66-119
+418
+419        <service
+419-->[com.google.android.datatransport:transport-backend-cct:3.3.0] /home/lequy/.gradle/caches/8.13/transforms/c1cfaad7d6c8b749e110379ac3ffb248/transformed/transport-backend-cct-3.3.0/AndroidManifest.xml:26:9-32:19
+420            android:name="com.google.android.datatransport.runtime.backends.TransportBackendDiscovery"
+420-->[com.google.android.datatransport:transport-backend-cct:3.3.0] /home/lequy/.gradle/caches/8.13/transforms/c1cfaad7d6c8b749e110379ac3ffb248/transformed/transport-backend-cct-3.3.0/AndroidManifest.xml:27:13-103
+421            android:exported="false" >
+421-->[com.google.android.datatransport:transport-backend-cct:3.3.0] /home/lequy/.gradle/caches/8.13/transforms/c1cfaad7d6c8b749e110379ac3ffb248/transformed/transport-backend-cct-3.3.0/AndroidManifest.xml:28:13-37
+422            <meta-data
+422-->[com.google.android.datatransport:transport-backend-cct:3.3.0] /home/lequy/.gradle/caches/8.13/transforms/c1cfaad7d6c8b749e110379ac3ffb248/transformed/transport-backend-cct-3.3.0/AndroidManifest.xml:29:13-31:39
+423                android:name="backend:com.google.android.datatransport.cct.CctBackendFactory"
+423-->[com.google.android.datatransport:transport-backend-cct:3.3.0] /home/lequy/.gradle/caches/8.13/transforms/c1cfaad7d6c8b749e110379ac3ffb248/transformed/transport-backend-cct-3.3.0/AndroidManifest.xml:30:17-94
+424                android:value="cct" />
+424-->[com.google.android.datatransport:transport-backend-cct:3.3.0] /home/lequy/.gradle/caches/8.13/transforms/c1cfaad7d6c8b749e110379ac3ffb248/transformed/transport-backend-cct-3.3.0/AndroidManifest.xml:31:17-36
+425        </service>
+426        <service
+426-->[androidx.room:room-runtime:2.5.0] /home/lequy/.gradle/caches/8.13/transforms/76114ccc02903ec0c217103f5cb41dda/transformed/room-runtime-2.5.0/AndroidManifest.xml:24:9-28:63
+427            android:name="androidx.room.MultiInstanceInvalidationService"
+427-->[androidx.room:room-runtime:2.5.0] /home/lequy/.gradle/caches/8.13/transforms/76114ccc02903ec0c217103f5cb41dda/transformed/room-runtime-2.5.0/AndroidManifest.xml:25:13-74
+428            android:directBootAware="true"
+428-->[androidx.room:room-runtime:2.5.0] /home/lequy/.gradle/caches/8.13/transforms/76114ccc02903ec0c217103f5cb41dda/transformed/room-runtime-2.5.0/AndroidManifest.xml:26:13-43
+429            android:exported="false" />
+429-->[androidx.room:room-runtime:2.5.0] /home/lequy/.gradle/caches/8.13/transforms/76114ccc02903ec0c217103f5cb41dda/transformed/room-runtime-2.5.0/AndroidManifest.xml:27:13-37
+430
+431        <receiver
+431-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/lequy/.gradle/caches/8.13/transforms/eb177d1ba6715276742c1ea2dc57a0a8/transformed/profileinstaller-1.4.0/AndroidManifest.xml:34:9-52:20
+432            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+432-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/lequy/.gradle/caches/8.13/transforms/eb177d1ba6715276742c1ea2dc57a0a8/transformed/profileinstaller-1.4.0/AndroidManifest.xml:35:13-76
+433            android:directBootAware="false"
+433-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/lequy/.gradle/caches/8.13/transforms/eb177d1ba6715276742c1ea2dc57a0a8/transformed/profileinstaller-1.4.0/AndroidManifest.xml:36:13-44
+434            android:enabled="true"
+434-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/lequy/.gradle/caches/8.13/transforms/eb177d1ba6715276742c1ea2dc57a0a8/transformed/profileinstaller-1.4.0/AndroidManifest.xml:37:13-35
+435            android:exported="true"
+435-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/lequy/.gradle/caches/8.13/transforms/eb177d1ba6715276742c1ea2dc57a0a8/transformed/profileinstaller-1.4.0/AndroidManifest.xml:38:13-36
+436            android:permission="android.permission.DUMP" >
+436-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/lequy/.gradle/caches/8.13/transforms/eb177d1ba6715276742c1ea2dc57a0a8/transformed/profileinstaller-1.4.0/AndroidManifest.xml:39:13-57
+437            <intent-filter>
+437-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/lequy/.gradle/caches/8.13/transforms/eb177d1ba6715276742c1ea2dc57a0a8/transformed/profileinstaller-1.4.0/AndroidManifest.xml:40:13-42:29
+438                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+438-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/lequy/.gradle/caches/8.13/transforms/eb177d1ba6715276742c1ea2dc57a0a8/transformed/profileinstaller-1.4.0/AndroidManifest.xml:41:17-91
+438-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/lequy/.gradle/caches/8.13/transforms/eb177d1ba6715276742c1ea2dc57a0a8/transformed/profileinstaller-1.4.0/AndroidManifest.xml:41:25-88
+439            </intent-filter>
+440            <intent-filter>
+440-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/lequy/.gradle/caches/8.13/transforms/eb177d1ba6715276742c1ea2dc57a0a8/transformed/profileinstaller-1.4.0/AndroidManifest.xml:43:13-45:29
+441                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+441-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/lequy/.gradle/caches/8.13/transforms/eb177d1ba6715276742c1ea2dc57a0a8/transformed/profileinstaller-1.4.0/AndroidManifest.xml:44:17-85
+441-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/lequy/.gradle/caches/8.13/transforms/eb177d1ba6715276742c1ea2dc57a0a8/transformed/profileinstaller-1.4.0/AndroidManifest.xml:44:25-82
+442            </intent-filter>
+443            <intent-filter>
+443-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/lequy/.gradle/caches/8.13/transforms/eb177d1ba6715276742c1ea2dc57a0a8/transformed/profileinstaller-1.4.0/AndroidManifest.xml:46:13-48:29
+444                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+444-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/lequy/.gradle/caches/8.13/transforms/eb177d1ba6715276742c1ea2dc57a0a8/transformed/profileinstaller-1.4.0/AndroidManifest.xml:47:17-88
+444-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/lequy/.gradle/caches/8.13/transforms/eb177d1ba6715276742c1ea2dc57a0a8/transformed/profileinstaller-1.4.0/AndroidManifest.xml:47:25-85
+445            </intent-filter>
+446            <intent-filter>
+446-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/lequy/.gradle/caches/8.13/transforms/eb177d1ba6715276742c1ea2dc57a0a8/transformed/profileinstaller-1.4.0/AndroidManifest.xml:49:13-51:29
+447                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+447-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/lequy/.gradle/caches/8.13/transforms/eb177d1ba6715276742c1ea2dc57a0a8/transformed/profileinstaller-1.4.0/AndroidManifest.xml:50:17-95
+447-->[androidx.profileinstaller:profileinstaller:1.4.0] /home/lequy/.gradle/caches/8.13/transforms/eb177d1ba6715276742c1ea2dc57a0a8/transformed/profileinstaller-1.4.0/AndroidManifest.xml:50:25-92
+448            </intent-filter>
+449        </receiver>
+450
+451        <service
+451-->[com.google.android.datatransport:transport-runtime:3.3.0] /home/lequy/.gradle/caches/8.13/transforms/ac5b8500c160e9f13ae921b7679ec16c/transformed/transport-runtime-3.3.0/AndroidManifest.xml:24:9-28:19
+452            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoSchedulerService"
+452-->[com.google.android.datatransport:transport-runtime:3.3.0] /home/lequy/.gradle/caches/8.13/transforms/ac5b8500c160e9f13ae921b7679ec16c/transformed/transport-runtime-3.3.0/AndroidManifest.xml:25:13-117
+453            android:exported="false"
+453-->[com.google.android.datatransport:transport-runtime:3.3.0] /home/lequy/.gradle/caches/8.13/transforms/ac5b8500c160e9f13ae921b7679ec16c/transformed/transport-runtime-3.3.0/AndroidManifest.xml:26:13-37
+454            android:permission="android.permission.BIND_JOB_SERVICE" >
+454-->[com.google.android.datatransport:transport-runtime:3.3.0] /home/lequy/.gradle/caches/8.13/transforms/ac5b8500c160e9f13ae921b7679ec16c/transformed/transport-runtime-3.3.0/AndroidManifest.xml:27:13-69
+455        </service>
+456
+457        <receiver
+457-->[com.google.android.datatransport:transport-runtime:3.3.0] /home/lequy/.gradle/caches/8.13/transforms/ac5b8500c160e9f13ae921b7679ec16c/transformed/transport-runtime-3.3.0/AndroidManifest.xml:30:9-32:40
+458            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.AlarmManagerSchedulerBroadcastReceiver"
+458-->[com.google.android.datatransport:transport-runtime:3.3.0] /home/lequy/.gradle/caches/8.13/transforms/ac5b8500c160e9f13ae921b7679ec16c/transformed/transport-runtime-3.3.0/AndroidManifest.xml:31:13-132
+459            android:exported="false" /> <!-- The activities will be merged into the manifest of the hosting app. -->
+459-->[com.google.android.datatransport:transport-runtime:3.3.0] /home/lequy/.gradle/caches/8.13/transforms/ac5b8500c160e9f13ae921b7679ec16c/transformed/transport-runtime-3.3.0/AndroidManifest.xml:32:13-37
+460        <activity
+460-->[com.google.android.play:core-common:2.0.4] /home/lequy/.gradle/caches/8.13/transforms/1882d776f15cb66b2e744491209299c1/transformed/core-common-2.0.4/AndroidManifest.xml:14:9-18:65
+461            android:name="com.google.android.play.core.common.PlayCoreDialogWrapperActivity"
+461-->[com.google.android.play:core-common:2.0.4] /home/lequy/.gradle/caches/8.13/transforms/1882d776f15cb66b2e744491209299c1/transformed/core-common-2.0.4/AndroidManifest.xml:15:13-93
+462            android:exported="false"
+462-->[com.google.android.play:core-common:2.0.4] /home/lequy/.gradle/caches/8.13/transforms/1882d776f15cb66b2e744491209299c1/transformed/core-common-2.0.4/AndroidManifest.xml:16:13-37
+463            android:stateNotNeeded="true"
+463-->[com.google.android.play:core-common:2.0.4] /home/lequy/.gradle/caches/8.13/transforms/1882d776f15cb66b2e744491209299c1/transformed/core-common-2.0.4/AndroidManifest.xml:17:13-42
+464            android:theme="@style/Theme.PlayCore.Transparent" />
+464-->[com.google.android.play:core-common:2.0.4] /home/lequy/.gradle/caches/8.13/transforms/1882d776f15cb66b2e744491209299c1/transformed/core-common-2.0.4/AndroidManifest.xml:18:13-62
+465    </application>
+466
+467</manifest>

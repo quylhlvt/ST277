@@ -1,0 +1,3 @@
+com.anime.oc.characters.avatar.test
+style WhiteBackgroundDialogTheme
+style WhiteBackgroundTheme

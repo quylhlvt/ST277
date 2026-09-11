@@ -1,0 +1,57 @@
+package com.anime.oc.characters.avatar.ui.main.home
+
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.annotation.StringRes
+import androidx.recyclerview.widget.RecyclerView
+import com.anime.oc.characters.avatar.R
+import com.anime.oc.characters.avatar.databinding.ItemHomeMenuBinding
+
+enum class HomeMenuAction {
+    CREATE, COSPLAY, RANDOM, MY_ALBUM
+}
+
+data class HomeMenuItem(
+    @StringRes val titleRes: Int,
+    @StringRes val imgRes: Int,
+    val action: HomeMenuAction
+)
+
+class HomeMenuAdapter(
+    private val onItemClick: (HomeMenuAction) -> Unit
+) : RecyclerView.Adapter<HomeMenuAdapter.HomeMenuViewHolder>() {
+
+    private val items = listOf(
+        HomeMenuItem(R.string.pony_maker, R.drawable.img_home1,HomeMenuAction.CREATE),
+        HomeMenuItem(R.string.cosplay, R.drawable.img_home2, HomeMenuAction.COSPLAY),
+        HomeMenuItem(R.string.cat_random, R.drawable.img_home3, HomeMenuAction.RANDOM),
+        HomeMenuItem(R.string.my_creation, R.drawable.img_home4, HomeMenuAction.MY_ALBUM)
+    )
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeMenuViewHolder {
+        val binding = ItemHomeMenuBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+        return HomeMenuViewHolder(binding)
+    }
+
+    override fun onBindViewHolder(holder: HomeMenuViewHolder, position: Int) {
+        holder.bind(items[position])
+    }
+
+    override fun getItemCount(): Int = items.size
+
+    inner class HomeMenuViewHolder(
+        private val binding: ItemHomeMenuBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(item: HomeMenuItem) {
+            binding.tvTitle.isSelected = true
+            binding.tvTitle.setText(item.titleRes)
+            binding.menuContainer.setBackgroundResource(item.imgRes)
+            binding.root.setOnClickListener { onItemClick(item.action) }
+        }
+    }
+}

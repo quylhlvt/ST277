@@ -1,0 +1,182 @@
+[
+    {
+        "merged": "com.anime.oc.characters.avatar.app-mergeDebugResources-87:/layout/item_text_color.xml",
+        "source": "com.anime.oc.characters.avatar.app-main-90:/layout/item_text_color.xml"
+    },
+    {
+        "merged": "com.anime.oc.characters.avatar.app-mergeDebugResources-87:/layout/layout_text_panel.xml",
+        "source": "com.anime.oc.characters.avatar.app-main-90:/layout/layout_text_panel.xml"
+    },
+    {
+        "merged": "com.anime.oc.characters.avatar.app-mergeDebugResources-87:/layout/item_background_image.xml",
+        "source": "com.anime.oc.characters.avatar.app-main-90:/layout/item_background_image.xml"
+    },
+    {
+        "merged": "com.anime.oc.characters.avatar.app-mergeDebugResources-87:/layout/item_intro.xml",
+        "source": "com.anime.oc.characters.avatar.app-main-90:/layout/item_intro.xml"
+    },
+    {
+        "merged": "com.anime.oc.characters.avatar.app-mergeDebugResources-87:/layout/dialog_rate.xml",
+        "source": "com.anime.oc.characters.avatar.app-main-90:/layout/dialog_rate.xml"
+    },
+    {
+        "merged": "com.anime.oc.characters.avatar.app-mergeDebugResources-87:/layout/item_color.xml",
+        "source": "com.anime.oc.characters.avatar.app-main-90:/layout/item_color.xml"
+    },
+    {
+        "merged": "com.anime.oc.characters.avatar.app-mergeDebugResources-87:/layout/dialogbase.xml",
+        "source": "com.anime.oc.characters.avatar.app-main-90:/layout/dialogbase.xml"
+    },
+    {
+        "merged": "com.anime.oc.characters.avatar.app-mergeDebugResources-87:/layout/layout_actionbar2.xml",
+        "source": "com.anime.oc.characters.avatar.app-main-90:/layout/layout_actionbar2.xml"
+    },
+    {
+        "merged": "com.anime.oc.characters.avatar.app-mergeDebugResources-87:/layout/item_bottom_custom.xml",
+        "source": "com.anime.oc.characters.avatar.app-main-90:/layout/item_bottom_custom.xml"
+    },
+    {
+        "merged": "com.anime.oc.characters.avatar.app-mergeDebugResources-87:/layout/activity_customize.xml",
+        "source": "com.anime.oc.characters.avatar.app-main-90:/layout/activity_customize.xml"
+    },
+    {
+        "merged": "com.anime.oc.characters.avatar.app-mergeDebugResources-87:/layout/dialog_color_picker.xml",
+        "source": "com.anime.oc.characters.avatar.app-main-90:/layout/dialog_color_picker.xml"
+    },
+    {
+        "merged": "com.anime.oc.characters.avatar.app-mergeDebugResources-87:/layout/item_speech.xml",
+        "source": "com.anime.oc.characters.avatar.app-main-90:/layout/item_speech.xml"
+    },
+    {
+        "merged": "com.anime.oc.characters.avatar.app-mergeDebugResources-87:/layout/activity_my_pony.xml",
+        "source": "com.anime.oc.characters.avatar.app-main-90:/layout/activity_my_pony.xml"
+    },
+    {
+        "merged": "com.anime.oc.characters.avatar.app-mergeDebugResources-87:/layout/activity_success.xml",
+        "source": "com.anime.oc.characters.avatar.app-main-90:/layout/activity_success.xml"
+    },
+    {
+        "merged": "com.anime.oc.characters.avatar.app-mergeDebugResources-87:/layout/item_my_design.xml",
+        "source": "com.anime.oc.characters.avatar.app-main-90:/layout/item_my_design.xml"
+    },
+    {
+        "merged": "com.anime.oc.characters.avatar.app-mergeDebugResources-87:/layout/item_home_menu.xml",
+        "source": "com.anime.oc.characters.avatar.app-main-90:/layout/item_home_menu.xml"
+    },
+    {
+        "merged": "com.anime.oc.characters.avatar.app-mergeDebugResources-87:/layout/activity_success_cosplay.xml",
+        "source": "com.anime.oc.characters.avatar.app-main-90:/layout/activity_success_cosplay.xml"
+    },
+    {
+        "merged": "com.anime.oc.characters.avatar.app-mergeDebugResources-87:/layout/item_my_avatar.xml",
+        "source": "com.anime.oc.characters.avatar.app-main-90:/layout/item_my_avatar.xml"
+    },
+    {
+        "merged": "com.anime.oc.characters.avatar.app-mergeDebugResources-87:/layout/item_layer.xml",
+        "source": "com.anime.oc.characters.avatar.app-main-90:/layout/item_layer.xml"
+    },
+    {
+        "merged": "com.anime.oc.characters.avatar.app-mergeDebugResources-87:/layout/activity_show.xml",
+        "source": "com.anime.oc.characters.avatar.app-main-90:/layout/activity_show.xml"
+    },
+    {
+        "merged": "com.anime.oc.characters.avatar.app-mergeDebugResources-87:/layout/layout_actionbar3.xml",
+        "source": "com.anime.oc.characters.avatar.app-main-90:/layout/layout_actionbar3.xml"
+    },
+    {
+        "merged": "com.anime.oc.characters.avatar.app-mergeDebugResources-87:/layout/activity_splash.xml",
+        "source": "com.anime.oc.characters.avatar.app-main-90:/layout/activity_splash.xml"
+    },
+    {
+        "merged": "com.anime.oc.characters.avatar.app-mergeDebugResources-87:/layout/item_tittle_background_image.xml",
+        "source": "com.anime.oc.characters.avatar.app-main-90:/layout/item_tittle_background_image.xml"
+    },
+    {
+        "merged": "com.anime.oc.characters.avatar.app-mergeDebugResources-87:/layout/activity_permission.xml",
+        "source": "com.anime.oc.characters.avatar.app-main-90:/layout/activity_permission.xml"
+    },
+    {
+        "merged": "com.anime.oc.characters.avatar.app-mergeDebugResources-87:/layout/activity_language.xml",
+        "source": "com.anime.oc.characters.avatar.app-main-90:/layout/activity_language.xml"
+    },
+    {
+        "merged": "com.anime.oc.characters.avatar.app-mergeDebugResources-87:/layout/layout_actionbar.xml",
+        "source": "com.anime.oc.characters.avatar.app-main-90:/layout/layout_actionbar.xml"
+    },
+    {
+        "merged": "com.anime.oc.characters.avatar.app-mergeDebugResources-87:/layout/layout_background_tab.xml",
+        "source": "com.anime.oc.characters.avatar.app-main-90:/layout/layout_background_tab.xml"
+    },
+    {
+        "merged": "com.anime.oc.characters.avatar.app-mergeDebugResources-87:/layout/activity_setting.xml",
+        "source": "com.anime.oc.characters.avatar.app-main-90:/layout/activity_setting.xml"
+    },
+    {
+        "merged": "com.anime.oc.characters.avatar.app-mergeDebugResources-87:/layout/dialog_speech.xml",
+        "source": "com.anime.oc.characters.avatar.app-main-90:/layout/dialog_speech.xml"
+    },
+    {
+        "merged": "com.anime.oc.characters.avatar.app-mergeDebugResources-87:/layout/bottom_bottom_view.xml",
+        "source": "com.anime.oc.characters.avatar.app-main-90:/layout/bottom_bottom_view.xml"
+    },
+    {
+        "merged": "com.anime.oc.characters.avatar.app-mergeDebugResources-87:/layout/activity_view.xml",
+        "source": "com.anime.oc.characters.avatar.app-main-90:/layout/activity_view.xml"
+    },
+    {
+        "merged": "com.anime.oc.characters.avatar.app-mergeDebugResources-87:/layout/item_background_color.xml",
+        "source": "com.anime.oc.characters.avatar.app-main-90:/layout/item_background_color.xml"
+    },
+    {
+        "merged": "com.anime.oc.characters.avatar.app-mergeDebugResources-87:/layout/item_quick_mix.xml",
+        "source": "com.anime.oc.characters.avatar.app-main-90:/layout/item_quick_mix.xml"
+    },
+    {
+        "merged": "com.anime.oc.characters.avatar.app-mergeDebugResources-87:/layout/activity_random.xml",
+        "source": "com.anime.oc.characters.avatar.app-main-90:/layout/activity_random.xml"
+    },
+    {
+        "merged": "com.anime.oc.characters.avatar.app-mergeDebugResources-87:/layout/activity_cosplay.xml",
+        "source": "com.anime.oc.characters.avatar.app-main-90:/layout/activity_cosplay.xml"
+    },
+    {
+        "merged": "com.anime.oc.characters.avatar.app-mergeDebugResources-87:/layout/activity_home.xml",
+        "source": "com.anime.oc.characters.avatar.app-main-90:/layout/activity_home.xml"
+    },
+    {
+        "merged": "com.anime.oc.characters.avatar.app-mergeDebugResources-87:/layout/dialog_create_name.xml",
+        "source": "com.anime.oc.characters.avatar.app-main-90:/layout/dialog_create_name.xml"
+    },
+    {
+        "merged": "com.anime.oc.characters.avatar.app-mergeDebugResources-87:/layout/item_font.xml",
+        "source": "com.anime.oc.characters.avatar.app-main-90:/layout/item_font.xml"
+    },
+    {
+        "merged": "com.anime.oc.characters.avatar.app-mergeDebugResources-87:/layout/item_choose.xml",
+        "source": "com.anime.oc.characters.avatar.app-main-90:/layout/item_choose.xml"
+    },
+    {
+        "merged": "com.anime.oc.characters.avatar.app-mergeDebugResources-87:/layout/item_sticker.xml",
+        "source": "com.anime.oc.characters.avatar.app-main-90:/layout/item_sticker.xml"
+    },
+    {
+        "merged": "com.anime.oc.characters.avatar.app-mergeDebugResources-87:/layout/item_language.xml",
+        "source": "com.anime.oc.characters.avatar.app-main-90:/layout/item_language.xml"
+    },
+    {
+        "merged": "com.anime.oc.characters.avatar.app-mergeDebugResources-87:/layout/activity_add_character.xml",
+        "source": "com.anime.oc.characters.avatar.app-main-90:/layout/activity_add_character.xml"
+    },
+    {
+        "merged": "com.anime.oc.characters.avatar.app-mergeDebugResources-87:/layout/activity_intro.xml",
+        "source": "com.anime.oc.characters.avatar.app-main-90:/layout/activity_intro.xml"
+    },
+    {
+        "merged": "com.anime.oc.characters.avatar.app-mergeDebugResources-87:/layout/activity_choose_pony.xml",
+        "source": "com.anime.oc.characters.avatar.app-main-90:/layout/activity_choose_pony.xml"
+    },
+    {
+        "merged": "com.anime.oc.characters.avatar.app-mergeDebugResources-87:/layout/layout_speech_tab.xml",
+        "source": "com.anime.oc.characters.avatar.app-main-90:/layout/layout_speech_tab.xml"
+    }
+]

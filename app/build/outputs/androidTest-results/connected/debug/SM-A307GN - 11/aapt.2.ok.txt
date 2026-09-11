@@ -1,0 +1,29 @@
+EXECUTING: /home/lequy/Android/Sdk/build-tools/35.0.0/aapt dump badging /home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/build/outputs/apk/androidTest/debug/ST279_Anime_OC_Maker_Avatar_Creator_v1.0.0_09.11.2026-debug-androidTest.apk
+CURRENT_WORKING_DIRECTORY: /home/lequy/LVT/ST279_Anime-OC-Maker (Copy)
+START_TIME: 2026-09-11 18:32:51.954
+START_TIME-NANOS: 2026-09-11 18:32:51.954894049
+ENVIRONMENT:
+
+*****************************************
+STDOUT/STDERR BELOW
+===================
+package: name='com.anime.oc.characters.avatar.test' versionCode='' versionName='' platformBuildVersionName='16' platformBuildVersionCode='36' compileSdkVersion='36' compileSdkVersionCodename='16'
+sdkVersion:'24'
+targetSdkVersion:'36'
+uses-permission: name='android.permission.REORDER_TASKS'
+application: label='' icon=''
+application-debuggable
+uses-library:'android.test.runner'
+feature-group: label=''
+  uses-feature: name='android.hardware.faketouch'
+  uses-implied-feature: name='android.hardware.faketouch' reason='default feature for all apps'
+other-activities
+supports-screens: 'small' 'normal' 'large' 'xlarge'
+supports-any-density: 'true'
+locales: '--_--'
+densities: '160'
+===================
+END_TIME: 2026-09-11 18:32:51.957
+END_TIME-NANOS: 2026-09-11 18:32:51.957551234
+DURATION: 2ms
+EXIT CODE: 0

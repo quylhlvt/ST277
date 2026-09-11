@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:ns1="urn:oasis:names:tc:xliff:document:1.2">
+    <string-array name="exo_controls_playback_speeds">
+    <item>0,25x</item>
+    <item>0,5x</item>
+    <item>0,75x</item>
+    <item>Normal</item>
+    <item>1,25x</item>
+    <item>1,5x</item>
+    <item>2x</item>
+  </string-array>
+    <plurals name="exo_controls_fastforward_by_amount_description">
+    <item quantity="one">Avançar %d segundo</item>
+    <item quantity="other">Avançar %d segundos</item>
+  </plurals>
+    <plurals name="exo_controls_rewind_by_amount_description">
+    <item quantity="one">Voltar %d segundo</item>
+    <item quantity="other">Voltar %d segundos</item>
+  </plurals>
+    <string msgid="5976598919945601918" name="abc_action_bar_home_description">"Navegar para a página inicial"</string>
+    <string msgid="8388173803310557296" name="abc_action_bar_up_description">"Navegar para cima"</string>
+    <string msgid="3937310113216875497" name="abc_action_menu_overflow_description">"Mais opções"</string>
+    <string msgid="4692188335987374352" name="abc_action_mode_done">"Concluído"</string>
+    <string msgid="1189761859438369441" name="abc_activity_chooser_view_see_all">"Ver tudo"</string>
+    <string msgid="2165779757652331008" name="abc_activitychooserview_choose_application">"Selecionar um app"</string>
+    <string msgid="4215997306490295099" name="abc_capital_off">"DESATIVADO"</string>
+    <string msgid="884982626291842264" name="abc_capital_on">"ATIVADO"</string>
+    <string msgid="8833365367933412986" name="abc_menu_alt_shortcut_label">"Alt+"</string>
+    <string msgid="2223301931652355242" name="abc_menu_ctrl_shortcut_label">"Ctrl+"</string>
+    <string msgid="838001238306846836" name="abc_menu_delete_shortcut_label">"delete"</string>
+    <string msgid="7986526966204849475" name="abc_menu_enter_shortcut_label">"enter"</string>
+    <string msgid="375214403600139847" name="abc_menu_function_shortcut_label">"Function+"</string>
+    <string msgid="4192209724446364286" name="abc_menu_meta_shortcut_label">"Meta+"</string>
+    <string msgid="4741552369836443843" name="abc_menu_shift_shortcut_label">"Shift+"</string>
+    <string msgid="5473865519181928982" name="abc_menu_space_shortcut_label">"espaço"</string>
+    <string msgid="6180552449598693998" name="abc_menu_sym_shortcut_label">"Sym+"</string>
+    <string msgid="5520303668377388990" name="abc_prepend_shortcut_label">"Menu+"</string>
+    <string msgid="7208076849092622260" name="abc_search_hint">"Pesquisar…"</string>
+    <string msgid="3741173234950517107" name="abc_searchview_description_clear">"Limpar consulta"</string>
+    <string msgid="693312494995508443" name="abc_searchview_description_query">"Consulta de pesquisa"</string>
+    <string msgid="3417662926640357176" name="abc_searchview_description_search">"Pesquisar"</string>
+    <string msgid="1486535517437947103" name="abc_searchview_description_submit">"Enviar consulta"</string>
+    <string msgid="2293578557972875415" name="abc_searchview_description_voice">"Pesquisa por voz"</string>
+    <string msgid="8875138169939072951" name="abc_shareactionprovider_share_with">"Compartilhar com"</string>
+    <string msgid="9055268688411532828" name="abc_shareactionprovider_share_with_application">"Compartilhar com <ns1:g id="APPLICATION_NAME">%s</ns1:g>"</string>
+    <string msgid="1656852541809559762" name="abc_toolbar_collapse_description">"Recolher"</string>
+    <string name="add_image">Adicionar imagem</string>
+    <string name="add_to_telegram">Adicionar ao Telegram</string>
+    <string name="add_to_whatsapp">Adicionar ao WhatsApp</string>
+    <string name="allow">\u00A0Permitir</string>
+    <string name="app_name">Anime OC Maker: Avatar Creator</string>
+    <string name="are_you_sure_want_to_delete_this_item">Tem certeza de que deseja excluir este item?</string>
+    <string msgid="9020470552698189270" name="autofill">"Preenchimento automático"</string>
+    <string name="bubbles">Bolhas</string>
+    <string msgid="881409763997275156" name="call_notification_answer_action">"Atender"</string>
+    <string msgid="8793775615905189152" name="call_notification_answer_video_action">"Vídeo"</string>
+    <string msgid="3229508546291798546" name="call_notification_decline_action">"Recusar"</string>
+    <string msgid="2659457946726154263" name="call_notification_hang_up_action">"Desligar"</string>
+    <string msgid="6107532579223922871" name="call_notification_incoming_text">"Alguém está ligando"</string>
+    <string msgid="8623827134497363134" name="call_notification_ongoing_text">"Chamada em andamento"</string>
+    <string msgid="59049573811482460" name="call_notification_screening_text">"Filtrando uma ligação recebida"</string>
+    <string name="cancel">Cancelar</string>
+    <string name="cat_random">Anime aleatório</string>
+    <string name="category">Categoria</string>
+    <string name="choose_color">Escolher cor</string>
+    <string msgid="406453423630273620" name="close_drawer">"Fechar menu de navegação"</string>
+    <string msgid="7573152094250666567" name="close_sheet">"Fechar planilha"</string>
+    <string name="color">Cor</string>
+    <string name="continue_per">Continuar</string>
+    <string name="cosplay">Cosplay de anime</string>
+    <string name="cosplay2">Cosplay</string>
+    <string name="cosplay_complete">Cosplay concluído!</string>
+    <string name="create_package_name">Criar nome do pacote</string>
+    <string msgid="8038256446254964252" name="default_error_message">"Entrada inválida"</string>
+    <string msgid="6312721426453364202" name="default_popup_window_title">"Janela pop-up"</string>
+    <string name="delete">Excluir</string>
+    <string name="design">Meu design</string>
+    <string name="do_you_want_to_reset_all">Deseja redefinir tudo?</string>
+    <string name="done">Concluído</string>
+    <string name="download">Baixar</string>
+    <string name="download_failed_please_try_again_later">Falha no download, tente novamente mais tarde!</string>
+    <string name="download_success">Download realizado com sucesso no álbum %s</string>
+    <string msgid="1890207353314751437" name="dropdown_menu">"Menu suspenso"</string>
+    <string name="edit">Editar</string>
+    <string name="enter_your_package_name">Digite o nome do pacote</string>
+    <string name="error">Erro</string>
+    <string name="errorcontent">Este item não está mais disponível.</string>
+    <string name="exit">Sair</string>
+    <string name="exo_controls_cc_disabled_description">Ativar legendas</string>
+    <string name="exo_controls_cc_enabled_description">Desativar legendas</string>
+    <string name="exo_controls_fastforward_description">Avançar</string>
+    <string name="exo_controls_fullscreen_enter_description">Entrar no modo de tela cheia</string>
+    <string name="exo_controls_fullscreen_exit_description">Sair do modo de tela cheia</string>
+    <string name="exo_controls_hide">Ocultar controles do player</string>
+    <string name="exo_controls_next_description">Próxima</string>
+    <string name="exo_controls_overflow_hide_description">Ocultar configurações extras</string>
+    <string name="exo_controls_overflow_show_description">Exibir configurações extras</string>
+    <string name="exo_controls_pause_description">Pausar</string>
+    <string name="exo_controls_play_description">Reproduzir</string>
+    <string name="exo_controls_playback_speed">Velocidade</string>
+    <string name="exo_controls_previous_description">Anterior</string>
+    <string name="exo_controls_repeat_all_description">Modo atual: repetir tudo. Alternar modo de repetição.</string>
+    <string name="exo_controls_repeat_off_description">Modo atual: não repetir. Alternar modo de repetição.</string>
+    <string name="exo_controls_repeat_one_description">Modo atual: repetir um item. Alternar modo de repetição.</string>
+    <string name="exo_controls_rewind_description">Voltar</string>
+    <string name="exo_controls_seek_bar_description">Andamento da reprodução</string>
+    <string name="exo_controls_settings_description">Configurações</string>
+    <string name="exo_controls_show">Mostrar controles do player</string>
+    <string name="exo_controls_shuffle_off_description">Ativar o modo de ordem aleatória</string>
+    <string name="exo_controls_shuffle_on_description">Desativar o modo de ordem aleatória</string>
+    <string name="exo_controls_stop_description">Parar</string>
+    <string name="exo_controls_vr_description">Modo RV</string>
+    <string name="exo_download_completed">Download concluído</string>
+    <string name="exo_download_description">Fazer o download</string>
+    <string name="exo_download_downloading">Fazendo o download</string>
+    <string name="exo_download_failed">Falha no download</string>
+    <string name="exo_download_notification_channel_name">Downloads</string>
+    <string name="exo_download_paused">Downloads pausados</string>
+    <string name="exo_download_paused_for_network">Downloads aguardando uma conexão de rede</string>
+    <string name="exo_download_paused_for_wifi">Downloads aguardando uma rede Wi-Fi</string>
+    <string name="exo_download_removing">Removendo downloads</string>
+    <string name="exo_item_list">%1$s, %2$s</string>
+    <string name="exo_track_bitrate">%1$.2f Mbps</string>
+    <string name="exo_track_mono">Mono</string>
+    <string name="exo_track_resolution">%1$d × %2$d</string>
+    <string name="exo_track_role_alternate">Alternativa</string>
+    <string name="exo_track_role_closed_captions">CC</string>
+    <string name="exo_track_role_commentary">Comentários</string>
+    <string name="exo_track_role_supplementary">Complementar</string>
+    <string name="exo_track_selection_auto">Automática</string>
+    <string name="exo_track_selection_none">Nenhuma</string>
+    <string name="exo_track_selection_title_audio">Áudio</string>
+    <string name="exo_track_stereo">Estéreo</string>
+    <string name="exo_track_surround">Sistema surround</string>
+    <string name="exo_track_surround_5_point_1">Sistema surround 5.1</string>
+    <string name="exo_track_surround_7_point_1">Sistema surround 7.1</string>
+    <string name="exo_track_unknown">Desconhecido</string>
+    <string name="exo_track_unknown_name">Desconhecido (%1$s)</string>
+    <string name="facebook_not_available">O Facebook não está instalado ou não pode receber esta imagem</string>
+    <string name="facebook_share">Compartilhar no Facebook</string>
+    <string name="five_star">Obrigado pelo seu feedback</string>
+    <string name="five_star_title">Nós também gostamos de você!</string>
+    <string name="font">Fonte</string>
+    <string name="four_star">Obrigado pelo seu feedback</string>
+    <string name="four_star_title">Nós também gostamos de você!</string>
+    <string name="go_to_setting_message">O aplicativo precisa desta permissão</string>
+    <string name="granted_notification">Permissão de notificação concedida</string>
+    <string name="granted_storage">Permissão de armazenamento concedida</string>
+    <string name="have_rated">Obrigado por avaliar nosso app</string>
+    <string name="haven_t_saved_it_yet_do_you_want_to_exit">Ainda não foi salvo, deseja sair?</string>
+    <string name="image">Imagem</string>
+    <string name="image_has_been_saved_successfully">Imagem salva com sucesso!</string>
+    <string name="image_not_found">Imagem não encontrada</string>
+    <string msgid="6827826412747255547" name="in_progress">"Em andamento"</string>
+    <string msgid="7933458017204019916" name="indeterminate">"Parcialmente selecionada"</string>
+    <string name="instagram_not_available">O Instagram não está instalado ou não pode receber esta imagem</string>
+    <string name="instagram_share">Compartilhar no Instagram</string>
+    <string name="instruction">Instruções</string>
+    <string name="internet">Internet</string>
+    <string name="invalid_action">Erro</string>
+    <string name="invalid_action_msg">Aplicativo não instalado</string>
+    <string name="language">Idioma</string>
+    <string name="limit_30_items">No máximo 30 itens podem ser adicionados</string>
+    <string name="limit_3_items">Pelo menos 3 itens são necessários para criar um sticker</string>
+    <string name="load_ads_fail">Falha ao carregar o anúncio</string>
+    <string name="loading">Carregando</string>
+    <string msgid="2988463736136100848" name="m3c_bottom_sheet_collapse_description">"Fechar página inferior"</string>
+    <string msgid="1555567894577437024" name="m3c_bottom_sheet_dismiss_description">"Dispensar página inferior"</string>
+    <string msgid="8403354765404029791" name="m3c_bottom_sheet_drag_handle_description">"Alça de arrastar"</string>
+    <string msgid="6670819569745899763" name="m3c_bottom_sheet_expand_description">"Abrir página inferior"</string>
+    <string msgid="3010635850035863127" name="m3c_bottom_sheet_pane_title">"Página inferior"</string>
+    <string msgid="8166741421776570875" name="m3c_date_input_headline">"Data informada"</string>
+    <string msgid="229313757840775812" name="m3c_date_input_headline_description">"Data informada: %1$s"</string>
+    <string msgid="6116910750161463197" name="m3c_date_input_invalid_for_pattern">"A data não está no padrão esperado: %1$s"</string>
+    <string msgid="2521768508935305279" name="m3c_date_input_invalid_not_allowed">"Data não permitida: %1$s"</string>
+    <string msgid="7052898923934555305" name="m3c_date_input_invalid_year_range">"A data está fora do intervalo de anos esperado: %1$s a %2$s"</string>
+    <string msgid="2895559812010326913" name="m3c_date_input_label">"Data"</string>
+    <string msgid="1237013946323089826" name="m3c_date_input_no_input_description">"Nenhum"</string>
+    <string msgid="7306227249789210568" name="m3c_date_input_title">"Selecionar data"</string>
+    <string msgid="7605002211875882969" name="m3c_date_picker_headline">"Data selecionada"</string>
+    <string msgid="3664277305226978227" name="m3c_date_picker_headline_description">"Seleção atual: %1$s"</string>
+    <string msgid="8436650776581492840" name="m3c_date_picker_navigate_to_year_description">"Navegar para o ano de %1$s"</string>
+    <string msgid="5811000998184572395" name="m3c_date_picker_no_selection_description">"Nenhum"</string>
+    <string msgid="7813882352367152251" name="m3c_date_picker_scroll_to_earlier_years">"Role a tela para mostrar anos anteriores"</string>
+    <string msgid="5727367015496556177" name="m3c_date_picker_scroll_to_later_years">"Role a tela para mostrar anos seguintes"</string>
+    <string msgid="1804346892470238807" name="m3c_date_picker_switch_to_calendar_mode">"Usar o modo de entrada na agenda"</string>
+    <string msgid="395627960681594326" name="m3c_date_picker_switch_to_day_selection">"Deslize para selecionar um ano ou toque para voltar à seleção de dia"</string>
+    <string msgid="2219746470065162704" name="m3c_date_picker_switch_to_input_mode">"Usar o modo de entrada de texto"</string>
+    <string msgid="7142101321095356500" name="m3c_date_picker_switch_to_next_month">"Mudar para o próximo mês"</string>
+    <string msgid="228438865139394590" name="m3c_date_picker_switch_to_previous_month">"Mudar para o mês anterior"</string>
+    <string msgid="791651718641787594" name="m3c_date_picker_switch_to_year_selection">"Usar a seleção de ano"</string>
+    <string msgid="7430790972741451689" name="m3c_date_picker_title">"Selecionar data"</string>
+    <string msgid="3199387177749801575" name="m3c_date_picker_today_description">"Hoje"</string>
+    <string msgid="2068382232816991922" name="m3c_date_picker_year_picker_pane_title">"Seletor de ano visível"</string>
+    <string msgid="3190049423327661366" name="m3c_date_range_input_invalid_range_input">"Período inválido"</string>
+    <string msgid="3148384720560189467" name="m3c_date_range_input_title">"Informar datas"</string>
+    <string msgid="2138321128465719402" name="m3c_date_range_picker_day_in_range">"Dentro do período"</string>
+    <string msgid="4947636797751277713" name="m3c_date_range_picker_end_headline">"Data de término"</string>
+    <string msgid="602077859540990149" name="m3c_date_range_picker_scroll_to_next_month">"Role a tela para mostrar o mês seguinte"</string>
+    <string msgid="4592174524846109496" name="m3c_date_range_picker_scroll_to_previous_month">"Role a tela para mostrar o mês anterior"</string>
+    <string msgid="4665981448952749820" name="m3c_date_range_picker_start_headline">"Data de início"</string>
+    <string msgid="3134165431120340385" name="m3c_date_range_picker_title">"Selecionar datas"</string>
+    <string msgid="7617233117134790350" name="m3c_dialog">"Caixa de diálogo"</string>
+    <string msgid="3177828188723359358" name="m3c_dropdown_menu_collapsed">"Fechado"</string>
+    <string msgid="2360841780724299882" name="m3c_dropdown_menu_expanded">"Aberto"</string>
+    <string msgid="8687821690726149911" name="m3c_dropdown_menu_toggle">"Ativar/desativar o menu suspenso"</string>
+    <string msgid="6152806324422087846" name="m3c_search_bar_search">"Pesquisar"</string>
+    <string msgid="6152755701819882931" name="m3c_snackbar_dismiss">"Dispensar"</string>
+    <string msgid="7655536806087401899" name="m3c_suggestions_available">"Sugestões abaixo"</string>
+    <string msgid="2786685010796619560" name="m3c_time_picker_am">"AM"</string>
+    <string msgid="2349193472625211372" name="m3c_time_picker_hour">"Hora"</string>
+    <string msgid="9179527532316922345" name="m3c_time_picker_hour_24h_suffix">"%1$d horas"</string>
+    <string msgid="8876759303332837035" name="m3c_time_picker_hour_selection">"Selecione a hora"</string>
+    <string msgid="3458167507790628988" name="m3c_time_picker_hour_suffix">"%1$dh"</string>
+    <string msgid="6973808109666874069" name="m3c_time_picker_hour_text_field">"por hora"</string>
+    <string msgid="4313071914266462005" name="m3c_time_picker_minute">"Minuto"</string>
+    <string msgid="4699133535056739733" name="m3c_time_picker_minute_selection">"Selecione os minutos"</string>
+    <string msgid="5064177921781937179" name="m3c_time_picker_minute_suffix">"%1$d minutos"</string>
+    <string msgid="7661234488295443182" name="m3c_time_picker_minute_text_field">"por minutos"</string>
+    <string msgid="5865171949528594571" name="m3c_time_picker_period_toggle_description">"Selecione AM ou PM"</string>
+    <string msgid="6616362054113087709" name="m3c_time_picker_pm">"PM"</string>
+    <string msgid="1805687647081129904" name="m3c_tooltip_long_press_label">"Mostrar dica"</string>
+    <string msgid="5460405025248574620" name="m3c_tooltip_pane_description">"Dica"</string>
+    <string name="my_avatar">Meu anime</string>
+    <string name="my_creation">Minha criação</string>
+    <string msgid="542007171693138492" name="navigation_menu">"Menu de navegação"</string>
+    <string name="next">Avançar\u00A0</string>
+    <string name="no">Não</string>
+    <string name="no_app_found_to_handle_this_action">Nenhum aplicativo encontrado para esta ação</string>
+    <string name="no_internet">Sem internet</string>
+    <string name="no_item_here">Nenhum item aqui</string>
+    <string name="not_matched">Sem correspondência</string>
+    <string name="not_select_lang">Por favor, selecione um idioma</string>
+    <string msgid="6610465462668679431" name="not_selected">"Não selecionado"</string>
+    <string name="notification">Notificação\u00A0</string>
+    <string name="null_edt">Por favor, insira um texto</string>
+    <string name="ok">OK</string>
+    <string name="one_star_title">Ah não!</string>
+    <string name="permission">Permissão</string>
+    <string name="please_connect_to_the_internet_to_download_more_data">Conecte-se à internet para baixar mais dados</string>
+    <string name="please_enter_your_package_name">Digite o nome do pacote!</string>
+    <string name="please_select_an_image">Por favor, selecione uma imagem</string>
+    <string name="please_wait">Aguarde...</string>
+    <string name="please_wait_a_few_seconds_for_data_to_load">Aguarde alguns segundos para carregar os dados.</string>
+    <string name="please_watch_full_ads">Assista ao anúncio completo</string>
+    <string name="pony_maker">Criador de anime</string>
+    <string name="privacy_policy"><![CDATA[Privacidade e Política]]></string>
+    <string name="random">Aleatório</string>
+    <string msgid="5941395253238309765" name="range_end">"Fim do intervalo"</string>
+    <string msgid="7097486360902471446" name="range_start">"Início do intervalo"</string>
+    <string name="rate">Avaliar</string>
+    <string name="rate_us">Avalie-nos</string>
+    <string name="rate_us_0">Você ainda não avaliou!</string>
+    <string name="reset">Redefinir</string>
+    <string name="save">Salvar</string>
+    <string msgid="6264217191555673260" name="search_menu_title">"Pesquisar"</string>
+    <string msgid="6043586758067023" name="selected">"Selecionado"</string>
+    <string name="settings">Configurações</string>
+    <string name="share">Compartilhar</string>
+    <string name="share_app">Compartilhar app</string>
+    <string name="share_failed">Não foi possível compartilhar a imagem. Tente novamente.</string>
+    <string name="size_slider">Tamanho</string>
+    <string msgid="2792228137354697160" name="snackbar_pane_title">"Alerta"</string>
+    <string msgid="4139871816613051306" name="state_empty">"Vazio"</string>
+    <string msgid="5834637030682409883" name="state_off">"Desativado"</string>
+    <string msgid="1490883874751719580" name="state_on">"Ativado"</string>
+    <string msgid="6277540029070332960" name="status_bar_notification_info_overflow">"999+"</string>
+    <string name="storage">Armazenamento\u00A0</string>
+    <string name="successful">Sucesso</string>
+    <string name="successfully">Com sucesso</string>
+    <string msgid="2561197295334830845" name="switch_role">"Chave"</string>
+    <string msgid="1672349317127674378" name="tab">"Guia"</string>
+    <string msgid="5946805113151406391" name="template_percent">"<ns1:g id="PERCENTAGE">%1$d</ns1:g>%%"</string>
+    <string name="text">Texto</string>
+    <string name="this_action_may_contain_advertising">Esta ação pode conter anúncios</string>
+    <string name="three_star">Por favor, envie seu feedback</string>
+    <string name="three_star_title">Ah não!</string>
+    <string name="title_1">\u00A0Transforme suas ideias em magia de anime\u00A0</string>
+    <string name="title_2">\u00A0OC incrível? Carregando...\u00A0</string>
+    <string name="title_3">\u00A0Tudo pronto para criar algo adorável?\u00A0</string>
+    <string name="to_access">para acessar fotos no seu dispositivo\u00A0</string>
+    <string name="to_access_13">para acessar notificações no seu dispositivo\u00A0</string>
+    <string msgid="3765533235322692011" name="tooltip_description">"dica"</string>
+    <string msgid="3124740595719787496" name="tooltip_label">"mostrar dica"</string>
+    <string name="try_again">Tentar novamente</string>
+    <string name="tvCosplay1">No modo Cosplay,</string>
+    <string name="tvCosplay2">os jogadores recebem aleatoriamente</string>
+    <string name="tvCosplay3">uma imagem de referência</string>
+    <string name="tvCosplay4">para seguir. Sua tarefa é recriar esse personagem com a maior precisão possível escolhendo os</string>
+    <string name="tvCosplay5">penteados, roupas, cores e acessórios corretos.</string>
+    <string name="tvCosplay6">Cada combinação correta aumenta sua</string>
+    <string name="tvCosplay7">porcentagem (%).</string>
+    <string name="tvCosplay8">Quanto mais o seu personagem se parecer com a imagem aleatória, maior será sua pontuação final. Preste atenção aos pequenos detalhes para obter o melhor resultado de cosplay.</string>
+    <string name="two_star_title">Ah não!</string>
+    <string name="type_your_content">Digite seu conteúdo</string>
+    <string name="unstable_connection_please_check_your_network_connection">Conexão instável, verifique sua conexão de rede</string>
+    <string name="victory">Vitória</string>
+    <string name="watch_a_short_ad_to_generate_a_random_anime">Assista a um anúncio curto para gerar um personagem de anime aleatório</string>
+    <string name="yes">Sim</string>
+    <string name="you_lose">Você perdeu!</string>
+    <string name="zero_star">Conte-nos sua experiência</string>
+    <string name="zero_star_title">Você gosta do app?</string>
+</resources>

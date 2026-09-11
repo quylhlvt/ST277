@@ -1,0 +1,306 @@
+# proto-message: google.testing.platform.proto.api.core.TestSuiteResult
+# 2026-09-11T11:32:56.672885751Z:
+test_suite_meta_data {
+  scheduled_test_case_count: 5
+  device {
+    id: "RF8M91ART6Z"
+    friendly_name: "primary"
+  }
+}
+test_status: FAILED
+test_result {
+  test_case {
+    test_class: "ActivityNavigationTest"
+    test_package: "com.anime.oc.characters.avatar"
+    test_method: "savedDesignOpensAlbumAndBackReturnsDirectlyHome"
+    start_time {
+      seconds: 1789126305
+      nanos: 740000000
+    }
+    end_time {
+      seconds: 1789126357
+      nanos: 440000000
+    }
+    device {
+      id: "RF8M91ART6Z"
+      friendly_name: "primary"
+    }
+  }
+  test_status: FAILED
+  error {
+    error_message: "java.lang.AssertionError: Activity never becomes requested state \"[DESTROYED]\" (last lifecycle transition = \"PAUSED\")\nat androidx.test.core.app.ActivityScenario.waitForActivityToBecomeAnyOf(ActivityScenario.java:454)\nat androidx.test.core.app.ActivityScenario.moveToState(ActivityScenario.java:689)\nat androidx.test.core.app.ActivityScenario.close(ActivityScenario.java:421)\nat kotlin.io.CloseableKt.closeFinally(Closeable.kt:46)\nat com.anime.oc.characters.avatar.ActivityNavigationTest.savedDesignOpensAlbumAndBackReturnsDirectlyHome(ActivityNavigationTest.kt:91)\n"
+    error_type: "java.lang.AssertionError"
+    stack_trace: "java.lang.AssertionError: Activity never becomes requested state \"[DESTROYED]\" (last lifecycle transition = \"PAUSED\")\nat androidx.test.core.app.ActivityScenario.waitForActivityToBecomeAnyOf(ActivityScenario.java:454)\nat androidx.test.core.app.ActivityScenario.moveToState(ActivityScenario.java:689)\nat androidx.test.core.app.ActivityScenario.close(ActivityScenario.java:421)\nat kotlin.io.CloseableKt.closeFinally(Closeable.kt:46)\nat com.anime.oc.characters.avatar.ActivityNavigationTest.savedDesignOpensAlbumAndBackReturnsDirectlyHome(ActivityNavigationTest.kt:91)\n"
+  }
+  output_artifact {
+    label {
+      label: "logcat"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/build/outputs/androidTest-results/connected/debug/SM-A307GN - 11/logcat-com.anime.oc.characters.avatar.ActivityNavigationTest-savedDesignOpensAlbumAndBackReturnsDirectlyHome.txt"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/build/outputs/androidTest-results/connected/debug/SM-A307GN - 11/device-info.pb"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.meminfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/build/outputs/androidTest-results/connected/debug/SM-A307GN - 11/meminfo"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.cpuinfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/build/outputs/androidTest-results/connected/debug/SM-A307GN - 11/cpuinfo"
+    }
+  }
+}
+test_result {
+  test_case {
+    test_class: "ActivityNavigationTest"
+    test_package: "com.anime.oc.characters.avatar"
+    test_method: "languageBackReturnsToSettingsAndSharesSessionAcrossActivities"
+    start_time {
+      seconds: 1789126357
+      nanos: 455000000
+    }
+    end_time {
+      seconds: 1789126362
+      nanos: 223000000
+    }
+    device {
+      id: "RF8M91ART6Z"
+      friendly_name: "primary"
+    }
+  }
+  test_status: PASSED
+  output_artifact {
+    label {
+      label: "logcat"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/build/outputs/androidTest-results/connected/debug/SM-A307GN - 11/logcat-com.anime.oc.characters.avatar.ActivityNavigationTest-languageBackReturnsToSettingsAndSharesSessionAcrossActivities.txt"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/build/outputs/androidTest-results/connected/debug/SM-A307GN - 11/device-info.pb"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.meminfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/build/outputs/androidTest-results/connected/debug/SM-A307GN - 11/meminfo"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.cpuinfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/build/outputs/androidTest-results/connected/debug/SM-A307GN - 11/cpuinfo"
+    }
+  }
+}
+test_result {
+  test_case {
+    test_class: "ActivityNavigationTest"
+    test_package: "com.anime.oc.characters.avatar"
+    test_method: "onboardingFinishesIntroAndPermissionBeforeHome"
+    start_time {
+      seconds: 1789126362
+      nanos: 224000000
+    }
+    end_time {
+      seconds: 1789126364
+      nanos: 481000000
+    }
+    device {
+      id: "RF8M91ART6Z"
+      friendly_name: "primary"
+    }
+  }
+  test_status: PASSED
+  output_artifact {
+    label {
+      label: "logcat"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/build/outputs/androidTest-results/connected/debug/SM-A307GN - 11/logcat-com.anime.oc.characters.avatar.ActivityNavigationTest-onboardingFinishesIntroAndPermissionBeforeHome.txt"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/build/outputs/androidTest-results/connected/debug/SM-A307GN - 11/device-info.pb"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.meminfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/build/outputs/androidTest-results/connected/debug/SM-A307GN - 11/meminfo"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.cpuinfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/build/outputs/androidTest-results/connected/debug/SM-A307GN - 11/cpuinfo"
+    }
+  }
+}
+test_result {
+  test_case {
+    test_class: "ActivityNavigationTest"
+    test_package: "com.anime.oc.characters.avatar"
+    test_method: "changingLanguageRebuildsHomeWithTheSelectedLocale"
+    start_time {
+      seconds: 1789126365
+      nanos: 285000000
+    }
+    end_time {
+      seconds: 1789126368
+      nanos: 697000000
+    }
+    device {
+      id: "RF8M91ART6Z"
+      friendly_name: "primary"
+    }
+  }
+  test_status: PASSED
+  output_artifact {
+    label {
+      label: "logcat"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/build/outputs/androidTest-results/connected/debug/SM-A307GN - 11/logcat-com.anime.oc.characters.avatar.ActivityNavigationTest-changingLanguageRebuildsHomeWithTheSelectedLocale.txt"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/build/outputs/androidTest-results/connected/debug/SM-A307GN - 11/device-info.pb"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.meminfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/build/outputs/androidTest-results/connected/debug/SM-A307GN - 11/meminfo"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.cpuinfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/build/outputs/androidTest-results/connected/debug/SM-A307GN - 11/cpuinfo"
+    }
+  }
+}
+test_result {
+  test_case {
+    test_class: "ExampleInstrumentedTest"
+    test_package: "com.anime.oc.characters.avatar"
+    test_method: "useAppContext"
+    start_time {
+      seconds: 1789126369
+      nanos: 476000000
+    }
+    end_time {
+      seconds: 1789126369
+      nanos: 477000000
+    }
+    device {
+      id: "RF8M91ART6Z"
+      friendly_name: "primary"
+    }
+  }
+  test_status: PASSED
+  output_artifact {
+    label {
+      label: "logcat"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/build/outputs/androidTest-results/connected/debug/SM-A307GN - 11/logcat-com.anime.oc.characters.avatar.ExampleInstrumentedTest-useAppContext.txt"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/build/outputs/androidTest-results/connected/debug/SM-A307GN - 11/device-info.pb"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.meminfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/build/outputs/androidTest-results/connected/debug/SM-A307GN - 11/meminfo"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.cpuinfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/build/outputs/androidTest-results/connected/debug/SM-A307GN - 11/cpuinfo"
+    }
+  }
+}
+output_artifact {
+  label {
+    label: "test-results.log"
+    namespace: "com.google.testing.platform.runtime.android.driver.AndroidInstrumentationDriver"
+  }
+  source_path {
+    path: "/home/lequy/LVT/ST279_Anime-OC-Maker (Copy)/app/build/outputs/androidTest-results/connected/debug/SM-A307GN - 11/testlog/test-results.log"
+  }
+  type: TEST_DATA
+  mime_type: "text/plain"
+}

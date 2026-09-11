@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<testsuite name="com.anime.oc.characters.avatar.ActivityNavigationTest" tests="5" failures="1" errors="0" skipped="0" time="70.884" timestamp="2026-09-11T11:32:56" hostname="localhost">
+  <properties>
+    <property name="device" value="SM-A307GN - 11" />
+    <property name="flavor" value="" />
+    <property name="project" value=":app" />
+  </properties>
+  <testcase name="savedDesignOpensAlbumAndBackReturnsDirectlyHome" classname="com.anime.oc.characters.avatar.ActivityNavigationTest" time="51.686">
+    <failure>java.lang.AssertionError: Activity never becomes requested state "[DESTROYED]" (last lifecycle transition = "PAUSED")
+at androidx.test.core.app.ActivityScenario.waitForActivityToBecomeAnyOf(ActivityScenario.java:454)
+at androidx.test.core.app.ActivityScenario.moveToState(ActivityScenario.java:689)
+at androidx.test.core.app.ActivityScenario.close(ActivityScenario.java:421)
+at kotlin.io.CloseableKt.closeFinally(Closeable.kt:46)
+at com.anime.oc.characters.avatar.ActivityNavigationTest.savedDesignOpensAlbumAndBackReturnsDirectlyHome(ActivityNavigationTest.kt:91)
+</failure>
+  </testcase>
+  <testcase name="languageBackReturnsToSettingsAndSharesSessionAcrossActivities" classname="com.anime.oc.characters.avatar.ActivityNavigationTest" time="4.767" />
+  <testcase name="onboardingFinishesIntroAndPermissionBeforeHome" classname="com.anime.oc.characters.avatar.ActivityNavigationTest" time="2.233" />
+  <testcase name="changingLanguageRebuildsHomeWithTheSelectedLocale" classname="com.anime.oc.characters.avatar.ActivityNavigationTest" time="3.413" />
+  <testcase name="useAppContext" classname="com.anime.oc.characters.avatar.ExampleInstrumentedTest" time="0.002" />
+</testsuite>
