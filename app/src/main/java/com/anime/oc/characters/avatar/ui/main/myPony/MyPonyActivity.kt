@@ -85,15 +85,13 @@ class MyPonyActivity : WhatsappSharingActivity<ActivityMyPonyBinding, MyPonyView
     private fun setupActionBar() {
         binding.actionBar.apply {
             setImageActionBar(btnActionBarLeft, R.drawable.back_app)
-            setImageActionBar(btnActionBarNextToRight1, R.drawable.ic_delete_all)
-//            setTextActionBar(tvCenter, getString(R.string.my_creation))
-            setImageActionBar(
-                btnActionBarRight1,
-                R.drawable.ic_select_all
-            )
+            setImageActionBar(btnActionBarRight2, R.drawable.ic_delete_all)
+            setImageActionBar(btnActionBarRight1, R.drawable.ic_share_all)
+            setImageActionBar(btnActionBarRight, R.drawable.ic_download_all)
 
+            btnActionBarRight2.invisible()
             btnActionBarRight1.invisible()
-            btnActionBarNextToRight1.invisible()
+            btnActionBarRight.invisible()
         }
     }
 
@@ -124,8 +122,7 @@ class MyPonyActivity : WhatsappSharingActivity<ActivityMyPonyBinding, MyPonyView
                 cardAvatar.setCardBackgroundColor(ContextCompat.getColor(this@MyPonyActivity, R.color.gray1))
                 btnMyDesign.strokeColor = ContextCompat.getColor(this@MyPonyActivity, R.color.black)
                 cardDesign.setCardBackgroundColor(ContextCompat.getColor(this@MyPonyActivity, R.color.app_color3))
-                tvMyDesign.setTextColor(ContextCompat.getColor(this@MyPonyActivity, R.color.app_color))
-                tvMyAvatar.setTextColor(ContextCompat.getColor(this@MyPonyActivity, R.color.app_color2))
+
                 recycleAvatar.gone()
                 recycleDesign.visible()
                 updateEmptyState(myDesignAdapter.items.isEmpty())
@@ -184,10 +181,13 @@ class MyPonyActivity : WhatsappSharingActivity<ActivityMyPonyBinding, MyPonyView
         binding.apply {
             btnWhatsapp.onClick(1000) { handleWhatsAppShare() }
             btnTelegram.onClick(1000) { handleTelegramShare() }
-            btnDownload.onClick(1000) { handleDownload() }
-            btnShare.onClick(1000) { handleShare() }
-            actionBar.btnActionBarNextToRight1.onClick { handleDeleteSelected() }
-            actionBar.btnActionBarRight1.onClick { handleSelectAll() }
+            actionBar.apply {
+
+                btnActionBarRight2.onClick(1000) { handleDeleteSelected() }
+                btnActionBarRight1.onClick(1000) { handleShare() }
+                btnActionBarRight.onClick(1000) { handleDownload() }
+            }
+
 
         }
     }
@@ -320,27 +320,23 @@ class MyPonyActivity : WhatsappSharingActivity<ActivityMyPonyBinding, MyPonyView
 
                 if (hasSelection) {
                     // ✅ Long click: hiện cả 4 nút
-                    lnlBottomTop.visible()  // WhatsApp + Telegram
-                    lnlBottomTopShadown.visible()
-                    llBottomShadown.visible()
-                    llBottom.visible()      // Share + Download
+                    lnlBottom.visible()  // WhatsApp + Telegram
                     actionBar.apply {
-                        btnActionBarNextToRight1.visible()
+                        btnActionBarRight2.visible()
                         btnActionBarRight1.visible()
-                        btnActionBarRight1.setImageResource(
-                            if (allSelected) R.drawable.ic_select_all else R.drawable.ic_not_select_all
-                        )
+                        btnActionBarRight.visible()
+
                     }
                     // Share + Download
                 } else {
                     // ✅ Bình thường có item: chỉ WhatsApp + Telegram
-                    lnlBottomTop.visible()
-                    llBottom.gone()
-                    lnlBottomTopShadown.visible()
-                    llBottomShadown.gone()
+
+                    lnlBottom.gone()
+
                     actionBar.apply {
+                        btnActionBarRight2.invisible()
                         btnActionBarRight1.invisible()
-                        btnActionBarNextToRight1.invisible()
+                        btnActionBarRight.invisible()
                     }
                 }
 
@@ -350,24 +346,17 @@ class MyPonyActivity : WhatsappSharingActivity<ActivityMyPonyBinding, MyPonyView
                     // ✅ Long click: chỉ Share + Download
                     lnlBottom.visible()
                     actionBar.apply {
+                        btnActionBarRight2.visible()
                         btnActionBarRight1.visible()
-                        btnActionBarNextToRight1.visible()
-                        btnActionBarRight1.setImageResource(
-                            if (allSelected) R.drawable.ic_select_all else R.drawable.ic_not_select_all
-                        )
+                        btnActionBarRight.visible()
                     }
-                    lnlBottomTop.gone()
-                    llBottom.visible()
-                    lnlBottomTopShadown.gone()
-                    llBottomShadown.visible()
                 } else {
                     // ✅ Bình thường hoặc không có item: ẩn hết
                     lnlBottom.gone()
-                    llBottom.gone()
-                    llBottomShadown.gone()
                     actionBar.apply {
+                        btnActionBarRight2.invisible()
                         btnActionBarRight1.invisible()
-                        btnActionBarNextToRight1.invisible()
+                        btnActionBarRight.invisible()
                     }
                 }
             }
@@ -406,10 +395,10 @@ class MyPonyActivity : WhatsappSharingActivity<ActivityMyPonyBinding, MyPonyView
         }
         if (isAvatar) {
             myAvatarAdapter.submitList(updatedList)
-            setRecyclerBottomMargin(binding.recycleAvatar, 100)
+            setRecyclerBottomMargin(binding.recycleAvatar, 0)
         } else {
             myDesignAdapter.submitList(updatedList)
-            setRecyclerBottomMargin(binding.recycleDesign, 50)
+            setRecyclerBottomMargin(binding.recycleDesign, 0)
         }
         updateSelectionUI()
     }

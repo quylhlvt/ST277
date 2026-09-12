@@ -2,6 +2,7 @@ package com.anime.oc.characters.avatar.ui.main.customize
 
 import android.graphics.Color
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import com.anime.oc.characters.avatar.R
 import com.anime.oc.characters.avatar.core.base.BaseAdapter
@@ -10,8 +11,10 @@ import com.anime.oc.characters.avatar.data.model.custom.ColorModel
 import com.anime.oc.characters.avatar.databinding.ItemBottomCustomBinding
 import com.anime.oc.characters.avatar.databinding.ItemColorBinding
 import com.anime.oc.characters.avatar.databinding.ItemLayerBinding
+import com.anime.oc.characters.avatar.utils.DataLocal
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.facebook.shimmer.ShimmerDrawable
 
 private object SelectionChangedPayload
 
@@ -32,11 +35,16 @@ class NavAdapter :
     }
 
     private fun bindFocus(binding: ItemBottomCustomBinding, position: Int) {
-        binding.forcus.visibility = if (posNav == position) View.VISIBLE else View.INVISIBLE
+        binding.frame1.strokeColor = if (posNav == position) {
+            ContextCompat.getColor(binding.root.context, R.color.app_color3)
+        } else {
+            ContextCompat.getColor(binding.root.context, R.color.white)
+        }
     }
 
     override fun onBind(binding: ItemBottomCustomBinding, item: BodyPartModel, position: Int) {
         binding.apply {
+            val shimmerDrawable = ShimmerDrawable().apply { setShimmer(DataLocal.shimmer) }
             bindFocus(binding, position)
             if (imvImage.tag != item.nav) {
                 imvImage.tag = item.nav
@@ -45,7 +53,7 @@ class NavAdapter :
                     .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                     .override(256)
                     .dontAnimate()
-                    .placeholder(R.color.white)
+                    .placeholder(shimmerDrawable)
                     .into(imvImage)
             }
 
@@ -83,8 +91,11 @@ class ColorAdapter : BaseAdapter<ColorModel, ItemColorBinding>(ItemColorBinding:
     }
 
     private fun bindFocus(binding: ItemColorBinding, position: Int) {
-        binding.colorSelected.visibility =
-            if (posColor == position) View.VISIBLE else View.INVISIBLE
+        binding.colorSelected.strokeColor = if (posColor == position) {
+            ContextCompat.getColor(binding.root.context, R.color.app_color3)
+        } else {
+            ContextCompat.getColor(binding.root.context, R.color.white)
+        }
     }
 
     override fun onBind(binding: ItemColorBinding, item: ColorModel, position: Int) {
@@ -129,11 +140,16 @@ class PartAdapter : BaseAdapter<String, ItemLayerBinding>(ItemLayerBinding::infl
     }
 
     private fun bindFocus(binding: ItemLayerBinding, position: Int) {
-        binding.forcus.visibility = if (posPath == position) View.VISIBLE else View.INVISIBLE
+        binding.materialParent.strokeColor = if (posPath == position) {
+            ContextCompat.getColor(binding.root.context, R.color.app_color3)
+        } else {
+            ContextCompat.getColor(binding.root.context, R.color.white)
+        }
     }
 
     override fun onBind(binding: ItemLayerBinding, item: String, position: Int) {
         binding.apply {
+            val shimmerDrawable = ShimmerDrawable().apply { setShimmer(DataLocal.shimmer) }
             bindFocus(binding, position)
             when (item) {
                 "none" -> {
@@ -159,8 +175,8 @@ class PartAdapter : BaseAdapter<String, ItemLayerBinding>(ItemLayerBinding::infl
                         Glide.with(imvImage)
                             .load(thumbPath)
                             .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                            .override(256)
-                            .placeholder(R.color.white)
+                            .override(400)
+                            .placeholder(shimmerDrawable)
                             .dontAnimate()
                             .into(imvImage)
                     }

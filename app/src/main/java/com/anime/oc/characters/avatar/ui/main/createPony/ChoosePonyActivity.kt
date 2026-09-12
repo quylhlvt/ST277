@@ -10,7 +10,6 @@ import com.anime.oc.characters.avatar.R
 import com.anime.oc.characters.avatar.core.base.BaseActivity
 import com.anime.oc.characters.avatar.core.extention.InternetExtension
 import com.anime.oc.characters.avatar.core.extention.InternetExtension.isInternetAvailable
-import com.anime.oc.characters.avatar.core.extention.InternetExtension.isNetworkConnected
 import com.anime.oc.characters.avatar.core.extention.setImageActionBar
 import com.anime.oc.characters.avatar.core.extention.setTextActionBar
 import com.anime.oc.characters.avatar.data.model.custom.CustomModel
@@ -29,9 +28,7 @@ class ChoosePonyActivity : BaseActivity<ActivityChoosePonyBinding, ChoosePonyVie
 ) {
     private lateinit var adapter: ChoosePonyAdapter
     private var isFirstLoad = true
-
     override fun initView() {
-
         setImageActionBar(binding.actionBar.btnActionBarLeft, R.drawable.back_app)
 //        setTextActionBar(binding.actionBar.tvCenter, getString(R.string.category))
 
@@ -40,18 +37,9 @@ class ChoosePonyActivity : BaseActivity<ActivityChoosePonyBinding, ChoosePonyVie
             val eventName = "click_item_${number}"
             Log.d("logevent", "$eventName- ${character.avatar}")
             if (character.id.startsWith("online_")) {
-                if (!isInternetAvailable(this@ChoosePonyActivity)) {
-                    showUnstableNetworkDialog(); return@ChoosePonyAdapter
-                }
-                this@ChoosePonyActivity.lifecycleScope.launch {
-                    val hasInternet = withContext(Dispatchers.IO) {
-                        isNetworkConnected(this@ChoosePonyActivity)
-                    }
-                    if (!hasInternet) showUnstableNetworkDialog()
-                    else
-                        navigateToCustomize(character, position)
-
-                }
+                // Điều hướng ngay; không chờ thêm một lần kiểm tra mạng trên IO.
+                // CustomizeActivity/Glide sẽ xử lý lỗi tải asset nếu offline.
+                navigateToCustomize(character, position)
             } else {
                 // ✅ Offline item — verify data tồn tại trước khi navigate
                 val safeIndex = viewModel.templates.value.indexOfFirst { it.id == character.id }
@@ -85,7 +73,8 @@ class ChoosePonyActivity : BaseActivity<ActivityChoosePonyBinding, ChoosePonyVie
         openActivity(CustomizeActivity::class.java,
             bundleOf(
                 CustomizeActivity.ARG_TEMPLATE_INDEX to correctIndex,
-                CustomizeActivity.ARG_TEMPLATE_ID to character.id
+                CustomizeActivity.ARG_TEMPLATE_ID to character.id,
+                CustomizeActivity.ARG_SHOW_INITIAL_LOADING to true
             )
         )
     }

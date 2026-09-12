@@ -15,8 +15,10 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.anime.oc.characters.avatar.R
+import com.anime.oc.characters.avatar.MyApplication
 import com.anime.oc.characters.avatar.core.base.BaseActivity
 import com.anime.oc.characters.avatar.core.extention.InternetExtension
 import com.anime.oc.characters.avatar.core.extention.onClick
@@ -65,10 +67,14 @@ class CustomizeActivity : BaseActivity<ActivityCustomizeBinding, CustomizeViewMo
     private val adapterPart by lazy { PartAdapter() }
 
     private val pendingLoads = AtomicInteger(0)
+    private var renderGeneration = 0L
     private var canSave = false
     private var hasTriggeredReInit = false
     private var holdActionJob: Job? = null
     private var scrollPartAfterRandom = false
+    private var initialLoadingPending = false
+    private var hasShownInitialLoading = false
+    private var initDataScheduled = false
 
     // ── INFLATE ───────────────────────────────────────────────────────────────
 
@@ -118,11 +124,13 @@ class CustomizeActivity : BaseActivity<ActivityCustomizeBinding, CustomizeViewMo
         }
         setupAdapters()
 
-        readArgsAndInit()
+        // Không dựng/sort toàn bộ template trong call stack của startActivity().
+        // Cho Activity vẽ frame đầu trước, sau đó bind danh sách theo JSON.
+        scheduleReadArgsAndInit()
     }
 
     private fun applyTabletLayout() {
-        val isTablet = resources.configuration.smallestScreenWidthDp >= 600
+        val isTablet = MyApplication.isTablet
 //        binding.view17.visibility = if (isTablet) View.GONE else View.VISIBLE
     }
 
@@ -172,6 +180,15 @@ class CustomizeActivity : BaseActivity<ActivityCustomizeBinding, CustomizeViewMo
         }
     }
 
+    private fun scheduleReadArgsAndInit() {
+        if (initDataScheduled || isFinishing || isDestroyed) return
+        initDataScheduled = true
+        binding.root.post {
+            initDataScheduled = false
+            if (!isFinishing && !isDestroyed) readArgsAndInit()
+        }
+    }
+
     private fun setupAdapters() {
         binding.rcvNav.apply {
             adapter = adapterNav
@@ -190,6 +207,10 @@ class CustomizeActivity : BaseActivity<ActivityCustomizeBinding, CustomizeViewMo
             itemAnimator = null
             setHasFixedSize(true)
             setItemViewCacheSize(10)
+            // Tablet có đủ chiều ngang để hiển thị 7 item mỗi hàng;
+            // điện thoại giữ layout 5 item như XML mặc định.
+            (layoutManager as? GridLayoutManager)?.spanCount =
+                if (MyApplication.isTablet) 7 else 5
         }
     }
 
@@ -299,21 +320,21 @@ class CustomizeActivity : BaseActivity<ActivityCustomizeBinding, CustomizeViewMo
             }
         }
         binding.apply {
-            imgChangColor.onClick {
-                val navPos = viewModel.state.value.currentNavIndex
-                if (!viewModel.state.value.hasMultipleColors) return@onClick
-                if (llColor.isVisible) {
-                    if (navPos < arrShowColor.size) arrShowColor[navPos] = false
-                    llColor.animate().alpha(0f).setDuration(200).withEndAction {
-                        llColor.visibility = View.INVISIBLE
-                    }.start()
-                } else {
-                    if (navPos < arrShowColor.size) arrShowColor[navPos] = true
-                    llColor.visibility = View.VISIBLE
-                    llColor.alpha = 0f
-                    llColor.animate().alpha(1f).setDuration(200).start()
-                }
-            }
+//            imgChangColor.onClick {
+//                val navPos = viewModel.state.value.currentNavIndex
+//                if (!viewModel.state.value.hasMultipleColors) return@onClick
+//                if (llColor.isVisible) {
+//                    if (navPos < arrShowColor.size) arrShowColor[navPos] = false
+//                    llColor.animate().alpha(0f).setDuration(200).withEndAction {
+//                        llColor.visibility = View.INVISIBLE
+//                    }.start()
+//                } else {
+//                    if (navPos < arrShowColor.size) arrShowColor[navPos] = true
+//                    llColor.visibility = View.VISIBLE
+//                    llColor.alpha = 0f
+//                    llColor.animate().alpha(1f).setDuration(200).start()
+//                }
+//            }
             imgRandom.onClick {
                 if (!checkOnlineNetworkOrShowDialog()) {
                     showConfirmDialog(
@@ -325,6 +346,9 @@ class CustomizeActivity : BaseActivity<ActivityCustomizeBinding, CustomizeViewMo
 //                            showRewardAds1(
 //                                onRewardSuccess = {
                                     if (!checkOnlineNetworkOrShowDialog()) {
+                                        // Random thay đổi nhiều layer cùng lúc; khóa Save
+                                        // ngay từ lúc xác nhận, không chờ StateFlow/render.
+                                        setSaveEnabled(false)
                                         viewModel.randomizeAll()
                                     }
 //                                },
@@ -381,7 +405,7 @@ class CustomizeActivity : BaseActivity<ActivityCustomizeBinding, CustomizeViewMo
                     if (state.listData.isEmpty()) {
                         if (!hasTriggeredReInit) {
                             hasTriggeredReInit = true
-                            readArgsAndInit()
+                            scheduleReadArgsAndInit()
                         }
                         return@collectLatest
                     }
@@ -423,7 +447,9 @@ class CustomizeActivity : BaseActivity<ActivityCustomizeBinding, CustomizeViewMo
 
     // Reset pendingLoads mỗi khi bắt đầu render lại
     private fun renderLayers(state: CustomizeState) {
-        // ✅ Reset counter trước khi đếm lại
+        // Mỗi lần render có generation riêng để callback của request Glide
+        // đã bị thay thế không làm sai bộ đếm của lần render hiện tại.
+        val generation = ++renderGeneration
         val pathsToLoad = state.listData.mapIndexedNotNull { i, bp ->
             val path = viewModel.resolvePathAt(i)
             val layerIndex = navToLayerIndex[bp.nav] ?: return@mapIndexedNotNull null
@@ -438,7 +464,10 @@ class CustomizeActivity : BaseActivity<ActivityCustomizeBinding, CustomizeViewMo
                 return@mapIndexedNotNull null
             }
 
-            if (view.tag == path && view.visibility == View.VISIBLE) return@mapIndexedNotNull null
+            if (view.tag == path &&
+                view.visibility == View.VISIBLE &&
+                view.drawable != null
+            ) return@mapIndexedNotNull null
 
             Triple(view, path, layerIndex)
         }
@@ -446,6 +475,8 @@ class CustomizeActivity : BaseActivity<ActivityCustomizeBinding, CustomizeViewMo
         if (pathsToLoad.isEmpty()) {
             // Không có gì cần load → enable save ngay
             setSaveEnabled(true)
+            viewModel.onLoadingComplete()
+            finishInitialLoading()
             return
         }
 
@@ -456,12 +487,16 @@ class CustomizeActivity : BaseActivity<ActivityCustomizeBinding, CustomizeViewMo
         pathsToLoad.forEach { (view, path, _) ->
             view.tag = path
             view.visibility = View.VISIBLE
-            loadImageIntoView(view, path, skipCount = true) // skipCount vì đã set ở trên
+            loadImageIntoView(view, path, generation, skipCount = true)
         }
     }
 
-    // Thêm param skipCount để tránh double increment
-    private fun loadImageIntoView(view: ImageView, path: String, skipCount: Boolean = false) {
+    private fun loadImageIntoView(
+        view: ImageView,
+        path: String,
+        generation: Long,
+        skipCount: Boolean = false
+    ) {
         if (!skipCount) {
             pendingLoads.incrementAndGet()
             setSaveEnabled(false)
@@ -479,7 +514,7 @@ class CustomizeActivity : BaseActivity<ActivityCustomizeBinding, CustomizeViewMo
                     e: GlideException?, model: Any?,
                     target: Target<Drawable>?, isFirstResource: Boolean
                 ): Boolean {
-                    onLoadFinished(); return false
+                    onLoadFinished(generation); return false
                 }
 
                 override fun onResourceReady(
@@ -487,32 +522,50 @@ class CustomizeActivity : BaseActivity<ActivityCustomizeBinding, CustomizeViewMo
                     target: Target<Drawable>?, dataSource: DataSource?,
                     isFirstResource: Boolean
                 ): Boolean {
-                    onLoadFinished(); return false
+                    onLoadFinished(generation); return false
                 }
             })
             .into(view)
     }
 
-    private fun onLoadFinished() {
+    private fun onLoadFinished(generation: Long) {
+        if (generation != renderGeneration) return
         if (pendingLoads.decrementAndGet() <= 0) {
             pendingLoads.set(0)
             binding.root.post {
                 setSaveEnabled(true)
                 viewModel.onLoadingComplete()
+                finishInitialLoading()
             }
         }
     }
 
-    // ✅ Thêm vào onResume: reset pendingLoads khi quay lại
+    private fun finishInitialLoading() {
+        if (!initialLoadingPending) return
+        initialLoadingPending = false
+        hideLoadingSafe()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (!hasShownInitialLoading &&
+            intent.getBooleanExtra(ARG_SHOW_INITIAL_LOADING, false) &&
+            viewModel.state.value.isLoading
+        ) {
+            hasShownInitialLoading = true
+            initialLoadingPending = true
+            showLoadingSafe()
+        }
+    }
+
     override fun onResume() {
         super.onResume()
-        pendingLoads.set(0)
 
         val state = viewModel.state.value
         if (state.listData.isEmpty()) {
             if (!hasTriggeredReInit) {
                 hasTriggeredReInit = true
-                readArgsAndInit()
+                scheduleReadArgsAndInit()
             }
             return
         }
@@ -543,6 +596,10 @@ class CustomizeActivity : BaseActivity<ActivityCustomizeBinding, CustomizeViewMo
 
     private fun setSaveEnabled(enabled: Boolean) {
         canSave = enabled
+        // Customize dùng nút dạng text; btnActionBarRight là nút icon ẩn.
+        // Cập nhật cả hai để state không bị lệch giữa logic và UI.
+        binding.actionBar.btnActionBarRightText.alpha = if (enabled) 1f else 0.5f
+        binding.actionBar.btnActionBarRightText.isEnabled = enabled
         binding.actionBar.btnActionBarRight.alpha = if (enabled) 1f else 0.5f
         binding.actionBar.btnActionBarRight.isEnabled = enabled
     }
@@ -615,7 +672,7 @@ class CustomizeActivity : BaseActivity<ActivityCustomizeBinding, CustomizeViewMo
 
     private fun updateColorSectionVisibility(showColors: Boolean, expanded: Boolean) {
         val showPanel = showColors && expanded
-        binding.imgChangColor.visibility = if (showColors) View.VISIBLE else View.GONE
+//        binding.imgChangColor.visibility = if (showColors) View.VISIBLE else View.GONE
 
         if (showPanel &&
             (binding.llColor.visibility != View.VISIBLE || binding.llColor.alpha != 1f)
@@ -821,6 +878,10 @@ class CustomizeActivity : BaseActivity<ActivityCustomizeBinding, CustomizeViewMo
 
             // ✅ Navigate trực tiếp trên Main thread, KHÔNG wrap thêm withContext
             if (!isFinishing && !isDestroyed) {
+                // CustomizeActivity vẫn nằm trong back stack. Dọn mọi dialog
+                // tạm trước khi mở Background để Back về không bị che UI.
+                hideLoadingSafe()
+                setSaveEnabled(true)
                 openActivity(AddCharacterActivity::class.java,
                     Bundle().apply {
                         putString("imagePath", savedPath)
@@ -879,6 +940,7 @@ class CustomizeActivity : BaseActivity<ActivityCustomizeBinding, CustomizeViewMo
         const val ARG_IS_FLIPPED = "is_flipped"
         const val ARG_SELECTIONS = "selections"
         const val ARG_CUSTOMIZED_ID = "customized_id"
+        const val ARG_SHOW_INITIAL_LOADING = "show_initial_loading"
 
         fun newArgs(
             templateIndex: Int,

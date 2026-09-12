@@ -10,7 +10,9 @@
         <item name="android:windowSoftInputMode">adjustResize</item>
         <item name="android:windowBackground">@color/white</item>
         <item name="android:windowIsTranslucent">false</item>
-        <item name="android:windowDisablePreview">true</item>
+        <!-- Cho phép Android hiển thị window preview trong lúc Activity inflate,
+             tránh giữ màn Category đứng yên khi chuyển màn. -->
+        <item name="android:windowDisablePreview">false</item>
     </style>
 
     <style name="ShapeAppearanceOverlay.App.TopRoundedOnly" parent="">

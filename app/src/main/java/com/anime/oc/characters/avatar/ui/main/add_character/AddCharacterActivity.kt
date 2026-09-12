@@ -48,6 +48,7 @@ import com.anime.oc.characters.avatar.core.extention.setMaterialCardViewActionBa
 import com.anime.oc.characters.avatar.core.extention.visible
 import com.anime.oc.characters.avatar.core.helper.BitmapHelper
 import com.anime.oc.characters.avatar.data.datalocal.manager.CharacterImageManager
+import com.anime.oc.characters.avatar.data.model.addcharacter.SelectedAddModel
 import com.anime.oc.characters.avatar.databinding.ActivityAddCharacterBinding
 import com.anime.oc.characters.avatar.ui.main.add_character.adapter.BackgroundColorAdapter
 import com.anime.oc.characters.avatar.ui.main.add_character.adapter.BackgroundImageAdapter
@@ -74,6 +75,7 @@ import java.util.Locale
 import javax.inject.Inject
 import kotlin.compareTo
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -88,6 +90,12 @@ class AddCharacterActivity : BaseActivity<ActivityAddCharacterBinding, AddCharac
     lateinit var imageManager: CharacterImageManager
     private val permissionViewModel: PermissionViewModel by viewModels()
     private var keyboardLayoutListener: ViewTreeObserver.OnGlobalLayoutListener? = null
+    private var isCatalogUiReady = false
+    private var backgroundSubmitJob: Job? = null
+    private var pendingBackgroundReady: (() -> Unit)? = null
+    private var isInitialScreenLoading = false
+    private var isInitialCharacterReady = false
+    private var isInitialCatalogReady = false
 
     // ── Keyboard state ──────────────────────────────────────────────────────
     // Source of truth duy nhất: layout change listener đo thực tế
@@ -174,7 +182,7 @@ class AddCharacterActivity : BaseActivity<ActivityAddCharacterBinding, AddCharac
                 }
                 launch {
                     appSession.stickerCategories.collectLatest { categories ->
-                        if (categories.isNotEmpty()) {
+                        if (isCatalogUiReady && categories.isNotEmpty()) {
                             viewModel.setStickerCategories(categories)
                             stickerCategoryAdapter.submitList(viewModel.stickerCategoryList)
                             stickerAdapter.submitList(viewModel.stickerList)
@@ -183,7 +191,7 @@ class AddCharacterActivity : BaseActivity<ActivityAddCharacterBinding, AddCharac
                 }
                 launch {
                     appSession.speechCategories.collectLatest { categories ->
-                        if (categories.isNotEmpty()) {
+                        if (isCatalogUiReady && categories.isNotEmpty()) {
                             viewModel.setSpeechCategories(categories)
                             val selected = viewModel.speechCategoryList.indexOfFirst { it.isSelected }
                             if (selected >= 0) viewModel.selectSpeechCategory(selected)
@@ -194,13 +202,13 @@ class AddCharacterActivity : BaseActivity<ActivityAddCharacterBinding, AddCharac
                 }
                 launch {
                     appSession.backgrounds.collectLatest { bgs ->
-                        if (bgs.isNotEmpty()) {
+                        if (isCatalogUiReady && bgs.isNotEmpty()) {
                             viewModel.loadDataFromMainViewModel(
                                 bgs,
                                 appSession.stickers.value,
                                 appSession.speechs.value
                             )
-                            backgroundImageAdapter.submitList(viewModel.backgroundImageList)
+                            submitBackgroundImages(viewModel.backgroundImageList)
                             stickerAdapter.submitList(viewModel.stickerList, true)
                             speechAdapter.submitList(viewModel.speechList)
                         }
@@ -343,6 +351,7 @@ class AddCharacterActivity : BaseActivity<ActivityAddCharacterBinding, AddCharac
             initData()
             viewModel.isInitialized = true
         } else {
+            isCatalogUiReady = true
             hideLoadingSafe()
             restoreUIState()
         }
@@ -503,66 +512,82 @@ class AddCharacterActivity : BaseActivity<ActivityAddCharacterBinding, AddCharac
     }
 
     private fun initData() {
+        isInitialScreenLoading = true
         showLoadingSafe()
-        this@AddCharacterActivity.lifecycleScope.launch {
-            // Character/background canvas can be shown immediately. Remote
-            // catalogues update their adapters later through observeData();
-            // blocking here made Customize -> Background wait up to 15 seconds.
-            viewModel.loadDataFromMainViewModel(
-                appSession.backgrounds.value,
-                appSession.stickers.value,
-                appSession.speechs.value
-            )
-            // Màn hình mới chưa có background: chọn None trong danh sách ảnh.
-            // Tab màu không còn mục None nên không chọn item nào ở đó.
-            if (viewModel.selectedBackgroundImagePosition < 0 &&
-                viewModel.selectedBackgroundImagePath == null &&
-                viewModel.savedBackgroundColor == null
-            ) {
-                viewModel.updateBackgroundImageSelected(NONE_BACKGROUND_POSITION)
-            }
-            submitAllAdapters()
-            applySelectedTextStyle()
-            backgroundImageAdapter.selectItem(
-                viewModel.backgroundImageList.indexOfFirst { it.isSelected }
-            )
-            backgroundColorAdapter.selectItem(
-                viewModel.backgroundColorList.indexOfFirst { it.isSelected }
-            )
-            viewModel.setTypeNavigation(ValueKey.BACKGROUND_NAVIGATION)
-            viewModel.setTypeBackground(ValueKey.IMAGE_BACKGROUND)
 
-            val customizeBitmap = appSession.customizeBitmap
-            if (customizeBitmap != null && !customizeBitmap.isRecycled) {
-                binding.drawView.addDraw(
-                    viewModel.loadDrawableEmoji(customizeBitmap, isCharacter = true)
-                )
-                appSession.customizeBitmap = null
-            } else if (imagepath.isNotEmpty()) {
-                addDrawable(imagepath, isCharacter = true) { hideLoadingAfterFirstFrame() }
-                return@launch
+        // Chỉ dựng character cho frame đầu. Việc map catalog và bind hàng
+        // loạt thumbnail trước frame đầu từng làm màn này bỏ hàng
+        // chục frame khi đi từ Custom sang Background.
+        viewModel.setTypeNavigation(ValueKey.BACKGROUND_NAVIGATION)
+        viewModel.setTypeBackground(ValueKey.IMAGE_BACKGROUND)
+
+        val customizeBitmap = appSession.customizeBitmap
+        if (customizeBitmap != null && !customizeBitmap.isRecycled) {
+            binding.drawView.addDraw(
+                viewModel.loadDrawableEmoji(customizeBitmap, isCharacter = true)
+            )
+            appSession.customizeBitmap = null
+            isInitialCharacterReady = true
+        } else if (imagepath.isNotEmpty()) {
+            addDrawable(imagepath, isCharacter = true) {
+                isInitialCharacterReady = true
+                hideInitialLoadingWhenReady()
             }
-            hideLoadingAfterFirstFrame()
+        } else {
+            isInitialCharacterReady = true
         }
+
+        loadCatalogAfterFirstFrame()
     }
 
-    /**
-     * Giữ loading từ màn Custom cho tới khi màn Background đã sẵn sàng vẽ.
-     * post sau pre-draw bảo đảm frame chứa character/background được render trước
-     * khi dialog loading biến mất.
-     */
-    private fun hideLoadingAfterFirstFrame() {
-        if (isFinishing || isDestroyed) return
+    private fun loadCatalogAfterFirstFrame() {
         binding.root.doOnPreDraw {
             binding.root.post {
-                if (!isFinishing && !isDestroyed) hideLoadingSafe()
+                if (isFinishing || isDestroyed || isCatalogUiReady) return@post
+
+                // Màn đã có frame đầu; lúc này mới chuẩn bị các danh sách
+                // Background/Sticker/Speech/Text và khởi động load thumbnail.
+                isCatalogUiReady = true
+                viewModel.loadDataFromMainViewModel(
+                    appSession.backgrounds.value,
+                    appSession.stickers.value,
+                    appSession.speechs.value
+                )
+                if (appSession.stickerCategories.value.isNotEmpty()) {
+                    viewModel.setStickerCategories(appSession.stickerCategories.value)
+                }
+                if (appSession.speechCategories.value.isNotEmpty()) {
+                    viewModel.setSpeechCategories(appSession.speechCategories.value)
+                    val selected = viewModel.speechCategoryList.indexOfFirst { it.isSelected }
+                    if (selected >= 0) viewModel.selectSpeechCategory(selected)
+                }
+
+                // Màn hình mới chưa có background: chọn None trong danh sách ảnh.
+                // Tab màu không còn mục None nên không chọn item nào ở đó.
+                if (viewModel.selectedBackgroundImagePosition < 0 &&
+                    viewModel.selectedBackgroundImagePath == null &&
+                    viewModel.savedBackgroundColor == null
+                ) {
+                    viewModel.updateBackgroundImageSelected(NONE_BACKGROUND_POSITION)
+                }
+                submitAllAdapters {
+                    isInitialCatalogReady = true
+                    hideInitialLoadingWhenReady()
+                }
+                applySelectedTextStyle()
+                backgroundImageAdapter.selectItem(
+                    viewModel.backgroundImageList.indexOfFirst { it.isSelected }
+                )
+                backgroundColorAdapter.selectItem(
+                    viewModel.backgroundColorList.indexOfFirst { it.isSelected }
+                )
             }
         }
         binding.root.invalidate()
     }
 
-    private fun submitAllAdapters() {
-        backgroundImageAdapter.submitList(viewModel.backgroundImageList)
+    private fun submitAllAdapters(onBackgroundReady: (() -> Unit)? = null) {
+        submitBackgroundImages(viewModel.backgroundImageList, onBackgroundReady)
         stickerCategoryAdapter.submitList(viewModel.stickerCategoryList)
         speechCategoryAdapter.submitList(viewModel.speechCategoryList)
         backgroundColorAdapter.submitList(viewModel.backgroundColorList, true)
@@ -570,6 +595,67 @@ class AddCharacterActivity : BaseActivity<ActivityAddCharacterBinding, AddCharac
         speechAdapter.submitList(viewModel.speechList)
         textFontAdapter.submitListReset(viewModel.textFontList)
         textColorAdapter.submitListReset(viewModel.textColorList)
+    }
+
+    private fun submitBackgroundImages(
+        items: List<SelectedAddModel>,
+        onFirstPageReady: (() -> Unit)? = null
+    ) {
+        // Giữ callback qua cả trường hợp StateFlow phát dữ liệu mới và hủy
+        // job đang chia batch; nếu không loading ban đầu có thể bị giữ mãi.
+        if (onFirstPageReady != null) pendingBackgroundReady = onFirstPageReady
+        val snapshot = items.toList()
+        if (backgroundImageAdapter.items == snapshot) {
+            dispatchBackgroundReady()
+            return
+        }
+
+        backgroundSubmitJob?.cancel()
+        backgroundImageAdapter.submitList(emptyList())
+        if (snapshot.isEmpty()) {
+            dispatchBackgroundReady()
+            return
+        }
+        backgroundSubmitJob = lifecycleScope.launch {
+            var submittedCount = 0
+            snapshot.chunked(BACKGROUND_BATCH_SIZE).forEachIndexed { index, batch ->
+                val start = backgroundImageAdapter.items.size
+                backgroundImageAdapter.items.addAll(batch)
+                backgroundImageAdapter.notifyItemRangeInserted(start, batch.size)
+                submittedCount += batch.size
+                if (submittedCount >= minOf(BACKGROUND_FIRST_PAGE_SIZE, snapshot.size)) {
+                    dispatchBackgroundReady()
+                }
+                if (index < snapshot.lastIndex / BACKGROUND_BATCH_SIZE) {
+                    delay(BACKGROUND_BATCH_DELAY_MS)
+                }
+            }
+            dispatchBackgroundReady()
+            backgroundSubmitJob = null
+        }
+    }
+
+    private fun dispatchBackgroundReady() {
+        val callback = pendingBackgroundReady ?: return
+        pendingBackgroundReady = null
+        callback()
+    }
+
+    private fun hideInitialLoadingWhenReady() {
+        if (!isInitialScreenLoading ||
+            !isInitialCharacterReady ||
+            !isInitialCatalogReady
+        ) return
+
+        binding.root.doOnPreDraw {
+            binding.root.post {
+                if (!isFinishing && !isDestroyed && isInitialScreenLoading) {
+                    isInitialScreenLoading = false
+                    hideLoadingSafe()
+                }
+            }
+        }
+        binding.root.invalidate()
     }
 
     private fun restoreUIState() {
@@ -869,6 +955,9 @@ class AddCharacterActivity : BaseActivity<ActivityAddCharacterBinding, AddCharac
         const val ADD_BACKGROUND_POSITION = 0
         const val NONE_BACKGROUND_POSITION = 1
         const val CUSTOM_BACKGROUND_COLOR_POSITION = 0
+        const val BACKGROUND_BATCH_SIZE = 5
+        const val BACKGROUND_FIRST_PAGE_SIZE = 20
+        const val BACKGROUND_BATCH_DELAY_MS = 32L
     }
 
     private fun handleChooseColor(isTextColor: Boolean = false) {

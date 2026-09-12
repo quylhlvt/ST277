@@ -27,19 +27,16 @@ class MyDesignAdapter() : BaseAdapter<MyAlbumModel, ItemMyDesignBinding>(ItemMyD
                 btnSelect.gone()
                 btnDelete.visible()
             }
-            if (item.isSelected) showDownSelect.visible() else showDownSelect.gone()
             btnSelect.setImageResource(
                 if (item.isSelected) R.drawable.ic_selected else R.drawable.ic_not_select
             )
             // Click luôn navigate
             root.onClick { onItemClick.invoke(item.path) }
-
             root.setOnLongClickListener {
                 if (items.any { it.isShowSelection }) return@setOnLongClickListener false
                 onLongClick.invoke(position)
                 true
             }
-
             btnDelete.onClick { onDeleteClick.invoke(item.path) }
             btnSelect.onClick { onItemTick.invoke(position) }
         }

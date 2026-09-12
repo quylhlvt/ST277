@@ -60,9 +60,9 @@
 
             <!--        imvLogo-->
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop" />
+                    android:layout_width="51dp"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"/>
         </androidx.cardview.widget.CardView>
 
         <!--    tvStart-->

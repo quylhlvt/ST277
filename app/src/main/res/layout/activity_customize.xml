@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                   xmlns:tools="http://schemas.android.com/tools"
-                                                   android:layout_width="match_parent"
-                                                   android:layout_height="match_parent"
-                                                   android:background="@drawable/img_bg_lang"
-                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                   tools:context="com.anime.oc.characters.avatar.ui.main.customize.CustomizeActivity">
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/app_color2"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        tools:context="com.anime.oc.characters.avatar.ui.main.customize.CustomizeActivity">
 
     <FrameLayout
             android:id="@+id/layoutActionBar"
@@ -31,36 +32,39 @@
 
             tools:layout_editor_absoluteX="-16dp">
 
-        <FrameLayout
-                android:id="@+id/rlCharacter"
-                android:layout_width="@dimen/dimension_0"
-                android:layout_height="@dimen/dimension_0"
-                android:elevation="@dimen/dimension_2"
-                android:background="@android:color/transparent"
-                app:layout_constraintBottom_toTopOf="@+id/frame_rando_all"
-                app:layout_constraintDimensionRatio="1:1"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
-        <View
+        <com.google.android.material.card.MaterialCardView
                 android:id="@+id/rlCharacter1"
                 android:layout_width="@dimen/dimension_0"
                 android:layout_height="@dimen/dimension_0"
-                android:elevation="@dimen/dimension_0"
-
-                android:background="@android:color/white"
-                app:layout_constraintBottom_toTopOf="@+id/frame_rando_all"
+                android:elevation="@dimen/dimension_2"
+                app:strokeColor="@color/app_color"
+                app:cardCornerRadius="@dimen/dimension_4"
+                android:layout_margin="@dimen/dimension_16"
+                app:cardBackgroundColor="@color/white"
+                android:background="@android:color/transparent"
+                app:layout_constraintBottom_toTopOf="@+id/constraintSelect"
                 app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent">
+            <FrameLayout
+                    android:id="@+id/rlCharacter"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:elevation="@dimen/dimension_0"/>
+        </com.google.android.material.card.MaterialCardView>
 
 
+        <View android:layout_width="match_parent" android:layout_height="@dimen/dimension_0"
+              app:layout_constraintTop_toTopOf="@+id/constraintSelect"
+              app:layout_constraintBottom_toBottomOf="parent"
+              android:background="@color/app_color9"/>
         <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintSelect"
                 android:layout_width="@dimen/dimension_0"
                 android:layout_height="@dimen/dimension_0"
                 android:elevation="@dimen/dimension_18"
-                app:layout_constraintDimensionRatio="3.6:0.56"
+                app:layout_constraintDimensionRatio="3.6:0.5"
                 app:layout_constraintBottom_toTopOf="@+id/frame_rando_all"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
@@ -76,18 +80,8 @@
                     app:layout_constraintDimensionRatio="3.6:0.08"
                     android:id="@+id/view18"
                     app:layout_constraintBottom_toBottomOf="parent"/>
-            <View
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:layout_width="@dimen/dimension_0"
-                    android:layout_height="match_parent"
-                    app:layout_constraintDimensionRatio="1.6:5.6"
-                    android:id="@+id/view19"/>
-            <View
-                    android:layout_width="@dimen/dimension_0"
-                    android:layout_height="match_parent"
-                    app:layout_constraintDimensionRatio="1.6:5.6"
-                    android:id="@+id/view20"
-                    app:layout_constraintEnd_toEndOf="parent"/>
+
+
             <ImageView
                     android:id="@+id/imgRandom"
                     android:src="@drawable/ic_random"
@@ -97,122 +91,102 @@
                     android:focusable="true"
                     app:layout_constraintBottom_toTopOf="@+id/view18"
                     app:layout_constraintDimensionRatio="1:1"
-                    app:layout_constraintEnd_toStartOf="@+id/view20"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="@dimen/dimension_16"
                     app:layout_constraintTop_toBottomOf="@+id/view17"
                     app:layout_constraintVertical_bias="1.0"/>
+            <ImageView
+                    android:id="@+id/imgReset"
+                    android:src="@drawable/ic_reset_all_custom"
+                    android:layout_width="@dimen/dimension_0"
+                    android:layout_height="@dimen/dimension_0"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:layout_constraintBottom_toTopOf="@+id/view18"
+                    app:layout_constraintDimensionRatio="1:1"
+                    android:layout_marginStart="@dimen/dimension_16"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view17"/>
+            <ImageView
+                    android:id="@+id/imgFlip"
+                    android:src="@drawable/ic_flip_all_custom"
+                    android:layout_width="@dimen/dimension_0"
+                    android:layout_height="@dimen/dimension_0"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_marginStart="@dimen/dimension_8"
+                    app:layout_constraintBottom_toTopOf="@+id/view18"
+                    app:layout_constraintDimensionRatio="1:1"
+                    app:layout_constraintStart_toEndOf="@+id/imgReset"
+                    app:layout_constraintTop_toBottomOf="@+id/view17"/>
+            <ImageView
+                    android:id="@+id/imgScale"
+                    android:src="@drawable/ic_scale_cus"
+                    android:layout_width="@dimen/dimension_0"
+                    android:layout_height="@dimen/dimension_0"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_marginStart="@dimen/dimension_8"
+                    app:layout_constraintBottom_toTopOf="@+id/view18"
+                    app:layout_constraintDimensionRatio="1:1"
+                    app:layout_constraintStart_toEndOf="@+id/imgFlip"
+                    app:layout_constraintTop_toBottomOf="@+id/view17"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/frame_rando_all"
                 android:layout_width="@dimen/dimension_0"
                 android:layout_height="@dimen/dimension_0"
-                app:layout_constraintDimensionRatio="3.6:0.56"
+                app:layout_constraintDimensionRatio="3.6:0.32"
                 app:layout_constraintBottom_toTopOf="@+id/frameLayer"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
-            <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimension_0"
-                    app:layout_constraintDimensionRatio="3.6:0.08"
-                    android:id="@+id/view4"
-                    app:layout_constraintTop_toTopOf="parent"/>
+
             <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimension_0"
                     app:layout_constraintDimensionRatio="3.6:0.08"
                     android:id="@+id/view5"
                     app:layout_constraintBottom_toBottomOf="parent"/>
-            <View
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:layout_width="@dimen/dimension_0"
-                    android:layout_height="match_parent"
-                    app:layout_constraintDimensionRatio="1.6:5.6"
-                    android:id="@+id/view6"/>
-            <View
-                    android:layout_width="@dimen/dimension_0"
-                    android:layout_height="match_parent"
-                    app:layout_constraintDimensionRatio="1.6:5.6"
-                    android:id="@+id/view7"
-                    app:layout_constraintEnd_toEndOf="parent"/>
-            <View
-                    android:layout_width="@dimen/dimension_0"
-                    android:layout_height="match_parent"
-                    app:layout_constraintDimensionRatio="0.8:5.6"
-                    android:id="@+id/view8"
-                    app:layout_constraintStart_toEndOf="@+id/imgScale"/>
 
 
-            <!-- Icon random -->
-            <ImageView
-                    android:id="@+id/imgChangColor"
-                    android:src="@drawable/img_change_color"
 
-                    android:layout_width="@dimen/dimension_0"
-                    android:layout_height="@dimen/dimension_0"
-                    android:clickable="true"
-                    android:focusable="true"
-                    app:layout_constraintBottom_toTopOf="@+id/view5"
-                    app:layout_constraintDimensionRatio="1:1"
-                    app:layout_constraintStart_toEndOf="@+id/view6"
-                    app:layout_constraintTop_toBottomOf="@+id/view4"
-                    app:layout_constraintVertical_bias="1.0"/>
 
-            <ImageView
-                    android:id="@+id/imgScale"
-                    android:src="@drawable/ic_scale_cus_none"
+<!--            &lt;!&ndash; Icon random &ndash;&gt;-->
+<!--            <ImageView-->
+<!--                    android:id="@+id/imgChangColor"-->
+<!--                    android:src="@drawable/img_change_color"-->
 
-                    android:layout_width="@dimen/dimension_0"
-                    android:layout_height="@dimen/dimension_0"
-                    android:clickable="true"
-                    android:focusable="true"
-                    app:layout_constraintBottom_toTopOf="@+id/view5"
-                    app:layout_constraintDimensionRatio="1:1"
-                    app:layout_constraintEnd_toStartOf="@+id/view7"
-                    app:layout_constraintTop_toBottomOf="@+id/view4"
-                    app:layout_constraintVertical_bias="1.0"/>
+<!--                    android:layout_width="@dimen/dimension_0"-->
+<!--                    android:layout_height="@dimen/dimension_0"-->
+<!--                    android:clickable="true"-->
+<!--                    android:focusable="true"-->
+<!--                    app:layout_constraintBottom_toTopOf="@+id/view5"-->
+<!--                    app:layout_constraintDimensionRatio="1:1"-->
+<!--                    app:layout_constraintStart_toEndOf="@+id/view6"-->
+<!--                    app:layout_constraintTop_toBottomOf="@+id/view4"-->
+<!--                    app:layout_constraintVertical_bias="1.0"/>-->
+
+
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
                     android:elevation="@dimen/dimension_1"
                     android:id="@+id/llColor"
                     android:layout_width="@dimen/dimension_0"
+                    android:layout_marginHorizontal="@dimen/dimension_16"
                     android:layout_height="@dimen/dimension_0"
-                    android:layout_marginEnd="@dimen/dimension_10"
-                    android:layout_marginStart="@dimen/dimension_2"
                     app:layout_constraintBottom_toTopOf="@+id/view5"
-                    app:layout_constraintTop_toBottomOf="@+id/view4"
-                    app:layout_constraintEnd_toStartOf="@+id/imgScale"
-                    app:layout_constraintStart_toEndOf="@+id/imgChangColor">
-
-                <com.google.android.material.card.MaterialCardView
-                        android:layout_width="@dimen/dimension_0"
-                        android:layout_height="@dimen/dimension_0"
-                        app:strokeWidth="@dimen/dimension_2"
-                        app:strokeColor="@color/app_color"
-                        app:cardCornerRadius="@dimen/dimension_10"
-                        app:cardBackgroundColor="@color/transparent"
-                        app:layout_constraintStart_toStartOf="@+id/cardColor"
-                        app:layout_constraintTop_toTopOf="@+id/cardColor"
-                        app:layout_constraintBottom_toBottomOf="@+id/cardColor"
-                        app:layout_constraintEnd_toEndOf="@+id/cardColor">
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
 
 
-                    <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/bg_10_stroke_linear_color"/>
 
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
+                <FrameLayout
                         android:id="@+id/cardColor"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        app:cardCornerRadius="@dimen/dimension_20"
-                        app:strokeWidth="@dimen/dimension_4"
-                        app:strokeColor="@color/transparent"
 
-                        app:cardBackgroundColor="@color/transparent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent">
@@ -220,15 +194,13 @@
                     <RelativeLayout
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:layout_marginEnd="@dimen/dimension_0"
-                            android:layout_marginVertical="@dimen/dimension_8">
+                            android:layout_marginEnd="@dimen/dimension_0">
 
                         <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/rcvColor"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_centerInParent="true"
-                                android:layout_marginStart="@dimen/dimension_25"
                                 android:clipToPadding="false"
                                 android:orientation="horizontal"
                                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -237,7 +209,7 @@
                     </RelativeLayout>
 
 
-                </com.google.android.material.card.MaterialCardView>
+                </FrameLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -247,28 +219,16 @@
                 android:id="@+id/frameLayer"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimension_0"
-                android:background="@color/app_color5"
                 app:layout_constraintBottom_toTopOf="@+id/constraintNav"
-                app:layout_constraintHeight_percent="0.265">
-            <View
-                    android:id="@+id/view10"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:layout_width="@dimen/dimension_0"
-                    android:layout_height="match_parent"
-                    app:layout_constraintDimensionRatio="0.11:1.96"/>
-            <View
-                    android:id="@+id/view11"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_width="@dimen/dimension_0"
-                    android:layout_height="match_parent"
-                    app:layout_constraintDimensionRatio="0.11:1.96"/>
+                app:layout_constraintHeight_percent="0.25">
+
             <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rcvPart"
                     android:layout_width="0dp"
-                    app:layout_constraintStart_toEndOf="@+id/view10"
-                    app:layout_constraintEnd_toStartOf="@+id/view11"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginHorizontal="@dimen/dimension_20"
                     android:layout_height="match_parent"
-                    android:paddingTop="@dimen/dimension_16"
                     android:elevation="@dimen/dimension_1"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                     app:spanCount="5"
@@ -504,18 +464,12 @@
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="@dimen/dimension_0"
                 android:id="@+id/constraintNav"
-                android:layout_height="@dimen/dimension_0"
-                app:layout_constraintDimensionRatio="3.6:0.56"
+                android:layout_height="@dimen/dimension_56"
                 android:background="@color/app_color4"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
-            <View
-                    android:id="@+id/viewNav1"
-                    android:layout_width="@dimen/dimension_0"
-                    android:layout_height="match_parent"
-                    app:layout_constraintDimensionRatio="1.7:5.6"
-                    app:layout_constraintStart_toStartOf="parent"/>
+
             <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rcvNav"
                     android:layout_width="@dimen/dimension_0"
@@ -524,7 +478,8 @@
                     android:elevation="@dimen/dimension_1"
                     android:orientation="horizontal"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/viewNav1"
+                    android:layout_marginStart="@dimen/dimension_16"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
 
                     tools:listitem="@layout/item_bottom_custom"/>
