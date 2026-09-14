@@ -11,6 +11,6 @@ data class SpeechCategoryModel(
 
     companion object {
         private const val SPEECH_BASE_URL =
-            "https://lvtglobal.tech/public/app/ST279_AnimeOCMaker/bg/speech%20bubble"
+            "https://lvtglobal.tech/public/app/ST267_CoupleCreatorsDressUp2/bg/speech%20bubble"
     }
 }

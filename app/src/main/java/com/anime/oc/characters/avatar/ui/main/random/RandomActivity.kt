@@ -5,61 +5,53 @@ import android.graphics.Canvas
 import android.os.Bundle
 import android.widget.ImageView
 import androidx.activity.OnBackPressedCallback
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.anime.oc.characters.avatar.R
 import com.anime.oc.characters.avatar.core.base.BaseActivity
-import com.anime.oc.characters.avatar.core.extention.InternetExtension
 import com.anime.oc.characters.avatar.core.extention.InternetExtension.isInternetAvailable
 import com.anime.oc.characters.avatar.core.extention.InternetExtension.isNetworkConnected
 import com.anime.oc.characters.avatar.core.extention.gone
 import com.anime.oc.characters.avatar.core.extention.onClick
 import com.anime.oc.characters.avatar.core.extention.select
 import com.anime.oc.characters.avatar.core.extention.setImageActionBar
-import com.anime.oc.characters.avatar.core.extention.setTextActionBar
 import com.anime.oc.characters.avatar.core.extention.visible
 import com.anime.oc.characters.avatar.databinding.ActivityRandomBinding
 import com.anime.oc.characters.avatar.ui.main.customize.CustomizeActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import dagger.hilt.android.AndroidEntryPoint
-import kotlin.collections.forEach
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeoutOrNull
 
 @AndroidEntryPoint
 class RandomActivity : BaseActivity<ActivityRandomBinding, RandomViewModel>(
     ActivityRandomBinding::inflate, RandomViewModel::class.java
 ) {
-
-    // RandomActivity được tạo mới mỗi lần điều hướng từ Home, nên bộ đếm này
-    // tự reset cho mỗi lượt vào màn và vẫn được giữ khi quay lại từ Customize.
-    private var randomClickCount = 0
-
-    // Thêm hàm này vào RandomActivity
-    private fun isOnlineTemplate(templateIndex: Int): Boolean {
-        return appSession.templates.value.getOrNull(templateIndex)?.id?.startsWith("online_") == true
+    companion object {
+        private const val RENDER_SIZE = 800
+        private const val RENDER_TIMEOUT_MS = 15_000L
     }
 
-    private fun checkOnlineNetworkOrShowDialog(templateIndex: Int): Boolean {
-        if (!isOnlineTemplate(templateIndex)) return false
-        return when {
-            !InternetExtension.isInternetAvailable(this@RandomActivity) -> {
-                showUnstableNetworkDialog(); true
-            }
+    private var renderJob: Job? = null
 
-            !InternetExtension.isNetworkConnected(this@RandomActivity) -> {
-                showUnstableNetworkDialog(); true
-            }
+    private fun hasUsableNetwork(): Boolean {
+        return isNetworkConnected(this@RandomActivity) &&
+            isInternetAvailable(this@RandomActivity)
+    }
 
-            else -> false
-        }
+    private fun checkOnlineNetworkOrShowDialog(templateId: String): Boolean {
+        if (!templateId.startsWith("online_") || hasUsableNetwork()) return false
+        showUnstableNetworkDialog()
+        return true
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -84,7 +76,7 @@ class RandomActivity : BaseActivity<ActivityRandomBinding, RandomViewModel>(
     override fun initView() {
         binding.imvImage.gone()
         binding.imageGif.visible()
-        setSaveButtonEnabled(false)
+        setControlsEnabled(canEdit = false, canRandom = false)
         binding.setupActionBar()
         binding.txtRandom.isSelected = true
         binding.txtEdit.isSelected = true
@@ -104,50 +96,55 @@ class RandomActivity : BaseActivity<ActivityRandomBinding, RandomViewModel>(
                 finish()
 
             }
-            // ✅ Nút random — check internet nếu template online
             random.onClick {
-                randomClickCount++
-                val isOnline = isNetworkConnected(this@RandomActivity) && isInternetAvailable(this@RandomActivity)
-                val currentIndex = viewModel.randomItem.value?.templateIndex ?: -1
-
-                if (currentIndex < 0 || !checkOnlineNetworkOrShowDialog(currentIndex)) {
-                    showLoading()
-                    val randomizeAction = {
-                        viewModel.randomize(isOnline = isOnline)
-                    }
-
-//                    if (randomClickCount == 1) {
-                        randomizeAction()
-//                    } else {
-//                        showInter(randomizeAction)
-//                    }
-                } else {
-                    return@onClick
-                }
+                requestRandomCharacter()
             }
             btnEdit.onClick {
                 if (!btnEdit.isEnabled) return@onClick
                 val item = viewModel.randomItem.value ?: return@onClick
-                if (checkOnlineNetworkOrShowDialog(item.templateIndex)) return@onClick
-                val templateId = appSession.templates.value.getOrNull(item.templateIndex)?.id ?: ""
+                if (checkOnlineNetworkOrShowDialog(item.template.id)) return@onClick
+
+                // Online refreshes can reorder the template list. Resolve the
+                // live index from the stable id before opening Customize.
+                val templateIndex = appSession.templates.value
+                    .indexOfFirst { it.id == item.template.id }
+                if (templateIndex < 0) {
+                    showLoadingDataDialog()
+                    return@onClick
+                }
                 val args = CustomizeActivity.newArgs(
-                    templateIndex = item.templateIndex,
-                    templateId = templateId,
+                    templateIndex = templateIndex,
+                    templateId = item.template.id,
                     isEdit = false,
                     savedSelections = item.selections
                 )
-                    openActivity(CustomizeActivity::class.java, args)
+                openActivity(CustomizeActivity::class.java, args)
 
             }
         }
+    }
+
+    private fun requestRandomCharacter() {
+        val hasNetwork = hasUsableNetwork()
+        val started = viewModel.randomize(isOnline = hasNetwork)
+        if (started) {
+            showLoading()
+            return
+        }
+
+        val cached = viewModel.cachedBitmap
+        setControlsEnabled(
+            canEdit = cached != null && !cached.isRecycled,
+            canRandom = true
+        )
+        if (hasNetwork) showLoadingDataDialog() else showUnstableNetworkDialog()
     }
 
     override fun observeData() {
         this@RandomActivity.lifecycleScope.launch {
             viewModel.isDataReady.collect { ready ->
                 if (ready && viewModel.randomItem.value == null) {
-                    val isOnline = isNetworkConnected(this@RandomActivity) && isInternetAvailable(this@RandomActivity)
-                    viewModel.randomize(isOnline = isOnline)
+                    requestRandomCharacter()
                 }
             }
         }
@@ -177,59 +174,63 @@ class RandomActivity : BaseActivity<ActivityRandomBinding, RandomViewModel>(
     }
 
     private fun renderCharacter(item: RandomViewModel.RandomItem) {
-        showLoading()
-        this@RandomActivity.lifecycleScope.launch {
+        renderJob?.cancel()
+        renderJob = this@RandomActivity.lifecycleScope.launch {
             val paths = item.resolvedPaths.filterNotNull()
-            if (paths.isEmpty()) return@launch
+            if (paths.isEmpty()) {
+                showRenderFailure(showNetworkDialog = false)
+                return@launch
+            }
             showLoading()
 
-            var networkDialogShown = false
-            var waitingForNetwork = false
-            var bitmaps: List<Bitmap> = emptyList()
-            while (isActive) {
-                val loaded = withContext(Dispatchers.IO) {
-                    paths.map { path ->
-                        async {
-                            runCatching {
-                                Glide.with(this@RandomActivity).asBitmap().load(path)
-                                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE).override(800).submit().get()
-                            }.getOrNull()
-                        }
-                    }.awaitAll()
-                }
-                bitmaps = loaded.filterNotNull()
-                if (bitmaps.size == paths.size) break
-
-                val hasNetwork =
-                    InternetExtension.isNetworkConnected(this@RandomActivity) && InternetExtension.isInternetAvailable(
-                        this@RandomActivity
-                    )
-                if (!hasNetwork) {
-                    waitingForNetwork = true
-                    if (!networkDialogShown) {
-                        showUnstableNetworkDialog()
-                        networkDialogShown = true
+            val loaded = withTimeoutOrNull(RENDER_TIMEOUT_MS) {
+                withContext(Dispatchers.IO) {
+                    coroutineScope {
+                        paths.map { path ->
+                            async {
+                                try {
+                                    Glide.with(this@RandomActivity).asBitmap().load(path)
+                                        .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                                        .override(RENDER_SIZE)
+                                        .submit()
+                                        .get()
+                                } catch (error: CancellationException) {
+                                    throw error
+                                } catch (_: Exception) {
+                                    null
+                                }
+                            }
+                        }.awaitAll()
                     }
-                    delay(200)
-                    continue
                 }
-                if (waitingForNetwork) {
-                    viewModel.randomize(isOnline = true)
-                    return@launch
-                }
-                delay(200)
             }
-            if (!isActive || bitmaps.size != paths.size) return@launch
+            if (!isActive) return@launch
 
-            val merged = mergeBitmaps(bitmaps)
+            val bitmaps = loaded?.filterNotNull().orEmpty()
+            if (bitmaps.size != paths.size) {
+                showRenderFailure(showNetworkDialog = !hasUsableNetwork())
+                return@launch
+            }
 
-            // ✅ Lưu vào cache
+            val merged = withContext(Dispatchers.Default) { mergeBitmaps(bitmaps) }
+            if (!isActive || viewModel.randomItem.value != item) {
+                merged.recycle()
+                return@launch
+            }
+
             viewModel.setCachedBitmap(merged)
-
-            withContext(Dispatchers.Main) {
-                showBitmap(merged)
-            }
+            showBitmap(merged)
         }
+    }
+
+    private fun showRenderFailure(showNetworkDialog: Boolean) {
+        binding.imvImage.apply {
+            setImageDrawable(null)
+            gone()
+        }
+        binding.imageGif.visible()
+        setControlsEnabled(canEdit = false, canRandom = true)
+        if (showNetworkDialog) showUnstableNetworkDialog()
     }
 
     private fun showLoading() {
@@ -238,7 +239,7 @@ class RandomActivity : BaseActivity<ActivityRandomBinding, RandomViewModel>(
             gone()
         }
         binding.imageGif.visible()
-        setSaveButtonEnabled(false)
+        setControlsEnabled(canEdit = false, canRandom = false)
     }
 
     private fun showBitmap(bitmap: Bitmap) {
@@ -248,30 +249,35 @@ class RandomActivity : BaseActivity<ActivityRandomBinding, RandomViewModel>(
             visible()
         }
         binding.imageGif.gone()
-        setSaveButtonEnabled(true)
+        setControlsEnabled(canEdit = true, canRandom = true)
     }
 
-    private fun setSaveButtonEnabled(enabled: Boolean) {
-        binding.btnEdit.isEnabled = enabled
-        binding.btnEdit.isClickable = enabled
-        binding.btnEdit.alpha = if (enabled) 1f else 0.5f
+    private fun setControlsEnabled(canEdit: Boolean, canRandom: Boolean) {
+        binding.btnEdit.isEnabled = canEdit
+        binding.btnEdit.isClickable = canEdit
+        binding.btnEdit.alpha = if (canEdit) 1f else 0.5f
 
-        binding.random.isEnabled = enabled
-        binding.random.isClickable = enabled
-        binding.random.alpha = if (enabled) 1f else 0.5f
+        binding.random.isEnabled = canRandom
+        binding.random.isClickable = canRandom
+        binding.random.alpha = if (canRandom) 1f else 0.5f
     }
 
     private fun mergeBitmaps(bitmaps: List<Bitmap>): Bitmap {
-        val size = 800
-        val merged = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888)
+        val merged = Bitmap.createBitmap(RENDER_SIZE, RENDER_SIZE, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(merged)
         bitmaps.forEach { bmp ->
-            val scaled = if (bmp.width == size && bmp.height == size) bmp
-            else Bitmap.createScaledBitmap(bmp, size, size, true)
+            val scaled = if (bmp.width == RENDER_SIZE && bmp.height == RENDER_SIZE) bmp
+            else Bitmap.createScaledBitmap(bmp, RENDER_SIZE, RENDER_SIZE, true)
             canvas.drawBitmap(scaled, 0f, 0f, null)
             if (scaled != bmp) scaled.recycle()
         }
         return merged
+    }
+
+    override fun onDestroy() {
+        renderJob?.cancel()
+        renderJob = null
+        super.onDestroy()
     }
 
     override fun bindViewModel() {}

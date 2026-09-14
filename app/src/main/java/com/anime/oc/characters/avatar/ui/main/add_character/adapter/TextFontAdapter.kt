@@ -19,12 +19,12 @@ class TextFontAdapter(val context: Context) : BaseAdapter<SelectedAddModel, Item
         binding.apply {
             if (item.isSelected) {
                 frame.apply {
-                    setCardBackgroundColor(ContextCompat.getColor(context, R.color.app_color6))
-                    strokeColor = ContextCompat.getColor(context, R.color.app_color)
+//                    setCardBackgroundColor(ContextCompat.getColor(context, R.color.app_color6))
+                    strokeColor = ContextCompat.getColor(context, R.color.app_color18)
                 }
             } else {
                 frame.apply {
-                    setCardBackgroundColor(ContextCompat.getColor(context, R.color.white))
+//                    setCardBackgroundColor(ContextCompat.getColor(context, R.color.white))
                     strokeColor = ContextCompat.getColor(context, R.color.white)
                 }
             }

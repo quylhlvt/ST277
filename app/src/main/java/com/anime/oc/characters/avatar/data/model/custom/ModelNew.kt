@@ -44,7 +44,8 @@ data class BodyPartModel(
 val listThumbPath:  ArrayList<String>    = arrayListOf(),
 val listSinglePath: ArrayList<String>    = arrayListOf(),
 val position:       Int                  = 0,
-val zIndex:         Int                  = 0
+val zIndex:         Int                  = 0,
+val charType:       Int                  = 1
 ) : Parcelable
 
 // ─────────────────────────────────────────────

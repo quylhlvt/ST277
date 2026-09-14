@@ -1,4 +1,4 @@
-package com.aesthetic.yaelokre.yaelokremaker.ui.main.customize.vertical
+package com.anime.oc.characters.avatar.ui.main.customize.vertical
 
 import android.content.Context
 import android.graphics.Canvas
@@ -8,14 +8,25 @@ import android.graphics.Path
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import androidx.appcompat.content.res.AppCompatResources
+import com.anime.oc.characters.avatar.R
+import kotlin.math.roundToInt
 
+/**
+ * Slider kích thước nằm ngang: giá trị tăng từ trái sang phải.
+ *
+ * Tên class cũ được giữ lại để tương thích với các layout đang sử dụng view này.
+ */
 class VerticalSizeSlider @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null
+    context: Context,
+    attrs: AttributeSet? = null
 ) : View(context, attrs) {
 
     var progress: Float = 0.5f // 0.0 -> 1.0
         set(value) {
-            field = value.coerceIn(0f, 1f)
+            val newValue = value.coerceIn(0f, 1f)
+            if (field == newValue) return
+            field = newValue
             invalidate()
             onProgressChanged?.invoke(field)
         }
@@ -23,107 +34,126 @@ class VerticalSizeSlider @JvmOverloads constructor(
     var onProgressChanged: ((Float) -> Unit)? = null
 
     private val trackPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = Color.parseColor("#FFFFFF")
+        color = Color.parseColor("#FFA6A6")
+        style = Paint.Style.FILL
     }
-    private val thumbPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = Color.parseColor("#410D00")
-    }
+    private val thumbDrawable = requireNotNull(
+        AppCompatResources.getDrawable(context, R.drawable.ic_scale_hor)
+    ).mutate()
+    private val trackPath = Path()
 
-    private val trackWidthDp = 16f
     private val thumbRadiusDp = 14f
+    private val trackSmallHalfHeightDp = 3f
+    private val trackLargeHalfHeightDp = 8f
 
-    private val trackWidth get() = trackWidthDp.dp
-    private val thumbRadius get() = thumbRadiusDp.dp
+    private val Float.dp: Float
+        get() = this * resources.displayMetrics.density
 
-    private val Float.dp get() = this * resources.displayMetrics.density
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        val desiredWidth = (trackWidthDp + 42f * 2).dp.toInt()
-        setMeasuredDimension(desiredWidth, MeasureSpec.getSize(heightMeasureSpec))
+        val desiredWidth = (191f + thumbRadiusDp * 2f).dp.toInt() + paddingLeft + paddingRight
+        val desiredHeight = (thumbRadiusDp * 2f).dp.toInt() + paddingTop + paddingBottom
+
+        setMeasuredDimension(
+            resolveSize(desiredWidth, widthMeasureSpec),
+            resolveSize(desiredHeight, heightMeasureSpec)
+        )
     }
+
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        val marginPx = 45f.dp
-        val cx = width / 2f
 
-        // Track chỉ vẽ trong vùng sau khi trừ margin
-        val trackWidthPx = width - marginPx * 2
-        val scaleX = trackWidthPx / 16f
-        val scaleY = height / 191f
+        val radius = thumbRadius()
+        val startX = paddingLeft + radius
+        val endX = (width - paddingRight - radius).coerceAtLeast(startX)
+        val centerY = paddingTop + contentHeight() / 2f
 
-        // Offset để căn giữa
-        val offsetX = marginPx
+        val largeHalfHeight = minOf(trackLargeHalfHeightDp.dp, contentHeight() / 2f)
+        val smallHalfHeight = minOf(trackSmallHalfHeightDp.dp, largeHalfHeight)
+        val capControlRatio = 4f / 3f
 
-        val path = Path().apply {
-            moveTo(offsetX + 16f * scaleX, 8f * scaleY)
-            cubicTo(
-                offsetX + 16f * scaleX, 4.88f * scaleY,
-                offsetX + 14.73f * scaleX, 2.34f * scaleY,
-                offsetX + 13.77f * scaleX, 2.34f * scaleY
-            )
-            cubicTo(
-                offsetX + 12.27f * scaleX, 0.84f * scaleY,
-                offsetX + 10.18f * scaleX, 0f,
-                offsetX + 8f * scaleX, 0f
-            )
-            cubicTo(
-                offsetX + 5.82f * scaleX, 0f,
-                offsetX + 3.73f * scaleX, 0.84f * scaleY,
-                offsetX + 2.24f * scaleX, 2.34f * scaleY
-            )
-            cubicTo(
-                offsetX + 0.74f * scaleX, 3.84f * scaleY,
-                offsetX - 0.06f * scaleX, 5.88f * scaleY,
-                offsetX, 8f * scaleY
-            )
-            lineTo(offsetX + 0.25f * scaleX, 17f * scaleY)
-            lineTo(offsetX + 4.75f * scaleX, 179f * scaleY)
-            lineTo(offsetX + 5f * scaleX, 188f * scaleY)
-            cubicTo(
-                offsetX + 5.02f * scaleX, 188.77f * scaleY,
-                offsetX + 5.36f * scaleX, 189.52f * scaleY,
-                offsetX + 5.92f * scaleX, 190.06f * scaleY
-            )
-            cubicTo(
-                offsetX + 6.49f * scaleX, 190.61f * scaleY,
-                offsetX + 7.22f * scaleX, 190.92f * scaleY,
-                offsetX + 8f * scaleX, 190.92f * scaleY
-            )
-            cubicTo(
-                offsetX + 8.78f * scaleX, 190.92f * scaleY,
-                offsetX + 9.51f * scaleX, 190.61f * scaleY,
-                offsetX + 10.08f * scaleX, 190.06f * scaleY
-            )
-            cubicTo(
-                offsetX + 10.64f * scaleX, 189.52f * scaleY,
-                offsetX + 10.98f * scaleX, 188.77f * scaleY,
-                offsetX + 11f * scaleX, 188f * scaleY
-            )
-            lineTo(offsetX + 11.25f * scaleX, 179f * scaleY)
-            lineTo(offsetX + 15.75f * scaleX, 17f * scaleY)
-            close()
-        }
+        trackPath.reset()
+        trackPath.moveTo(startX, centerY - smallHalfHeight)
+        trackPath.cubicTo(
+            startX - smallHalfHeight * capControlRatio,
+            centerY - smallHalfHeight,
+            startX - smallHalfHeight * capControlRatio,
+            centerY + smallHalfHeight,
+            startX,
+            centerY + smallHalfHeight
+        )
+        trackPath.lineTo(endX, centerY + largeHalfHeight)
+        trackPath.cubicTo(
+            endX + largeHalfHeight * capControlRatio,
+            centerY + largeHalfHeight,
+            endX + largeHalfHeight * capControlRatio,
+            centerY - largeHalfHeight,
+            endX,
+            centerY - largeHalfHeight
+        )
+        trackPath.close()
+        canvas.drawPath(trackPath, trackPaint)
 
-        canvas.drawPath(path, trackPaint)
-
-        val thumbRadius = thumbRadius
-        val usableTop = thumbRadius
-        val usableBottom = height - thumbRadius
-        val thumbY = usableTop + (1f - progress) * (usableBottom - usableTop)
-        canvas.drawCircle(cx, thumbY, thumbRadius, thumbPaint)
+        val thumbX = startX + progress * (endX - startX)
+        thumbDrawable.setBounds(
+            (thumbX - radius).roundToInt(),
+            (centerY - radius).roundToInt(),
+            (thumbX + radius).roundToInt(),
+            (centerY + radius).roundToInt()
+        )
+        thumbDrawable.draw(canvas)
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
-        val thumbRadius = thumbRadius
-        val topY = thumbRadius
-        val bottomY = height - thumbRadius
-        val trackLength = bottomY - topY
+        if (!isEnabled) return false
 
-        when (event.action) {
-            MotionEvent.ACTION_DOWN, MotionEvent.ACTION_MOVE -> {
-                progress = 1f - ((event.y - topY) / trackLength)
+        when (event.actionMasked) {
+            MotionEvent.ACTION_DOWN -> {
+                parent?.requestDisallowInterceptTouchEvent(true)
+                updateProgress(event.x)
+                return true
+            }
+
+            MotionEvent.ACTION_MOVE -> {
+                updateProgress(event.x)
+                return true
+            }
+
+            MotionEvent.ACTION_UP -> {
+                updateProgress(event.x)
+                parent?.requestDisallowInterceptTouchEvent(false)
+                performClick()
+                return true
+            }
+
+            MotionEvent.ACTION_CANCEL -> {
+                parent?.requestDisallowInterceptTouchEvent(false)
                 return true
             }
         }
+
         return super.onTouchEvent(event)
     }
+
+    override fun performClick(): Boolean {
+        super.performClick()
+        return true
+    }
+
+    private fun updateProgress(touchX: Float) {
+        val radius = thumbRadius()
+        val startX = paddingLeft + radius
+        val trackLength = (width - paddingLeft - paddingRight - radius * 2f)
+            .coerceAtLeast(1f)
+
+        progress = (touchX - startX) / trackLength
+    }
+
+    private fun thumbRadius(): Float = minOf(
+        thumbRadiusDp.dp,
+        contentHeight() / 2f,
+        (width - paddingLeft - paddingRight).coerceAtLeast(0) / 2f
+    )
+
+    private fun contentHeight(): Float =
+        (height - paddingTop - paddingBottom).coerceAtLeast(0).toFloat()
 }

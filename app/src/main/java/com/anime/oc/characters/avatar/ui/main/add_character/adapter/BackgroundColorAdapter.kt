@@ -11,6 +11,7 @@ import com.anime.oc.characters.avatar.databinding.ItemBackgroundColorBinding
 class BackgroundColorAdapter : BaseAdapter<SelectedAddModel, ItemBackgroundColorBinding>(
     ItemBackgroundColorBinding::inflate
 ) {
+    var onNoneColorClick: (() -> Unit) = {}
     var onChooseColorClick: (() -> Unit) = {}
     var onBackgroundColorClick: ((Int, Int) -> Unit) = { _, _ -> }
     var currentSelected = -1
@@ -22,15 +23,28 @@ class BackgroundColorAdapter : BaseAdapter<SelectedAddModel, ItemBackgroundColor
             } else {
                 materiaForcus.gone()
             }
-            if (position == 0) {
-                imvAddColor.visible()
-                imvColor.gone()
-                root.onClick { onChooseColorClick() }
-            } else {
-                imvAddColor.gone()
-                imvColor.visible()
-                imvColor.setBackgroundColor(item.color)
-                root.onClick { onBackgroundColorClick(item.color, position) }
+            when (position) {
+                NONE_COLOR_POSITION -> {
+                    imvColorNone.visible()
+                    imvAddColor.gone()
+                    imvColor.gone()
+                    root.onClick { onNoneColorClick() }
+                }
+
+                ADD_COLOR_POSITION -> {
+                    imvColorNone.gone()
+                    imvAddColor.visible()
+                    imvColor.gone()
+                    root.onClick { onChooseColorClick() }
+                }
+
+                else -> {
+                    imvColorNone.gone()
+                    imvAddColor.gone()
+                    imvColor.visible()
+                    imvColor.setBackgroundColor(item.color)
+                    root.onClick { onBackgroundColorClick(item.color, position) }
+                }
             }
 
         }
@@ -40,14 +54,19 @@ class BackgroundColorAdapter : BaseAdapter<SelectedAddModel, ItemBackgroundColor
         if (position == currentSelected) return
         val old = currentSelected
         currentSelected = position
-        if (old >= 0) notifyItemChanged(old)
-        if (position >= 0) notifyItemChanged(position)
+        if (old in items.indices) notifyItemChanged(old)
+        if (position in items.indices) notifyItemChanged(position)
     }
 
     fun clearSelection() {
         if (currentSelected < 0) return
         val old = currentSelected
         currentSelected = -1
-        notifyItemChanged(old)
+        if (old in items.indices) notifyItemChanged(old)
+    }
+
+    private companion object {
+        const val NONE_COLOR_POSITION = 0
+        const val ADD_COLOR_POSITION = 1
     }
 }

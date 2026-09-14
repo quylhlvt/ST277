@@ -51,6 +51,7 @@ class AddCharacterViewModel @Inject constructor(
     val backgroundImagePath: StateFlow<String?> = _backgroundImagePath.asStateFlow()
     var selectedBackgroundImagePath: String? = null
     var selectedBackgroundImagePosition: Int = -1
+    var selectedBackgroundColorPosition: Int = -1
 
     var savedBackgroundColor: Int? = null
 
@@ -95,11 +96,11 @@ class AddCharacterViewModel @Inject constructor(
         backgroundImageList = arrayListOf(
             SelectedAddModel(
                 path = "",
-                isSelected = selectedBackgroundImagePosition == ADD_BACKGROUND_POSITION
+                isSelected = selectedBackgroundImagePosition == NONE_BACKGROUND_POSITION
             ),
             SelectedAddModel(
                 path = "",
-                isSelected = selectedBackgroundImagePosition == NONE_BACKGROUND_POSITION
+                isSelected = selectedBackgroundImagePosition == ADD_BACKGROUND_POSITION
             )
         ).apply {
             addAll(backgrounds.map { path ->
@@ -109,8 +110,12 @@ class AddCharacterViewModel @Inject constructor(
         selectedBackgroundImagePosition = backgroundImageList.indexOfFirst { it.isSelected }
 
         backgroundColorList.clear()
+        backgroundColorList.add(SelectedAddModel()) // None
         backgroundColorList.add(SelectedAddModel()) // Choose custom color
         backgroundColorList.addAll(DataLocal.getBackgroundColorDefault(context))
+        backgroundColorList.forEachIndexed { index, item ->
+            item.isSelected = index == selectedBackgroundColorPosition
+        }
 
         stickerList.clear()
         stickerList.addAll(stickers.map { SelectedAddModel(path = it) })
@@ -132,6 +137,17 @@ class AddCharacterViewModel @Inject constructor(
         textColorList.addAll(DataLocal.getTextColorDefault(context))
         textColorList.getOrNull(1)?.isSelected = true
 
+    }
+
+    fun loadDataFromQuantity(
+        bgQuantity: Int,
+        stickerQuantity: Int,
+        bgBaseUrl: String,
+        speeches: List<String>
+    ) {
+        val backgrounds = (1..bgQuantity).map { "$bgBaseUrl/Background/$it.jpg" }
+        val stickers = (1..stickerQuantity).map { "$bgBaseUrl/Sticker/$it.png" }
+        loadDataFromMainViewModel(backgrounds, stickers, speeches)
     }
 
     fun setStickerCategories(categories: List<StickerCategoryModel>) {
@@ -186,6 +202,7 @@ class AddCharacterViewModel @Inject constructor(
 
     fun updateBackgroundImageSelected(position: Int) {
         selectedBackgroundImagePosition = position
+        selectedBackgroundColorPosition = -1
         backgroundColorList.forEach { model ->
             model.isSelected = false
         }
@@ -197,6 +214,7 @@ class AddCharacterViewModel @Inject constructor(
     fun updateBackgroundColorSelected(position: Int) {
         selectedBackgroundImagePosition = -1
         selectedBackgroundImagePath = null
+        selectedBackgroundColorPosition = position
         backgroundImageList.forEach { model ->
             model.isSelected = false
         }
@@ -205,9 +223,26 @@ class AddCharacterViewModel @Inject constructor(
         }
     }
 
+    /** None là trạng thái dùng chung cho cả tab Image và tab Color. */
+    fun selectNoBackground() {
+        setBackgroundImage(null)
+        selectedBackgroundImagePath = null
+        selectedBackgroundImagePosition = NONE_BACKGROUND_POSITION
+        selectedBackgroundColorPosition = NONE_BACKGROUND_COLOR_POSITION
+        savedBackgroundColor = null
+
+        backgroundImageList.forEachIndexed { index, model ->
+            model.isSelected = index == NONE_BACKGROUND_POSITION
+        }
+        backgroundColorList.forEachIndexed { index, model ->
+            model.isSelected = index == NONE_BACKGROUND_COLOR_POSITION
+        }
+    }
+
     private companion object {
-        const val ADD_BACKGROUND_POSITION = 0
-        const val NONE_BACKGROUND_POSITION = 1
+        const val NONE_BACKGROUND_POSITION = 0
+        const val ADD_BACKGROUND_POSITION = 1
+        const val NONE_BACKGROUND_COLOR_POSITION = 0
     }
 
     fun updateTextFontSelected(position: Int) {
@@ -288,5 +323,6 @@ class AddCharacterViewModel @Inject constructor(
         drawViewList.clear()
         currentDraw = null
         pathDefault = ""
+        selectedBackgroundColorPosition = -1
     }
 }

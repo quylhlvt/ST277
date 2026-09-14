@@ -7,12 +7,11 @@ import com.anime.oc.characters.avatar.data.datalocal.manager.AppDataManager
 import com.anime.oc.characters.avatar.data.model.addcharacter.SpeechCategoryModel
 import com.anime.oc.characters.avatar.data.model.addcharacter.StickerCategoryModel
 import com.anime.oc.characters.avatar.data.model.custom.CustomModel
+import com.anime.oc.characters.avatar.data.model.custom.LayerTransform
 import com.anime.oc.characters.avatar.data.model.custom.SelectionIndex
 import com.anime.oc.characters.avatar.data.usecase.GetCatalogueUseCase
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.google.gson.Gson
-import com.google.gson.annotations.SerializedName
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.net.HttpURLConnection
 import java.net.URL
@@ -20,8 +19,6 @@ import java.util.Collections
 import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlin.text.isEmpty
-import kotlin.text.orEmpty
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -63,6 +60,11 @@ class AppSession @Inject constructor(
     private val _bgStickerReady = MutableStateFlow(false)
     val bgStickerReady: StateFlow<Boolean> = _bgStickerReady.asStateFlow()
     private val _bgLoading = MutableStateFlow(false)
+    var bgQuantity: Int = 0
+        private set
+    var stickerQuantity: Int = 0
+        private set
+    val bgBaseUrl = "https://lvtglobal.tech/public/app/ST267_CoupleCreatorsDressUp2/bg"
     private val _stickerCategories = MutableStateFlow<List<StickerCategoryModel>>(emptyList())
     val stickerCategories: StateFlow<List<StickerCategoryModel>> = _stickerCategories.asStateFlow()
     private val _speechCategories = MutableStateFlow<List<SpeechCategoryModel>>(emptyList())
@@ -127,31 +129,22 @@ class AppSession @Inject constructor(
         return results.toSortedMap().values.toList()
     }
 
-    private data class BgConfig(
-        @SerializedName("background")
-        val background: List<CategoryConfig> = emptyList(),
-        @SerializedName("sticker")
-        val sticker: List<CategoryConfig> = emptyList(),
-        @SerializedName("speech bubble")
-        val speechBubble: List<CategoryConfig> = emptyList()
-    )
-
-    private data class CategoryConfig(
-        @SerializedName("category")
-        val category: String = "",
-        @SerializedName("quantity")
-        val quantity: Int = 0
-    )
-
-    private fun loadBgConfig(): BgConfig {
-        val url = "https://lvtglobal.tech/public/app/ST279_AnimeOCMaker/bg/bg.json"
-        val connection = java.net.URL(url).openConnection() as java.net.HttpURLConnection
+    private fun loadBgQuantities(): Pair<Int, Int> {
+        val connection = URL("$bgBaseUrl/bg.json").openConnection() as HttpURLConnection
         return try {
             connection.connectTimeout = 10_000
             connection.readTimeout = 10_000
-            connection.inputStream.bufferedReader().use { reader ->
-                Gson().fromJson(reader, BgConfig::class.java)
-            }
+            val json = connection.inputStream.bufferedReader().use { it.readText() }
+            val jsonObject = org.json.JSONObject(json)
+            val backgroundQuantity = jsonObject
+                .getJSONArray("Background")
+                .getJSONObject(0)
+                .getInt("quantity")
+            val stickerQuantity = jsonObject
+                .getJSONArray("Sticker")
+                .getJSONObject(0)
+                .getInt("quantity")
+            backgroundQuantity to stickerQuantity
         } finally {
             connection.disconnect()
         }
@@ -170,53 +163,21 @@ class AppSession @Inject constructor(
             _bgLoading.value = true
             _bgStickerReady.value = false
             try {
-                coroutineScope {
-                    val config = loadBgConfig()
-                    val backgrounds = config.background
-                        .filter { it.quantity > 0 }
-                        .flatMap { item ->
-                            val categoryPath = item.category
-                                .trim()
-                                .takeIf { it.isNotEmpty() }
-                                ?.let { "/$it" }
-                                .orEmpty()
-                            (1..item.quantity).map { index ->
-                                "$BACKGROUND_BASE_URL$categoryPath/$index.png"
-                            }
-                        }
-                    val stickerCategories = config.sticker
-                        .filter { it.category.isNotBlank() && it.quantity > 0 }
-                        .mapIndexed { index, item ->
-                            StickerCategoryModel(
-                                category = item.category,
-                                quantity = item.quantity,
-                                isSelected = index == 0
-                            )
-                        }
-                    val stickers = stickerCategories.firstOrNull()?.imageUrls().orEmpty()
-                    val speechCategories = config.speechBubble
-                        .filter { it.category.isNotBlank() && it.quantity > 0 }
-                        .map { item ->
-                            SpeechCategoryModel(
-                                category = item.category,
-                                quantity = item.quantity
-                            )
-                        }
-                    val speech = speechCategories.flatMap { it.imageUrls() }
-
-                    if (backgrounds.isEmpty() && stickers.isEmpty() && speech.isEmpty()) {
-                        Log.w("AppSession", "⚠️ Empty result, mark as failed")
-                        _bgStickerFailed.value = true
-                        return@coroutineScope
-                    }
-
-                    appDataManager.updateBackgroundsStickersAndSpeech(backgrounds, stickers, speech)
-                    _stickerCategories.value = stickerCategories
-                    _speechCategories.value = speechCategories
-                    _bgStickerFailed.value = false
-                    _bgStickerReady.value = true
-                    Log.d("AppSession", "✅ bgs=${backgrounds.size} stickers=${stickers.size}")
+                val (backgroundCount, stickerCount) = loadBgQuantities()
+                check(backgroundCount > 0 && stickerCount > 0) {
+                    "Background/Sticker quantity is empty"
                 }
+
+                bgQuantity = backgroundCount
+                stickerQuantity = stickerCount
+                _stickerCategories.value = emptyList()
+                _speechCategories.value = emptyList()
+                _bgStickerFailed.value = false
+                _bgStickerReady.value = true
+                Log.d(
+                    "AppSession",
+                    "✅ bgQuantity=$bgQuantity stickerQuantity=$stickerQuantity"
+                )
             } catch (e: Exception) {
                 Log.e("AppSession", "❌ loadBgSticker: ${e.message}")
                 _bgStickerFailed.value = true
@@ -226,10 +187,6 @@ class AppSession @Inject constructor(
         }
     }
 
-    private companion object {
-        const val BACKGROUND_BASE_URL =
-            "https://lvtglobal.tech/public/app/ST279_AnimeOCMaker/bg/background"
-    }
     private fun loadInitialData() {
         applicationScope.launch {
             try {
@@ -383,7 +340,8 @@ class AppSession @Inject constructor(
         character:  CustomModel,
         selections: List<SelectionIndex>,
         imageSave:  String  = "",
-        isFlipped:  Boolean = false
+        isFlipped:  Boolean = false,
+        layerTransforms: Map<Int, LayerTransform> = emptyMap()
     ) {
         applicationScope.launch {
             val toSave = if (isTemplate(character.id)) {
@@ -393,6 +351,7 @@ class AppSession @Inject constructor(
                     selections = ArrayList(selections),
                     imageSave  = imageSave,
                     isFlipped  = isFlipped,
+                    layerTransforms = layerTransforms,
                     createdAt  = System.currentTimeMillis(),
                     updatedAt  = System.currentTimeMillis()
                     // ✅ KHÔNG set listPath — giữ nguyên từ template
@@ -402,6 +361,7 @@ class AppSession @Inject constructor(
                     selections = ArrayList(selections),
                     imageSave  = imageSave,
                     isFlipped  = isFlipped,
+                    layerTransforms = layerTransforms,
                     updatedAt  = System.currentTimeMillis()
                     // ✅ KHÔNG set listPath
                 )

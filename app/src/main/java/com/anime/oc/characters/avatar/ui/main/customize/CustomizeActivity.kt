@@ -71,6 +71,7 @@ class CustomizeActivity : BaseActivity<ActivityCustomizeBinding, CustomizeViewMo
     private var canSave = false
     private var hasTriggeredReInit = false
     private var holdActionJob: Job? = null
+    private var isUpdatingScaleSlider = false
     private var scrollPartAfterRandom = false
     private var initialLoadingPending = false
     private var hasShownInitialLoading = false
@@ -249,9 +250,15 @@ class CustomizeActivity : BaseActivity<ActivityCustomizeBinding, CustomizeViewMo
             if (viewModel.resolvePathAt(viewModel.state.value.currentNavIndex) == null) return@onClick
             toggleScalePanel()
         }
-//        binding.imgScale.onClick {
-//            closeScalePanel()
-//        }
+        binding.btnExitScale.onClick {
+            binding.imgScale.setImageResource(R.drawable.ic_scale_cus)
+            closeScalePanel(animate = true)
+        }
+        binding.gender.onClick {
+            if (!checkOnlineNetworkOrShowDialog()) {
+                viewModel.toggleCharacter()
+            }
+        }
 
         binding.ratioRight.onClickAndHold {
             changeCurrentTransform {
@@ -275,8 +282,12 @@ class CustomizeActivity : BaseActivity<ActivityCustomizeBinding, CustomizeViewMo
         binding.transitionRight.onClickAndHold { changeCurrentTransform { it.copy(translationX = it.translationX + 20f) } }
         binding.transitionTop.onClickAndHold { changeCurrentTransform { it.copy(translationY = it.translationY - 20f) } }
         binding.transitionBottom.onClickAndHold { changeCurrentTransform { it.copy(translationY = it.translationY + 20f) } }
-        binding.scalePlus.onClickAndHold { changeCurrentTransform { it.copy(scale = it.scale + 0.05f) } }
-        binding.scaleMinus.onClickAndHold { changeCurrentTransform { it.copy(scale = it.scale - 0.05f) } }
+        binding.sliderSize.onProgressChanged = { progress ->
+            if (!isUpdatingScaleSlider) {
+                val scale = MIN_LAYER_SCALE + progress * LAYER_SCALE_RANGE
+                changeCurrentTransform { it.copy(scale = scale) }
+            }
+        }
         binding.btnResetScale.onClick {
             viewModel.resetTransform(viewModel.state.value.currentNavIndex)
             applyTransformsToAllLayers(viewModel.state.value)
@@ -605,10 +616,21 @@ class CustomizeActivity : BaseActivity<ActivityCustomizeBinding, CustomizeViewMo
     // ── ADAPTERS ──────────────────────────────────────────────────────────────
 
     private fun updateAdapters(state: CustomizeState) {
-        visibleNavIndices = state.listData.indices.toList()
+        visibleNavIndices = state.listData.withIndex()
+            .filter { it.value.charType == state.activeCharacter }
+            .map { it.index }
         val visibleNavItems = visibleNavIndices.mapNotNull { state.listData.getOrNull(it) }
         val visibleNavPosition = visibleNavIndices.indexOf(state.currentNavIndex)
             .takeIf { it >= 0 } ?: 0
+
+        val canSwitchCharacter = state.listData.any { it.charType == 1 } &&
+                state.listData.any { it.charType == 2 }
+        binding.gender.setImageResource(
+            if (state.activeCharacter == 2) R.drawable.img_gender2
+            else R.drawable.img_gender1
+        )
+        binding.gender.isEnabled = canSwitchCharacter
+        binding.gender.alpha = if (canSwitchCharacter) 1f else 0.4f
 
         if (adapterNav.items != visibleNavItems) {
             adapterNav.submitList(visibleNavItems)
@@ -746,8 +768,6 @@ class CustomizeActivity : BaseActivity<ActivityCustomizeBinding, CustomizeViewMo
         val hasLayer = viewModel.resolvePathAt(index) != null
         val transform = viewModel.getTransform(index)
         val scale = transform.scale
-        val canScaleUp = hasLayer && scale < MAX_LAYER_SCALE - SCALE_EPSILON
-        val canScaleDown = hasLayer && scale > MIN_LAYER_SCALE + SCALE_EPSILON
         val maxX = binding.rlCharacter.width.coerceAtLeast(1) * MAX_TRANSLATION_X_FRACTION
         val maxY = binding.rlCharacter.height.coerceAtLeast(1) / 2f
         val canMoveLeft = hasLayer && transform.translationX > -maxX + TRANSFORM_EPSILON
@@ -757,10 +777,16 @@ class CustomizeActivity : BaseActivity<ActivityCustomizeBinding, CustomizeViewMo
 
         binding.imgScale.isEnabled = hasLayer
         binding.imgScale.setImageResource(if (hasLayer) R.drawable.ic_scale_cus else R.drawable.ic_scale_cus_none)
-        binding.scalePlus.isEnabled = canScaleUp
-        binding.scalePlus.alpha = if (canScaleUp) 1f else 0.4f
-        binding.scaleMinus.isEnabled = canScaleDown
-        binding.scaleMinus.alpha = if (canScaleDown) 1f else 0.4f
+        binding.sliderSize.isEnabled = hasLayer
+        binding.sliderSize.alpha = if (hasLayer) 1f else 0.4f
+        isUpdatingScaleSlider = true
+        try {
+            binding.sliderSize.progress =
+                ((scale - MIN_LAYER_SCALE) / LAYER_SCALE_RANGE)
+                    .coerceIn(0f, 1f)
+        } finally {
+            isUpdatingScaleSlider = false
+        }
         binding.transitionLeft.isEnabled = canMoveLeft
         binding.transitionLeft.alpha = if (canMoveLeft) 1f else 0.4f
         binding.transitionRight.isEnabled = canMoveRight
@@ -844,7 +870,8 @@ class CustomizeActivity : BaseActivity<ActivityCustomizeBinding, CustomizeViewMo
                     character = template,
                     selections = selections,
                     imageSave = savedPath,
-                    isFlipped = viewModel.state.value.isFlipped
+                    isFlipped = viewModel.state.value.isFlipped,
+                    layerTransforms = viewModel.layerTransforms.value
                 )
             }
 
@@ -929,8 +956,8 @@ class CustomizeActivity : BaseActivity<ActivityCustomizeBinding, CustomizeViewMo
     companion object {
         private const val MIN_LAYER_SCALE = 0.3f
         private const val MAX_LAYER_SCALE = 2f
+        private const val LAYER_SCALE_RANGE = MAX_LAYER_SCALE - MIN_LAYER_SCALE
         private const val MAX_TRANSLATION_X_FRACTION = 0.65f
-        private const val SCALE_EPSILON = 0.0001f
         private const val TRANSFORM_EPSILON = 0.01f
         const val ARG_TEMPLATE_INDEX = "template_index"
         const val ARG_TEMPLATE_ID = "template_id"

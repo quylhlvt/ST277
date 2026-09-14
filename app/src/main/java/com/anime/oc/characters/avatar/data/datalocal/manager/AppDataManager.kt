@@ -227,7 +227,7 @@ class AppDataManager @Inject constructor(
             folders.forEach { folder ->
                 val basePath = "data/$folder"
                 val items    = (assetManager.list(basePath) ?: return@forEach)
-                    .sortedBy { it.substringBefore("-").toIntOrNull() ?: 999 }  // sort theo gia tri x trong "x-y"
+                    .sortedBy { it.substringBefore("-").toIntOrNull() ?: 999 }
 
                 val bodyParts = arrayListOf<BodyPartModel>()
                 var avatar    = ""
@@ -245,6 +245,10 @@ class AppDataManager @Inject constructor(
                     val parts = item.split("-")
                     val x = parts.getOrNull(0)?.toIntOrNull() ?: position
                     val y = parts.getOrNull(1)?.toIntOrNull() ?: position
+                    val charType = parts.getOrNull(2)
+                        ?.toIntOrNull()
+                        ?.takeIf { it == 1 || it == 2 }
+                        ?: 1
 
                     val nav = contents.firstOrNull { it.startsWith("nav.") }
                         ?.let { "$ASSET_PREFIX/$fullPath/$it" } ?: ""
@@ -297,8 +301,6 @@ class AppDataManager @Inject constructor(
                         }
                     }
 
-                    applySpecialPrefixes(colors, item)
-
                     bodyParts.add(
                         BodyPartModel(
                             nav = nav,
@@ -306,11 +308,14 @@ class AppDataManager @Inject constructor(
                             listThumbPath = listThumbPath,
                             listSinglePath = listSinglePath,
                             position = x,
-                            zIndex = y
+                            zIndex = y,
+                            charType = charType
                         )
                     )
                     position++
                 }
+
+                applySpecialPrefixes(bodyParts)
 
                 result.add(
                     CustomModel(
@@ -330,21 +335,22 @@ class AppDataManager @Inject constructor(
             Log.e(TAG, "❌ Asset load error: ${e.message}", e)
         }
     }
-    private fun applySpecialPrefixes(colors: ArrayList<ColorModel>, itemName: String) {
-        val pos = itemName.substringAfter("-").toIntOrNull() ?: return
-        colors.forEach { cm ->
-            if (cm.listPath.isEmpty()) return@forEach  // ← guard: bỏ qua nếu rỗng
-            when {
-                pos == 1 -> {
-                    // Nav0 / body chính: CHỈ thêm "dice", không "none"
-                    if (cm.listPath.first() != "dice") cm.listPath.add(0, "dice")
-                }
-                else -> {
-                    // Nav khác: thêm "none" trước, "dice" sau
-                    if (cm.listPath.first() != "none") {
-                        cm.listPath.add(0, "none")
-                        cm.listPath.add(1, "dice")
-                    }
+    private fun applySpecialPrefixes(bodyParts: List<BodyPartModel>) {
+        val minZIndexByCharacter = bodyParts
+            .groupBy { it.charType }
+            .mapValues { (_, parts) ->
+                parts.minOfOrNull { it.zIndex } ?: Int.MAX_VALUE
+            }
+
+        bodyParts.forEach { bodyPart ->
+            bodyPart.listPath.forEach colorLoop@ { color ->
+                if (color.listPath.isEmpty()) return@colorLoop
+                if (bodyPart.zIndex == minZIndexByCharacter[bodyPart.charType]) {
+                    // Mỗi nhân vật có một body chính riêng: chỉ dice.
+                    if (color.listPath.first() != "dice") color.listPath.add(0, "dice")
+                } else if (color.listPath.first() != "none") {
+                    color.listPath.add(0, "none")
+                    color.listPath.add(1, "dice")
                 }
             }
         }
@@ -508,7 +514,14 @@ class AppDataManager @Inject constructor(
     }
 
     private suspend fun loadSpeechs() {
-        _speechs.value = emptyList()
+        runCatching {
+            _speechs.value = (context.assets.list("speech") ?: emptyArray())
+                .filter { it.endsWith(".png", ignoreCase = true) }
+                .sortedBy {
+                    it.substringBeforeLast(".").toIntOrNull() ?: Int.MAX_VALUE
+                }
+                .map { "$ASSET_PREFIX/speech/$it" }
+        }.onFailure { Log.e(TAG, "❌ loadSpeechs", it) }
     }
 
     // ── MY DESIGNS ────────────────────────────────────────────────────────────

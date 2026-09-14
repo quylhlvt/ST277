@@ -14,7 +14,7 @@
         app:strokeWidth="@dimen/dimension_2"
         app:strokeColor="@color/transparent"
 
-        app:cardCornerRadius="@dimen/dimension_100"
+        app:cardCornerRadius="@dimen/dimension_108"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"

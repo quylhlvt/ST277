@@ -78,18 +78,14 @@ class SuccessActivity : BaseActivity<ActivitySuccessBinding, SuccessViewModel>(
         binding.actionBar.root.isEnabled = true
         binding.actionBar.btnActionBarLeft.isEnabled = true
         binding.actionBar.btnActionBarLeft.isClickable = true
-        binding.actionBar.btnActionBarNextToRight.isEnabled = true
-        binding.actionBar.btnActionBarNextToRight.isClickable = true
+        binding.actionBar.btnActionBarRight2.isEnabled = true
+        binding.actionBar.btnActionBarRight2.isClickable = true
+        binding.actionBar.btnActionBarRight1.isEnabled = true
+        binding.actionBar.btnActionBarRight1.isClickable = true
         binding.actionBar.btnActionBarRight.isEnabled = true
         binding.actionBar.btnActionBarRight.isClickable = true
-        binding.btnBottomLeft.isEnabled = true
-        binding.btnBottomLeft.isClickable = true
-        binding.btnBottomRight.isEnabled = true
-        binding.btnBottomRight.isClickable = true
-        binding.btnBottomLeftSocial.isEnabled = true
-        binding.btnBottomLeftSocial.isClickable = true
-        binding.btnBottomRightSocial.isEnabled = true
-        binding.btnBottomRightSocial.isClickable = true
+        binding.btnLang.isEnabled = true
+        binding.btnLang.isClickable = true
         binding.root.requestLayout()
         binding.root.invalidate()
     }
@@ -106,24 +102,14 @@ class SuccessActivity : BaseActivity<ActivitySuccessBinding, SuccessViewModel>(
 
         currentImagePath = imagePath
         binding.apply {
-            setImageActionBar(actionBar.btnActionBarLeft, R.drawable.back_app)
             loadImage(this@SuccessActivity, imagePath, imvImage)
-            txtLeftSocial.apply  {
-                isSelected =true
-            }
-            txtRightSocial.apply  {
-                isSelected =true
-            }
-            txtLeft.apply  {
-                isSelected =true
-                visible();}
-            txtRight.apply {
-                isSelected =true
-                visible();}
-            setImageActionBar(actionBar.btnActionBarNextToRight, R.drawable.ic_share_success)
-            setImageActionBar(actionBar.btnActionBarRight, R.drawable.ic_home)
-//            setTextActionBar(actionBar.tvCenter, getString(R.string.successful))
-            tvSuccess.isSelected = true
+
+
+            setImageActionBar(actionBar.btnActionBarLeft, R.drawable.back_app1)
+            setImageActionBar(actionBar.btnActionBarRight2, R.drawable.ic_home)
+            setImageActionBar(actionBar.btnActionBarRight1, R.drawable.ic_mycreation)
+            setImageActionBar(actionBar.btnActionBarRight, R.drawable.ic_share_all)
+            txtDownload.isSelected = true
         }
     }
 
@@ -132,31 +118,24 @@ class SuccessActivity : BaseActivity<ActivitySuccessBinding, SuccessViewModel>(
             actionBar.btnActionBarLeft.onClick1 { finish() }
 
             // Home
-            actionBar.btnActionBarRight.onClick1 {
-                    openActivity(HomeActivity::class.java, clearTop = true)
-
+            actionBar.btnActionBarRight2.onClick1 {
+                openActivity(HomeActivity::class.java, clearTop = true)
             }
-            // Share
-            actionBar.btnActionBarNextToRight.onClick( 1500) { shareImage() }
 
             // MyCreation
-            btnBottomLeft.onClick1 {
-                    openActivity(HomeActivity::class.java, Bundle().apply {
-                        putBoolean(HomeActivity.EXTRA_OPEN_ALBUM, true)
-                    }, clearTop = true)
+            actionBar.btnActionBarRight1.onClick1 {
+                openActivity(HomeActivity::class.java, Bundle().apply {
+                    putBoolean(HomeActivity.EXTRA_OPEN_ALBUM, true)
+                }, clearTop = true)
+            }
 
+            // Share
+            actionBar.btnActionBarRight.onClick(1500) {
+                shareImage()
             }
 
             // Download
-            btnBottomRight.onClick1 { downloadImage() }
-            btnBottomLeftSocial.onClick1 {
-                logSocialShareEvent("facebook")
-                shareToSocialApp(SocialShareManager.SocialApp.FACEBOOK)
-            }
-            btnBottomRightSocial.onClick1 {
-                logSocialShareEvent("instagram")
-                shareToSocialApp(SocialShareManager.SocialApp.INSTAGRAM)
-            }
+            btnLang.onClick1 { downloadImage() }
         }
     }
     private fun logSocialShareEvent(socialName: String) {

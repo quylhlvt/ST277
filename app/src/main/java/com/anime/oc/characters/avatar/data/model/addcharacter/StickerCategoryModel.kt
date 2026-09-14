@@ -11,6 +11,6 @@ data class StickerCategoryModel(
 
     companion object {
         private const val STICKER_BASE_URL =
-            "https://lvtglobal.tech/public/app/ST279_AnimeOCMaker/bg/sticker"
+            "https://lvtglobal.tech/public/app/ST267_CoupleCreatorsDressUp2/bg/sticker"
     }
 }

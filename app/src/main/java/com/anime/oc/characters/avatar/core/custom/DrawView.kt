@@ -721,27 +721,29 @@ open class DrawView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) :
             // draw icons
             if (isShowIcons) {
                 val rotation = calcRotation(x4, y4, x3, y3)
-                for (i in 0 until iconList.size) {
-                    val icon = iconList[i]
+                val selectedDraw = handlingDraw ?: return
+                for (icon in iconList) {
                     when (icon.positionDefault) {
                         DrawKey.TOP_LEFT -> setupMatrix(icon, x1, y1, rotation)
                         DrawKey.RIGHT_TOP -> setupMatrix(icon, x2, y2, rotation)
                         DrawKey.LEFT_BOTTOM -> setupMatrix(icon, x3, y3, rotation)
                         DrawKey.RIGHT_BOTTOM -> setupMatrix(icon, x4, y4, rotation)
                     }
-                    if (icon.positionDefault == DrawKey.LEFT_BOTTOM) {
-                        if (handlingDraw!!.isText) {
 
-                        }
-                    } else if (icon.positionDefault == DrawKey.RIGHT_TOP) {
-                        if (!handlingDraw!!.isCharacter) {
-                            icon.draw(canvas, borderPaint,context)
-                        }
-                    } else {
-                        icon.draw(canvas, borderPaint,context)
+                    if (isIconVisible(icon, selectedDraw)) {
+                        icon.draw(canvas, borderPaint, context)
                     }
                 }
             }
+        }
+    }
+
+    private fun isIconVisible(icon: BitmapDrawIcon, draw: DrawableDraw): Boolean {
+        return when (icon.event) {
+            is EditEvent -> draw.isText
+            is DeleteEvent -> !draw.isCharacter
+            is FlipEvent -> true
+            else -> true
         }
     }
 
@@ -845,16 +847,27 @@ open class DrawView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) :
     }
 
     private fun targetCurrentDraw(): BitmapDrawIcon? {
+        val selectedDraw = handlingDraw ?: return null
+        if (!isShowIcons) return null
+
+        var nearestIcon: BitmapDrawIcon? = null
+        var nearestDistance = Float.MAX_VALUE
+
+        // Small draws can make adjacent icon touch areas overlap. In that case,
+        // choose the icon whose centre is closest to the finger.
         for (icon in iconList) {
+            if (!isIconVisible(icon, selectedDraw)) continue
+
             val x = icon.x - downX
             val y = icon.y - downY
             val distance = x * x + y * y
             val r = icon.radius * 2
-            if (distance <= r * r) {
-                return icon
+            if (distance <= r * r && distance < nearestDistance) {
+                nearestIcon = icon
+                nearestDistance = distance
             }
         }
-        return null
+        return nearestIcon
     }
 
     private fun targetHandlingDraw(): DrawableDraw? {
@@ -1001,7 +1014,7 @@ open class DrawView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) :
 
     private fun setupDefaultIcons() {
         val deleteIcon = BitmapDrawIcon(
-            ContextCompat.getDrawable(context, R.drawable.ic_close), DrawKey.RIGHT_TOP
+            ContextCompat.getDrawable(context, R.drawable.ic_close), DrawKey.LEFT_BOTTOM
         )
         deleteIcon.event = DeleteEvent()
         val zoomIcon = BitmapDrawIcon(
@@ -1009,11 +1022,11 @@ open class DrawView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) :
         )
         zoomIcon.event = ZoomEvent()
         val flipIcon = BitmapDrawIcon(
-            ContextCompat.getDrawable(context, R.drawable.ic_flip_add), DrawKey.TOP_LEFT
+            ContextCompat.getDrawable(context, R.drawable.ic_flip_add), DrawKey.RIGHT_TOP
         )
         flipIcon.event = FlipEvent()
         val editIcon = BitmapDrawIcon(
-            ContextCompat.getDrawable(context, R.drawable.ic_close), DrawKey.LEFT_BOTTOM
+            ContextCompat.getDrawable(context, R.drawable.ic_edit), DrawKey.TOP_LEFT
         )
         editIcon.event = EditEvent()
         iconList.clear()

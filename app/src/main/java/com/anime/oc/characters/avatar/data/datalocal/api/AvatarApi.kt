@@ -16,7 +16,7 @@ import javax.inject.Singleton
 object ApiConfig {
     const val BASE_URL_1   = "https://lvtglobal.tech/"
     const val BASE_URL_2   = "https://lvt-api-tech.io.vn/"
-    const val BASE_CONNECT = "public/app/ST279_AnimeOCMaker/"
+    const val BASE_CONNECT = "public/app/ST267_CoupleCreatorsDressUp2/"
 
     var BASE_URL = BASE_URL_1
 }
@@ -40,7 +40,7 @@ data class X10(
 }
 // ── SERVICE ───────────────────────────────────────────────────────────────────
 interface AvatarApiService {
-    @GET("api/app/ST279_AnimeOCMaker")
+    @GET("api/app/ST267_CoupleCreatorsDressUp2")
     suspend fun getAllData(): Map<String, List<X10>>
 }
 // ── MAPPER ────────────────────────────────────────────────────────────────────
@@ -66,16 +66,24 @@ object ApiTemplateMapper {
                             listPath = colors,
                             listThumbPath = listThumbPath,
                             position = x,
-                            zIndex = y
+                            zIndex = y,
+                            charType = parts.getOrNull(2)
+                                ?.toIntOrNull()
+                                ?.takeIf { it == 1 || it == 2 }
+                                ?: 1
                         )
                     }
-                val minZIndex = bodyParts.minOfOrNull { it.zIndex } ?: Int.MAX_VALUE
+                val minZIndexByCharacter = bodyParts
+                    .groupBy { it.charType }
+                    .mapValues { (_, parts) ->
+                        parts.minOfOrNull { it.zIndex } ?: Int.MAX_VALUE
+                    }
                 bodyParts.forEach { bp ->
-                    bp.listPath.forEach { cm ->
-                        if (cm.listPath.isEmpty()) return@forEach  // guard
+                    bp.listPath.forEach colorLoop@ { cm ->
+                        if (cm.listPath.isEmpty()) return@colorLoop
                         when {
-                            bp.zIndex == minZIndex -> {
-                                // Body chính: chỉ dice
+                            bp.zIndex == minZIndexByCharacter[bp.charType] -> {
+                                // Mỗi nhân vật có một body chính riêng: chỉ dice.
                                 if (cm.listPath.first() != "dice") cm.listPath.add(0, "dice")
                             }
                             else -> {
