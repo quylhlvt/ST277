@@ -202,42 +202,39 @@
             android:layout_marginEnd="@dimen/dimension_16"
             android:visibility="gone"
             app:cardBackgroundColor="@color/app_color2"
-            app:cardCornerRadius="@dimen/dimension_10"
+            app:cardCornerRadius="@dimen/dimension_16"
             app:layout_constraintBottom_toBottomOf="@+id/btnActionBarRight"
-            app:layout_constraintDimensionRatio="0.64:0.36"
+            app:layout_constraintDimensionRatio="0.53:0.44"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/btnActionBarRight"
-            app:strokeColor="@color/app_color"
-            app:strokeWidth="@dimen/dimension_2">
+            app:strokeColor="@color/black"
+            app:strokeWidth="@dimen/dimension_1">
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginHorizontal="@dimen/dimension_2"
-
-                android:layout_marginTop="@dimen/dimension_2"
-                android:layout_marginBottom="@dimen/dimension_5"
-                app:cardBackgroundColor="@color/app_color8"
-                app:cardCornerRadius="@dimen/dimension_8"
+                android:layout_margin="@dimen/dimension_4"
+                app:cardBackgroundColor="@color/app_color4"
+                app:cardCornerRadius="@dimen/dimension_12"
                 app:strokeWidth="@dimen/dimension_0">
 
                 <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/forground_next">
+                    android:layout_height="match_parent">
 
                     <TextView
                         android:id="@+id/tvRightText"
                         style="@style/single_marquee"
                         android:layout_width="match_parent"
+                        android:layout_marginHorizontal="@dimen/dimension_1"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
-                        android:fontFamily="@font/pacifico_regular"
+                        android:fontFamily="@font/schoolbell_regular"
                         android:foreground="@drawable/forground_next"
                         android:gravity="center"
                         android:text="@string/next"
-                        android:textColor="@color/app_color"
-                        android:textSize="@dimen/dimension_16" />
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_16" />
                 </FrameLayout>
 
             </com.google.android.material.card.MaterialCardView>

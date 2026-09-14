@@ -114,8 +114,6 @@ class CustomizeActivity : BaseActivity<ActivityCustomizeBinding, CustomizeViewMo
         }
         binding.actionBar.apply {
             setImageActionBar(btnActionBarLeft, R.drawable.back_app)
-            setImageActionBar(btnActionBarCenter2, R.drawable.ic_reset_all_custom)
-            setImageActionBar(btnActionBarCenter, R.drawable.ic_flip_all_custom)
             setMaterialCardViewActionBar1(
                 btnActionBarRightText,
                 tvRightText,
@@ -359,10 +357,10 @@ class CustomizeActivity : BaseActivity<ActivityCustomizeBinding, CustomizeViewMo
                     )
                 }
             }
-            actionBar.btnActionBarCenter.setOnClickListener {
+            imgFlip.setOnClickListener {
                 viewModel.toggleFlip()
             }
-            actionBar.btnActionBarCenter2.setOnClickListener {
+            imgReset.setOnClickListener {
                 showConfirmDialog(
                     title = getString(R.string.reset),
                     message = getString(R.string.do_you_want_to_reset_all),
