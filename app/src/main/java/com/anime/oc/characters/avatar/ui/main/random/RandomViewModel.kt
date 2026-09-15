@@ -31,7 +31,10 @@ class RandomViewModel @Inject constructor(
     val randomItem: StateFlow<RandomItem?> = _randomItem.asStateFlow()
     private var _cachedBitmap: Bitmap? = null
     val cachedBitmap get() = _cachedBitmap
+    private var _cachedGeneration: Long? = null
+    val cachedGeneration get() = _cachedGeneration
     private var randomizeJob: Job? = null
+    @Volatile
     private var generationCounter = 0L
 
     init {
@@ -52,11 +55,16 @@ class RandomViewModel @Inject constructor(
         val resolvedPaths: List<String?>,
         val generation   : Long
     )
-    fun setCachedBitmap(bmp: Bitmap) { _cachedBitmap = bmp }
+    fun setCachedBitmap(bmp: Bitmap, generation: Long) {
+        _cachedBitmap = bmp
+        _cachedGeneration = generation
+    }
+    fun isCurrentGeneration(generation: Long): Boolean = generationCounter == generation
     override fun onCleared() {
         super.onCleared()
         randomizeJob?.cancel()
         _cachedBitmap = null
+        _cachedGeneration = null
     }
 
     /**
@@ -72,6 +80,7 @@ class RandomViewModel @Inject constructor(
         if (candidates.isEmpty()) return false
 
         _cachedBitmap = null
+        _cachedGeneration = null
         randomizeJob?.cancel()
         val generation = ++generationCounter
         randomizeJob = viewModelScope.launch(Dispatchers.Default) {
@@ -85,6 +94,10 @@ class RandomViewModel @Inject constructor(
                 next = createRandomItem(allTemplates, candidates.random(), generation)
                 attempt++
             }
+
+            // Cancellation alone is not enough because the generation work has
+            // no suspension point. Never let an older job publish after a newer one.
+            if (!isCurrentGeneration(generation)) return@launch
 
             // generation makes StateFlow emit even when the data set only has
             // one possible character and a different result cannot be created.
@@ -124,7 +137,7 @@ class RandomViewModel @Inject constructor(
         })
     }
 
-    /** Resolve layers in drawing order while keeping selections in source order. */
+    /** Resolve layers in the same drawing order used by Customize/Show. */
     private fun resolvePaths(
         template: CustomModel,
         selections: List<SelectionIndex>
@@ -138,9 +151,13 @@ class RandomViewModel @Inject constructor(
                 ?.takeIf { it.isRenderablePath() }
                 ?: return@mapIndexedNotNull null
 
-            ResolvedLayer(bodyPart.zIndex, bodyPartIndex, path)
+            ResolvedLayer(bodyPart.position, bodyPart.zIndex, bodyPartIndex, path)
         }
-            .sortedWith(compareBy<ResolvedLayer> { it.zIndex }.thenBy { it.sourceIndex })
+            .sortedWith(
+                compareBy<ResolvedLayer> { it.position }
+                    .thenBy { it.zIndex }
+                    .thenBy { it.sourceIndex }
+            )
             .map { it.path }
     }
 
@@ -162,6 +179,7 @@ class RandomViewModel @Inject constructor(
     }
 
     private data class ResolvedLayer(
+        val position: Int,
         val zIndex: Int,
         val sourceIndex: Int,
         val path: String

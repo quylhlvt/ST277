@@ -26,12 +26,16 @@ import com.anime.oc.characters.avatar.ui.main.show.ShowActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -46,16 +50,48 @@ class CosplayActivity : BaseActivity<ActivityCosplayBinding, CosplayViewModel>(
     companion object {
         const val EXTRA_START_CHALLENGE = "start_challenge"
         private const val STATE_START_CHALLENGE = "pending_challenge"
+        private const val MISSING_LAYER_RETRY_DELAY_MS = 700L
+        private const val NETWORK_RECHECK_DELAY_MS = 500L
     }
     private var startChallengeWhenReady = false
+    private var randomRequestPending = false
+
+    private fun hasUsableNetwork(): Boolean {
+        return isNetworkConnected(this@CosplayActivity) &&
+            isInternetAvailable(this@CosplayActivity)
+    }
+
+    private fun requestRandomCharacter(isOnline: Boolean): Boolean {
+        if (randomRequestPending) return true
+
+        val started = viewModel.randomize(isOnline = isOnline)
+        if (!started) {
+            val currentItem = viewModel.randomItem.value
+            setControlsEnabled(
+                canShow = currentItem?.let(::cachedBitmapFor) != null,
+                canRandom = true
+            )
+            if (isOnline) showLoadingDataDialog() else showUnstableNetworkDialog()
+            return false
+        }
+
+        randomRequestPending = true
+        renderJob?.cancel()
+        renderJob = null
+        showLoading()
+        return true
+    }
 
     private fun startChallenge() {
         val item = viewModel.randomItem.value ?: return
-        val bitmap = viewModel.cachedBitmap ?: return
-        if (bitmap.isRecycled || checkOnlineNetworkOrShowDialog(item.templateIndex)) return
+        val bitmap = cachedBitmapFor(item) ?: return
+        if (bitmap.isRecycled || checkOnlineNetworkOrShowDialog(item.template.id)) return
         startChallengeWhenReady = false
         appSession.cosplayBitmap = bitmap
-        openActivity(ShowActivity::class.java, ShowActivity.newArgshow(item.templateIndex, item.selections))
+        openActivity(
+            ShowActivity::class.java,
+            ShowActivity.newArgshow(item.templateIndex, item.selections, item.template.id)
+        )
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -63,13 +99,8 @@ class CosplayActivity : BaseActivity<ActivityCosplayBinding, CosplayViewModel>(
         super.onSaveInstanceState(outState)
     }
 
-    private fun isOnlineTemplate(templateIndex: Int): Boolean {
-        return appSession.templates.value.getOrNull(templateIndex)
-            ?.id?.startsWith("online_") == true
-    }
-
-    private fun checkOnlineNetworkOrShowDialog(templateIndex: Int): Boolean {
-        if (!isOnlineTemplate(templateIndex)) return false
+    private fun checkOnlineNetworkOrShowDialog(templateId: String): Boolean {
+        if (!templateId.startsWith("online_")) return false
         return when {
             !InternetExtension.isInternetAvailable(this@CosplayActivity) -> {
                 showUnstableNetworkDialog(); true
@@ -111,30 +142,7 @@ class CosplayActivity : BaseActivity<ActivityCosplayBinding, CosplayViewModel>(
         setShowButtonEnabled(false)
         binding.txtRandom.isSelected = true
         binding.txtShow.isSelected = true
-        val space = SpannableString(" ")
-        val parts = listOf(
-            changeText(this@CosplayActivity, getString(R.string.tvCosplay1), R.color.app_color2, R.font.pacifico_regular),
-            space,
-            changeText(this@CosplayActivity, getString(R.string.tvCosplay2), R.color.app_color2, R.font.pacifico_regular),
-            space,
-            changeText(this@CosplayActivity, getString(R.string.tvCosplay3), R.color.app_color2, R.font.pacifico_regular),
-            space,
-            changeText(this@CosplayActivity, getString(R.string.tvCosplay4), R.color.app_color2, R.font.pacifico_regular),
-            space,
-            changeText(this@CosplayActivity, getString(R.string.tvCosplay5), R.color.app_color2, R.font.pacifico_regular),
-            space,
-            changeText(this@CosplayActivity, getString(R.string.tvCosplay6), R.color.app_color2, R.font.pacifico_regular),
-            space,
-            changeText(this@CosplayActivity, getString(R.string.tvCosplay7), R.color.app_color2, R.font.pacifico_regular),
-            space,
-            changeText(this@CosplayActivity, getString(R.string.tvCosplay8), R.color.app_color2, R.font.pacifico_regular),
-        )
 
-        // ✅ Dùng SpannableStringBuilder thay vì TextUtils.concat
-        val builder = android.text.SpannableStringBuilder()
-        parts.forEach { builder.append(it) }
-
-        binding.txtGuile.setText(builder, TextView.BufferType.SPANNABLE)
         // Chỉ randomize lần đầu, nếu chưa có item nào
 //        if (viewModel.randomItem.value == null) {
 //            viewModel.randomize()
@@ -143,7 +151,7 @@ class CosplayActivity : BaseActivity<ActivityCosplayBinding, CosplayViewModel>(
 
     private fun ActivityCosplayBinding.setupActionBar() {
         actionBar.apply {
-            tvCenter.select()
+//            tvCenter.select()
             setImageActionBar(btnActionBarLeft, R.drawable.back_app)
             setImageActionBar(btnActionBarRight, R.drawable.guid)
 //            setTextActionBar(tvCenter, getString(R.string.cosplay))
@@ -156,13 +164,7 @@ class CosplayActivity : BaseActivity<ActivityCosplayBinding, CosplayViewModel>(
             actionBar.btnActionBarLeft.onClick { finish() }
 
             random.onClick {
-                val isOnline = isNetworkConnected(this@CosplayActivity) && isInternetAvailable(
-                    this@CosplayActivity
-                )
-                val currentIndex = viewModel.randomItem.value?.templateIndex ?: -1
-                if (currentIndex >= 0 && checkOnlineNetworkOrShowDialog(currentIndex)) return@onClick
-                showLoading()
-                viewModel.randomize(isOnline = isOnline)
+                requestRandomCharacter(isOnline = hasUsableNetwork())
             }
             actionBar.btnActionBarRight.onClick {
                 showGuide.visible()
@@ -173,14 +175,15 @@ class CosplayActivity : BaseActivity<ActivityCosplayBinding, CosplayViewModel>(
             show.onClick {
                 if (!show.isEnabled) return@onClick
                 val item = viewModel.randomItem.value ?: return@onClick
-                if (checkOnlineNetworkOrShowDialog(item.templateIndex)) return@onClick
-                val cached = viewModel.cachedBitmap
-                if (cached != null && !cached.isRecycled) {
+                if (checkOnlineNetworkOrShowDialog(item.template.id)) return@onClick
+                val cached = cachedBitmapFor(item)
+                if (cached != null) {
                     appSession.cosplayBitmap = cached
                 }
                 val args = ShowActivity.newArgshow(
                     templateIndex = item.templateIndex,
-                    targetSelections = item.selections
+                    targetSelections = item.selections,
+                    templateId = item.template.id
                 )
                 openActivity(ShowActivity::class.java, args)
             }
@@ -191,24 +194,36 @@ class CosplayActivity : BaseActivity<ActivityCosplayBinding, CosplayViewModel>(
         this@CosplayActivity.lifecycleScope.launch {
             viewModel.isDataReady.collect { ready ->
                 if (ready && viewModel.randomItem.value == null) {
-                    val isOnline =
-                        isNetworkConnected(this@CosplayActivity) && isInternetAvailable(this@CosplayActivity)
-                    viewModel.randomize(isOnline = isOnline)
+                    requestRandomCharacter(isOnline = hasUsableNetwork())
                 }
             }
         }
         this@CosplayActivity.lifecycleScope.launch {
             viewModel.randomItem.collectLatest { item ->
                 item ?: return@collectLatest
+                randomRequestPending = false
 
                 // ✅ Nếu đã có cache bitmap thì không render lại
-                val cached = viewModel.cachedBitmap
-                if (cached != null && !cached.isRecycled) {
+                val cached = cachedBitmapFor(item)
+                if (cached != null) {
                     showBitmap(cached)
                     return@collectLatest
                 }
 
                 renderCharacter(item)
+            }
+        }
+        this@CosplayActivity.lifecycleScope.launch {
+            appSession.networkOnline.collectLatest { online ->
+                if (online &&
+                    viewModel.isDataReady.value &&
+                    viewModel.randomItem.value == null &&
+                    !randomRequestPending
+                ) {
+                    // If the screen was opened offline and no item could be
+                    // selected, start automatically as soon as network returns.
+                    requestRandomCharacter(isOnline = true)
+                }
             }
         }
     }
@@ -218,16 +233,23 @@ class CosplayActivity : BaseActivity<ActivityCosplayBinding, CosplayViewModel>(
         if (intent.getBooleanExtra(EXTRA_START_CHALLENGE, false)) {
             intent.removeExtra(EXTRA_START_CHALLENGE)
             startChallengeWhenReady = true
-            showLoading()
-            viewModel.randomize()
+            if (!requestRandomCharacter(isOnline = hasUsableNetwork())) {
+                startChallengeWhenReady = false
+            }
             return
         }
         // ✅ Guard: chỉ access viewModel khi fragment đã attach xong
         if (isFinishing || isDestroyed) return
 
-        val cached = viewModel.cachedBitmap
-        if (cached != null && !cached.isRecycled) {
+        val cached = viewModel.randomItem.value?.let(::cachedBitmapFor)
+        if (cached != null) {
             showBitmap(cached)
+        }
+    }
+
+    private fun cachedBitmapFor(item: CosplayViewModel.RandomItem): Bitmap? {
+        return viewModel.cachedBitmap?.takeIf {
+            viewModel.cachedGeneration == item.generation && !it.isRecycled
         }
     }
 
@@ -240,46 +262,78 @@ class CosplayActivity : BaseActivity<ActivityCosplayBinding, CosplayViewModel>(
             showLoading()
 
             var networkDialogShown = false
-            var waitingForNetwork = false
-            var bitmaps: List<Bitmap> = emptyList()
-            while (isActive) {
-                val loaded = withContext(Dispatchers.IO) {
-                    paths.map { path ->
-                        async {
-                            runCatching {
-                                Glide.with(this@CosplayActivity).asBitmap().load(path)
-                                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                                    .override(512).submit().get()
-                            }.getOrNull()
-                        }
-                    }.awaitAll()
-                }
-                bitmaps = loaded.filterNotNull()
-                if (bitmaps.size == paths.size) break
+            val loadedBitmaps = MutableList<Bitmap?>(paths.size) { null }
 
-                val hasNetwork = InternetExtension.isNetworkConnected(this@CosplayActivity) &&
-                        InternetExtension.isInternetAvailable(this@CosplayActivity)
-                if (!hasNetwork) {
-                    waitingForNetwork = true
+            while (isActive &&
+                viewModel.isCurrentGeneration(item.generation) &&
+                viewModel.randomItem.value == item
+            ) {
+                val missingIndices = loadedBitmaps.indices.filter { loadedBitmaps[it] == null }
+                if (missingIndices.isEmpty()) break
+
+                val loaded = withContext(Dispatchers.IO) {
+                    coroutineScope {
+                        missingIndices.map { index ->
+                            async {
+                                val bitmap = try {
+                                    Glide.with(this@CosplayActivity).asBitmap().load(paths[index])
+                                        .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                                        .override(512).submit().get()
+                                } catch (error: CancellationException) {
+                                    throw error
+                                } catch (_: Exception) {
+                                    null
+                                }
+                                index to bitmap
+                            }
+                        }.awaitAll()
+                    }
+                }
+                loaded.forEach { (index, bitmap) ->
+                    if (bitmap != null) loadedBitmaps[index] = bitmap
+                }
+                if (loadedBitmaps.all { it != null }) break
+
+                if (!hasUsableNetwork()) {
                     if (!networkDialogShown) {
                         showUnstableNetworkDialog()
                         networkDialogShown = true
                     }
-                    delay(200)
-                    continue
+
+                    // Keep the same selections and all successfully loaded
+                    // layers. Resume only the missing paths when network returns.
+                    while (isActive &&
+                        viewModel.isCurrentGeneration(item.generation) &&
+                        viewModel.randomItem.value == item &&
+                        !hasUsableNetwork()
+                    ) {
+                        appSession.networkOnline.filter { it }.first()
+                        if (!hasUsableNetwork()) delay(NETWORK_RECHECK_DELAY_MS)
+                    }
+                } else {
+                    delay(MISSING_LAYER_RETRY_DELAY_MS)
                 }
-                if (waitingForNetwork) {
-                    viewModel.randomize(isOnline = true)
-                    return@launch
-                }
-                delay(200)
             }
-            if (!isActive || bitmaps.size != paths.size) return@launch
+
+            if (!isActive ||
+                !viewModel.isCurrentGeneration(item.generation) ||
+                viewModel.randomItem.value != item
+            ) return@launch
+
+            val bitmaps = loadedBitmaps.map { it ?: return@launch }
 
             val merged = mergeBitmaps(bitmaps)
 
+            if (!isActive ||
+                !viewModel.isCurrentGeneration(item.generation) ||
+                viewModel.randomItem.value != item
+            ) {
+                merged.recycle()
+                return@launch
+            }
+
             // ✅ Lưu vào cache
-            viewModel.setCachedBitmap(merged)
+            viewModel.setCachedBitmap(merged, item.generation)
 
             withContext(Dispatchers.Main) {
                 showBitmap(merged)
@@ -312,12 +366,16 @@ class CosplayActivity : BaseActivity<ActivityCosplayBinding, CosplayViewModel>(
     }
 
     private fun setShowButtonEnabled(enabled: Boolean) {
-        binding.show.isEnabled = enabled
-        binding.show.isClickable = enabled
-        binding.show.alpha = if (enabled) 1f else 0.5f
-        binding.random.isEnabled = enabled
-        binding.random.isClickable = enabled
-        binding.random.alpha = if (enabled) 1f else 0.5f
+        setControlsEnabled(canShow = enabled, canRandom = enabled)
+    }
+
+    private fun setControlsEnabled(canShow: Boolean, canRandom: Boolean) {
+        binding.show.isEnabled = canShow
+        binding.show.isClickable = canShow
+        binding.show.alpha = if (canShow) 1f else 0.5f
+        binding.random.isEnabled = canRandom
+        binding.random.isClickable = canRandom
+        binding.random.alpha = if (canRandom) 1f else 0.5f
     }
 
     private fun mergeBitmaps(bitmaps: List<Bitmap>): Bitmap {

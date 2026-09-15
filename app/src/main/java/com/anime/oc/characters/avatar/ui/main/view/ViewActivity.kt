@@ -82,18 +82,12 @@ class ViewActivity : BaseActivity<ActivityViewBinding, ViewViewModel>(
         binding.actionBar.root.isEnabled = true
         binding.actionBar.btnActionBarLeft.isEnabled = true
         binding.actionBar.btnActionBarLeft.isClickable = true
-        binding.actionBar.btnActionBarNextToRight.isEnabled = true
-        binding.actionBar.btnActionBarNextToRight.isClickable = true
+        binding.actionBar.btnActionBarRight2.isEnabled = true
+        binding.actionBar.btnActionBarRight2.isClickable = true
+        binding.actionBar.btnActionBarRight1.isEnabled = true
+        binding.actionBar.btnActionBarRight1.isClickable = true
         binding.actionBar.btnActionBarRight.isEnabled = true
         binding.actionBar.btnActionBarRight.isClickable = true
-        binding.btnBottomLeft.isEnabled = true
-        binding.btnBottomLeft.isClickable = true
-        binding.btnBottomRight.isEnabled = true
-        binding.btnBottomRight.isClickable = true
-        binding.btnBottomLeftSocial.isEnabled = true
-        binding.btnBottomLeftSocial.isClickable = true
-        binding.btnBottomRightSocial.isEnabled = true
-        binding.btnBottomRightSocial.isClickable = true
         binding.root.requestLayout()
         binding.root.invalidate()
     }
@@ -112,24 +106,15 @@ class ViewActivity : BaseActivity<ActivityViewBinding, ViewViewModel>(
         binding.apply {
             setImageActionBar(actionBar.btnActionBarLeft, R.drawable.back_app)
             loadImage(this@ViewActivity, imagePath, imvImage)
-            txtRight.isSelected = true
-            txtLeft.isSelected = true
-            txtLeftSocial.isSelected = true
-            txtRightSocial.isSelected = true
-
+            setImageActionBar(actionBar.btnActionBarRight2, R.drawable.ic_delete_all)
+            setImageActionBar(actionBar.btnActionBarRight1, R.drawable.ic_share_all)
+            setImageActionBar(actionBar.btnActionBarRight, R.drawable.ic_download_all)
             when (imageType) {
                 1 -> {
-                    txtLeft.text = getString(R.string.share)
-                    setImageActionBar(actionBar.btnActionBarRight, R.drawable.ic_delete)
-                    setImageActionBar(actionBar.btnActionBarNextToRight, R.drawable.ic_edit1)
-                    txtRight.apply { visible(); text = getString(R.string.download) }
-                    txtLeft.visible()
+                    btnEdit.visible()
                 }
                 2 -> {
-                    txtLeft.text = getString(R.string.share)
-                    setImageActionBar(actionBar.btnActionBarRight, R.drawable.ic_delete)
-                    txtRight.apply { visible(); text = getString(R.string.download) }
-                    txtLeft.visible()
+                    btnEdit.gone()
                 }
             }
         }
@@ -141,34 +126,16 @@ class ViewActivity : BaseActivity<ActivityViewBinding, ViewViewModel>(
 
             when (imageType) {
                 1 -> {
-                    actionBar.btnActionBarRight.onClick1 { confirmDelete() }
-                    actionBar.btnActionBarNextToRight.onClick1 {
-                        navigateToEdit()
-                    }
-                    btnBottomLeft.onClick(1500) { shareImage() }
-                    btnBottomRight.onClick1 { downloadImage() }
-                    btnBottomLeftSocial.onClick1 {
-                        logSocialShareEvent("facebook")
-                        shareToSocialApp(SocialShareManager.SocialApp.FACEBOOK)
-                    }
-                    btnBottomRightSocial.onClick1 {
-                        logSocialShareEvent("instagram")
-                        shareToSocialApp(SocialShareManager.SocialApp.INSTAGRAM)
-                    }
+                    actionBar.btnActionBarRight2.onClick1 { confirmDelete() }
+                    actionBar.btnActionBarRight1.onClick(1500) { shareImage() }
+                    actionBar.btnActionBarRight.onClick1 { downloadImage() }
+                    btnEdit.onClick1 { navigateToEdit() }
                 }
 
                 2 -> {
-                    actionBar.btnActionBarRight.onClick1 { confirmDelete() }
-                    btnBottomLeft.onClick(1500) { shareImage() }
-                    btnBottomRight.onClick1 { downloadImage() }
-                    btnBottomLeftSocial.onClick1 {
-                        logSocialShareEvent("facebook")
-                        shareToSocialApp(SocialShareManager.SocialApp.FACEBOOK)
-                    }
-                    btnBottomRightSocial.onClick1 {
-                        logSocialShareEvent("instagram")
-                        shareToSocialApp(SocialShareManager.SocialApp.INSTAGRAM)
-                    }
+                    actionBar.btnActionBarRight2.onClick1 { confirmDelete() }
+                    actionBar.btnActionBarRight1.onClick(1500) { shareImage() }
+                    actionBar.btnActionBarRight.onClick1 { downloadImage() }
                 }
             }
         }

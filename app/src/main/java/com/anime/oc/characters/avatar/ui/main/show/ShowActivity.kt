@@ -1,22 +1,21 @@
 package com.anime.oc.characters.avatar.ui.main.show
 
-import android.animation.ValueAnimator
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.DecelerateInterpolator
 import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
-import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.anime.oc.characters.avatar.MyApplication
 import com.anime.oc.characters.avatar.R
 import com.anime.oc.characters.avatar.core.base.BaseActivity
 import com.anime.oc.characters.avatar.core.extention.InternetExtension
@@ -56,23 +55,28 @@ class ShowActivity : BaseActivity<ActivityShowBinding, ShowViewModel>(
     private val layerViews = arrayListOf<AppCompatImageView>()
     private val navToLayerIndex = mutableMapOf<String, Int>()
     private val arrShowColor = mutableListOf<Boolean>()
+    private var visibleNavIndices = emptyList<Int>()
 
     private val adapterNav by lazy { NavAdapter() }
     private val adapterColor by lazy { ColorAdapter() }
     private val adapterPart by lazy { PartAdapter() }
 
     private val pendingLoads = AtomicInteger(0)
+    private var renderGeneration = 0L
     private var timerJob: Job? = null
-    private var starAnimator: ValueAnimator? = null
-    private val totalSeconds = 10 * 60
+    private var countDownJob: Job? = null
+    private val totalSeconds = 1 * 60
     private var remainingSeconds = totalSeconds
 
     private var remainingSecondsOnPause: Int = totalSeconds
     private var hasNavigatedToSuccess = false
     private var scrollPartAfterRandom = false
-
+    private var scrollAfterGenderChange = false
     // ── INFLATE ───────────────────────────────────────────────────────────────
     private fun isOnlineTemplate(): Boolean {
+        val templateId = intent.extras?.getString(ARG_TEMPLATE_ID)
+        if (templateId != null) return templateId.startsWith("online_")
+
         val templateIndex = intent.extras?.getInt(ARG_TEMPLATE_INDEX, 0) ?: 0
         return appSession.templates.value
             .getOrNull(templateIndex)?.id?.startsWith("online_") == true
@@ -94,10 +98,13 @@ class ShowActivity : BaseActivity<ActivityShowBinding, ShowViewModel>(
 
     override fun initView() {
 
+        // Mỗi lần mở một ván Show (kể cả Chơi lại) phải bắt đầu điểm từ 0,
+        // không lấy lại phần trăm/kết quả của ván trước.
+        appSession.cosplayPercent = 0
+        appSession.userResultBitmap = null
+
         binding.apply {
-            txtTittle.isSelected = true
-            txtNextDialog.isSelected = true
-            txtNext.isSelected = true
+
             actionBar.apply {
                 setImageActionBar(cvLogo, R.drawable.back_app)
 //            setImageActionBar(btnActionBarRight, R.drawable.next_app)
@@ -107,8 +114,7 @@ class ShowActivity : BaseActivity<ActivityShowBinding, ShowViewModel>(
 
         setupAdapters()
         readArgsAndInit()
-        updateCompletionDialog(isComplete = false)
-        binding.showWin.gone()
+
         startCountDown()
 
         val bitmap = appSession.cosplayBitmap
@@ -139,7 +145,7 @@ class ShowActivity : BaseActivity<ActivityShowBinding, ShowViewModel>(
                 updateTimerUI(minutes, seconds)
 
                 if (remainingSeconds == 0) {
-                    showFailLayout()
+                    navigateToSuccess()
                     break
                 }
 
@@ -148,12 +154,9 @@ class ShowActivity : BaseActivity<ActivityShowBinding, ShowViewModel>(
             }
         }
     }
-    // Thêm hàm showFailLayout
-    private fun showFailLayout() {
-        if (isFinishing || isDestroyed) return
-        showResultDialog(isComplete = false)
-    }
+
     private fun startCountDown() {
+        countDownJob?.cancel()
         binding.actionBar.cvLogo.isEnabled = false
         binding.actionBar.btnActionBarRight.isEnabled = false
         val colors = listOf(
@@ -164,7 +167,7 @@ class ShowActivity : BaseActivity<ActivityShowBinding, ShowViewModel>(
 
         binding.countDown.visibility = View.VISIBLE
 
-        this@ShowActivity.lifecycleScope.launch {
+        countDownJob = this@ShowActivity.lifecycleScope.launch {
             for (count in 3 downTo 1) {
                 val colorIndex = 3 - count
                 binding.tvCountDown.setTextColor(colors[colorIndex])
@@ -210,23 +213,45 @@ class ShowActivity : BaseActivity<ActivityShowBinding, ShowViewModel>(
         }
     }
     private fun readArgsAndInit() {
-        val templateIndex = intent.extras?.getInt(ARG_TEMPLATE_INDEX, 0) ?: 0
+        val fallbackIndex = intent.extras?.getInt(ARG_TEMPLATE_INDEX, 0) ?: 0
+        val templateId = intent.extras?.getString(ARG_TEMPLATE_ID)
+        val templateIndex = templateId?.let { id ->
+            appSession.templates.value.indexOfFirst { it.id == id }.takeIf { it >= 0 }
+        } ?: fallbackIndex
         val targetSelections: ArrayList<SelectionIndex> =
             intent.extras?.getParcelableArrayList(ARG_SELECTIONS) ?: return
 
-        viewModel.init(templateIndex, targetSelections)
+        viewModel.init(templateIndex, targetSelections, templateId)
     }
 
     private fun setupAdapters() {
-        binding.rcvNav.adapter = adapterNav
-        binding.rcvColor.adapter = adapterColor
-        binding.rcvPart.adapter = adapterPart
+        binding.rcvNav.apply {
+            adapter = adapterNav
+            itemAnimator = null
+            setHasFixedSize(true)
+            setItemViewCacheSize(8)
+        }
+        binding.rcvColor.apply {
+            adapter = adapterColor
+            itemAnimator = null
+            setHasFixedSize(true)
+            setItemViewCacheSize(8)
+        }
+        binding.rcvPart.apply {
+            adapter = adapterPart
+            itemAnimator = null
+            setHasFixedSize(true)
+            setItemViewCacheSize(10)
+            (layoutManager as? GridLayoutManager)?.spanCount =
+                if (MyApplication.isTablet) 7 else 5
+        }
     }
     private fun navigateToSuccess() {
         if (isFinishing || isDestroyed) return
         if (hasNavigatedToSuccess) return
         hasNavigatedToSuccess = true
         timerJob?.cancel()
+        countDownJob?.cancel()
 
         // Nếu vẫn còn đang load ảnh → đợi
         if (pendingLoads.get() > 0) {
@@ -243,11 +268,25 @@ class ShowActivity : BaseActivity<ActivityShowBinding, ShowViewModel>(
 
     private fun doNavigateToSuccess() {
         if (isFinishing || isDestroyed) return
-        val bitmap = renderLayersToBitmap()
-        if (bitmap != null) appSession.userResultBitmap = bitmap
-        appSession.cosplayPercent = viewModel.state.value.matchPercent
-            openActivity(SuccessCosplayActivity::class.java)
 
+        val bitmap = renderLayersToBitmap()
+        // Luôn ghi đè kết quả phiên hiện tại, tránh giữ lại ảnh người chơi cũ.
+        appSession.userResultBitmap = bitmap
+
+        appSession.cosplayPercent = viewModel.state.value.matchPercent
+
+        val successIntent = Intent(
+            this@ShowActivity,
+            SuccessCosplayActivity::class.java
+        ).apply {
+            // Truyền toàn bộ dữ liệu của ShowActivity sang Success
+            intent.extras?.let { putExtras(it) }
+        }
+
+        startActivity(successIntent)
+
+        // Xóa màn Show cũ
+        finish()
     }
     private fun renderLayersToBitmap(): Bitmap? {
         val root = binding.rlCharacter
@@ -257,11 +296,8 @@ class ShowActivity : BaseActivity<ActivityShowBinding, ShowViewModel>(
         layerViews.forEach { iv ->
             if (iv.visibility != View.VISIBLE) return@forEach
             val drawable = iv.drawable ?: return@forEach
-            canvas.save()
-            if (iv.scaleX < 0) canvas.scale(-1f, 1f, root.width / 2f, 0f)
             drawable.setBounds(0, 0, root.width, root.height)
             drawable.draw(canvas)
-            canvas.restore()
         }
         return bitmap
     }
@@ -279,47 +315,47 @@ class ShowActivity : BaseActivity<ActivityShowBinding, ShowViewModel>(
                 imgShowBig.visible()
             }
             close.onClick { imgShowBig.gone() }
-            frameNextDialog.onClick { navigateToSuccess() }
 
-            // ── Color toggle ──────────────────────────────────────────────────────
-            imgChangColor.onClick {
-                if (checkOnlineNetworkOrShowDialog()) return@onClick              // ← guard
-                val navPos = viewModel.state.value.currentNavIndex
-                if (!viewModel.state.value.hasMultipleColors) return@onClick
-                if (llColor.isVisible) {
-                    if (navPos < arrShowColor.size) arrShowColor[navPos] = false
-                    llColor.animate().alpha(0f).setDuration(200).withEndAction {
-                        llColor.visibility = View.INVISIBLE
-                    }.start()
-                } else {
-                    if (navPos < arrShowColor.size) arrShowColor[navPos] = true
-                    llColor.visibility = View.VISIBLE
-                    llColor.alpha = 0f
-                    llColor.animate().alpha(1f).setDuration(200).start()
+            gender.onClick {
+                if (!checkOnlineNetworkOrShowDialog()) {
+                    scrollAfterGenderChange = true
+                    viewModel.toggleCharacter()
                 }
             }
         }
 
         // ── Nav ───────────────────────────────────────────────────────────────────
-        adapterNav.onClick = {
-            if (!checkOnlineNetworkOrShowDialog()) viewModel.selectNav(it)       // ← guard
+        adapterNav.onClick = { index ->
+            if (!checkOnlineNetworkOrShowDialog()) {
+                adapterNav.setPos(index)
+                visibleNavIndices.getOrNull(index)?.let(viewModel::selectNav)
+            }
         }
 
         // ── Color ─────────────────────────────────────────────────────────────────
-        adapterColor.onClick = {
-            if (!checkOnlineNetworkOrShowDialog()) viewModel.selectColor(it)     // ← guard
+        adapterColor.onClick = { index ->
+            if (!checkOnlineNetworkOrShowDialog()) {
+                adapterColor.setPos(index)
+                viewModel.selectColor(index)
+            }
         }
 
         // ── Part ──────────────────────────────────────────────────────────────────
         adapterPart.onClick = { idx, type ->
             if (!checkOnlineNetworkOrShowDialog()) {                              // ← guard
                 when (type) {
-                    "none" -> viewModel.selectNone()
+                    "none" -> {
+                        adapterPart.setPos(idx)
+                        viewModel.selectNone()
+                    }
                     "dice" -> {
                         scrollPartAfterRandom = true
                         viewModel.selectDiceCurrent()
                     }
-                    else   -> viewModel.selectPath(idx)
+                    else -> {
+                        adapterPart.setPos(idx)
+                        viewModel.selectPath(idx)
+                    }
                 }
             }
         }
@@ -331,34 +367,6 @@ class ShowActivity : BaseActivity<ActivityShowBinding, ShowViewModel>(
     // ✅ FIX — thêm flag giống CustomizeActivity
     private var hasTriggeredReInit = false
 
-    private fun updateCompletionDialog(isComplete: Boolean) {
-        binding.apply {
-
-            imgAvatarDialog.setImageResource(
-                if (isComplete) R.drawable.avatar_win else R.drawable.avatar_lost
-            )
-            bgTiltleDialog.setImageResource(
-                if (isComplete) R.drawable.bg_tittle_win else R.drawable.bg_tittle_lost
-            )
-            txtNextDialog.setText(
-                if (isComplete) R.string.cosplay_complete else R.string.not_matched
-            )
-            txtTittle.setText(
-                if (isComplete) R.string.victory else R.string.you_lose
-            )
-        }
-    }
-
-    private fun showResultDialog(isComplete: Boolean) {
-        timerJob?.cancel()
-        updateCompletionDialog(isComplete)
-        binding.showWin.visible()
-    }
-
-    private fun showWinLayout() {
-        if (isFinishing || isDestroyed) return
-        showResultDialog(isComplete = true)
-    }
     override fun observeData() {
 
         this@ShowActivity.lifecycleScope.launch {
@@ -378,15 +386,9 @@ class ShowActivity : BaseActivity<ActivityShowBinding, ShowViewModel>(
                     }
                     renderLayers(state)
                     updateAdapters(state)
-                    val scale = if (state.isFlipped) -1f else 1f
-                    layerViews.forEach { it.scaleX = scale }
                     updateMatchUI(state.matchPercent)
                     if (state.matchPercent >= 100) {
-                        timerJob?.cancel()
-                        if (!isFinishing && !isDestroyed) {
-//                            navigateToSuccess()
-                            showWinLayout()
-                        }
+                        navigateToSuccess()
                     }
                 }
             }
@@ -417,6 +419,7 @@ class ShowActivity : BaseActivity<ActivityShowBinding, ShowViewModel>(
     // ── RENDER LAYERS (giống CustomizeActivity.renderLayers) ─────────────────
 
     private fun renderLayers(state: ShowState) {
+        val generation = ++renderGeneration
         val pathsToLoad = state.listData.mapIndexedNotNull { i, bp ->
             val path = viewModel.resolveUserPathAt(i)
             val layerIndex = navToLayerIndex[bp.nav] ?: return@mapIndexedNotNull null
@@ -430,11 +433,15 @@ class ShowActivity : BaseActivity<ActivityShowBinding, ShowViewModel>(
                 }
                 return@mapIndexedNotNull null
             }
-            if (view.tag == path && view.visibility == View.VISIBLE) return@mapIndexedNotNull null
+            if (view.tag == path &&
+                view.visibility == View.VISIBLE &&
+                view.drawable != null
+            ) return@mapIndexedNotNull null
             Triple(view, path, layerIndex)
         }
 
         if (pathsToLoad.isEmpty()) {
+            pendingLoads.set(0)
             viewModel.onLoadingComplete()
             return
         }
@@ -444,12 +451,11 @@ class ShowActivity : BaseActivity<ActivityShowBinding, ShowViewModel>(
         pathsToLoad.forEach { (view, path, _) ->
             view.tag = path
             view.visibility = View.VISIBLE
-            view.scaleX = if (viewModel.state.value.isFlipped) -1f else 1f
-            loadImageIntoView(view, path)
+            loadImageIntoView(view, path, generation)
         }
     }
 
-    private fun loadImageIntoView(view: ImageView, path: String) {
+    private fun loadImageIntoView(view: ImageView, path: String, generation: Long) {
         Glide.with(binding.rlCharacter)
             .load(path)
             .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
@@ -462,7 +468,7 @@ class ShowActivity : BaseActivity<ActivityShowBinding, ShowViewModel>(
                     e: GlideException?, model: Any?,
                     target: Target<Drawable>?, isFirstResource: Boolean
                 ): Boolean {
-                    onLoadFinished(); return false
+                    onLoadFinished(generation); return false
                 }
 
                 override fun onResourceReady(
@@ -470,13 +476,14 @@ class ShowActivity : BaseActivity<ActivityShowBinding, ShowViewModel>(
                     target: Target<Drawable>?, dataSource: DataSource?,
                     isFirstResource: Boolean
                 ): Boolean {
-                    onLoadFinished(); return false
+                    onLoadFinished(generation); return false
                 }
             })
             .into(view)
     }
 
-    private fun onLoadFinished() {
+    private fun onLoadFinished(generation: Long) {
+        if (generation != renderGeneration) return
         if (pendingLoads.decrementAndGet() <= 0) {
             pendingLoads.set(0)
             binding.root.post { viewModel.onLoadingComplete() }
@@ -486,11 +493,38 @@ class ShowActivity : BaseActivity<ActivityShowBinding, ShowViewModel>(
     // ── ADAPTERS (giống CustomizeActivity.updateAdapters) ────────────────────
 
     private fun updateAdapters(state: ShowState) {
-        adapterNav.setPos(state.currentNavIndex)
-        adapterNav.submitList(state.listData)
-//        binding.imgChangColor.isVisible = state.hasMultipleColors
+        visibleNavIndices = state.listData.withIndex()
+            .filter { it.value.charType == state.activeCharacter }
+            .map { it.index }
+        val visibleNavItems = visibleNavIndices.mapNotNull { state.listData.getOrNull(it) }
+        val visibleNavPosition = visibleNavIndices.indexOf(state.currentNavIndex)
+            .takeIf { it >= 0 } ?: 0
 
-        adapterColor.setPos(state.currentColorIndex)
+        val canSwitchCharacter = state.listData.any { it.charType == 1 } &&
+            state.listData.any { it.charType == 2 }
+        binding.gender.setImageResource(
+            if (state.activeCharacter == 2) R.drawable.img_gender2
+            else R.drawable.img_gender1
+        )
+        binding.gender.isEnabled = canSwitchCharacter
+        binding.gender.alpha = if (canSwitchCharacter) 1f else 0.4f
+
+        if (adapterNav.items != visibleNavItems) {
+            adapterNav.submitList(visibleNavItems)
+        }
+//        adapterNav.setPos(visibleNavPosition.coerceIn(0, maxOf(0, visibleNavItems.lastIndex)))
+        val safeNavPosition = visibleNavPosition.coerceIn(
+            0,
+            maxOf(0, visibleNavItems.lastIndex)
+        )
+
+        adapterNav.setPos(safeNavPosition)
+
+        val safeColorPosition = state.currentColorIndex.coerceIn(
+            0,
+            maxOf(0, state.currentColors.lastIndex)
+        )
+        adapterColor.setPos(safeColorPosition)
 
         // Khởi tạo arrShowColor
         if (arrShowColor.size != state.listData.size) {
@@ -501,36 +535,103 @@ class ShowActivity : BaseActivity<ActivityShowBinding, ShowViewModel>(
         val navPos = state.currentNavIndex
 
         if (state.hasMultipleColors) {
-//            binding.imgChangColor.visible()
-            adapterColor.submitList(state.currentColors)
-            if (navPos < arrShowColor.size && arrShowColor[navPos]) {
-                binding.llColor.animate().alpha(1f).setDuration(150).withStartAction {
-                    binding.llColor.visibility = View.VISIBLE
-                    binding.imgChangColor.visibility = View.VISIBLE
-                }.start()
-            } else {
-//                binding.imgChangColor.invisible()
-                binding.llColor.animate().alpha(0f).setDuration(150).withEndAction {
-                    binding.llColor.visibility = View.GONE
-                }.start()
+            if (adapterColor.items != state.currentColors) {
+                adapterColor.submitList(state.currentColors)
             }
+            updateColorSectionVisibility(
+                showColors = true,
+                expanded = navPos < arrShowColor.size && arrShowColor[navPos]
+            )
         } else {
-            binding.llColor.animate().alpha(0f).setDuration(150).withEndAction {
-                binding.llColor.visibility = View.GONE
-                binding.imgChangColor.visibility = View.GONE
-            }.start()
+            updateColorSectionVisibility(showColors = false, expanded = false)
         }
 
         val bp = state.listData.getOrNull(state.currentNavIndex)
         val thumb = buildThumbList(bp, state.currentPaths)
+
+        val safePartPosition = state.currentPathIndex.coerceIn(
+            0,
+            maxOf(0, state.currentPaths.lastIndex)
+        )
+
+        adapterPart.setPos(safePartPosition)
+
+        val partContentChanged =
+            adapterPart.items != state.currentPaths ||
+                    adapterPart.listThumb != thumb
+
         adapterPart.listThumb = thumb
-        adapterPart.setPos(state.currentPathIndex)
-        adapterPart.submitList(state.currentPaths)
+
+        if (partContentChanged) {
+            adapterPart.submitList(state.currentPaths)
+        }
+
+// Random dice
         if (scrollPartAfterRandom) {
             scrollPartAfterRandom = false
+
             binding.rcvPart.post {
-                binding.rcvPart.scrollToPosition(state.currentPathIndex.coerceAtLeast(0))
+                ensurePositionVisible(
+                    binding.rcvPart,
+                    safePartPosition
+                )
             }
+
+        }
+
+// Khi bấm gender → scroll cả NAV + PART
+        if (scrollAfterGenderChange) {
+            scrollAfterGenderChange = false
+
+            binding.rcvNav.post {
+                ensurePositionVisible(
+                    binding.rcvNav,
+                    safeNavPosition
+                )
+            }
+
+            binding.rcvPart.post {
+                ensurePositionVisible(
+                    binding.rcvPart,
+                    safePartPosition
+                )
+            }
+
+            binding.rcvColor.post {
+                ensurePositionVisible(
+                    binding.rcvColor,
+                    safeColorPosition
+                )
+            }
+        }
+    }
+
+    private fun ensurePositionVisible(recyclerView: RecyclerView, position: Int) {
+        if (position < 0) return
+        recyclerView.post {
+            if (isFinishing || isDestroyed) return@post
+            if (recyclerView.layoutManager?.findViewByPosition(position) == null) {
+                recyclerView.scrollToPosition(position)
+            }
+        }
+    }
+
+    private fun updateColorSectionVisibility(showColors: Boolean, expanded: Boolean) {
+        val showPanel = showColors && expanded
+        if (showPanel &&
+            (binding.llColor.visibility != View.VISIBLE || binding.llColor.alpha != 1f)
+        ) {
+            binding.llColor.animate().cancel()
+            if (binding.llColor.visibility != View.VISIBLE) {
+                binding.llColor.visibility = View.VISIBLE
+                binding.llColor.alpha = 0f
+            }
+            binding.llColor.animate().alpha(1f).setDuration(150).start()
+        } else if (!showPanel && binding.llColor.visibility == View.VISIBLE) {
+            binding.llColor.animate().cancel()
+            binding.llColor.animate().alpha(0f).setDuration(150).withEndAction {
+                binding.llColor.visibility = View.GONE
+            }.start()
         }
     }
 
@@ -549,7 +650,6 @@ class ShowActivity : BaseActivity<ActivityShowBinding, ShowViewModel>(
     // ── PROGRESS (giống ShowActivity.updateMatchUI) ───────────────────────────
 
     private fun updateMatchUI(percent: Int) {
-        val safePercent = percent.coerceIn(0, 100)
         val starCount = when (percent) {
             0 -> 0
             in 1..20 -> 1
@@ -560,58 +660,10 @@ class ShowActivity : BaseActivity<ActivityShowBinding, ShowViewModel>(
             else -> 0
         }
 
-        binding.ll1.rating = starCount.toFloat()
 
-        // 0% = bias 1 (bottom), 100% = bias 0 (top).
-        val targetBias = 1f - safePercent / 100f
-        val currentBias =
-            (binding.imgStar.layoutParams as ConstraintLayout.LayoutParams).verticalBias
-
-        starAnimator?.cancel()
-        starAnimator = ValueAnimator.ofFloat(currentBias, targetBias).apply {
-            duration = 400L
-            interpolator = DecelerateInterpolator()
-            addUpdateListener { animator ->
-                binding.imgStar.updateLayoutParams<ConstraintLayout.LayoutParams> {
-                    verticalBias = animator.animatedValue as Float
-                }
-            }
-            start()
-        }
-        binding.tvPercent.text = "$percent%"
-//
-//        // Animate progress fill (scaleY từ 0→1 theo %)
-//        binding.progressTrack.post {
-//            val trackH = binding.progressTrack.height.toFloat()
-//            val marginPx = 10 * resources.displayMetrics.density
-//            val fillH = trackH - marginPx
-//            val scale = percent / 100f
-//
-//            binding.progressFill.pivotX = binding.progressFill.width / 2f
-//            binding.progressFill.pivotY = fillH
-
-//            ObjectAnimator.ofFloat(
-//                binding.progressFill, "scaleY",
-//                binding.progressFill.scaleY,
-//                scale * fillH / trackH
-//            ).apply {
-//                duration = 400
-//                interpolator = DecelerateInterpolator()
-//                start()
-//            }
-//
-//            // Star icon chạy theo thanh progress
-//            val starH = binding.imgStar.height.toFloat()
-//            ObjectAnimator.ofFloat(
-//                binding.imgStar, "translationY",
-//                binding.imgStar.translationY,
-//                -(fillH * scale) - marginPx + starH / 2f
-//            ).apply {
-//                duration = 400
-//                interpolator = DecelerateInterpolator()
-//                start()
-//            }
-//        }
+        val percentText = "$percent%"
+        binding.tvPercent.text = percentText
+        binding.txtPercent2.text = percentText
     }
     // onPause — lưu remainingSeconds thực tế
     override fun onPause() {
@@ -649,15 +701,12 @@ class ShowActivity : BaseActivity<ActivityShowBinding, ShowViewModel>(
             buildLayerViews(currentState.listData)
             renderLayers(currentState)
             updateAdapters(currentState)
-            val scale = if (currentState.isFlipped) -1f else 1f
-            layerViews.forEach { it.scaleX = scale }
         }
     }
     override fun onDestroy() {
-        starAnimator?.cancel()
-        starAnimator = null
         super.onDestroy()
         timerJob?.cancel()
+        countDownJob?.cancel()
     }
     override fun bindViewModel() {}
 
@@ -665,13 +714,16 @@ class ShowActivity : BaseActivity<ActivityShowBinding, ShowViewModel>(
 
     companion object {
         const val ARG_TEMPLATE_INDEX = "template_index"
+        const val ARG_TEMPLATE_ID = "template_id"
         const val ARG_SELECTIONS = "selections"
 
         fun newArgshow(
             templateIndex: Int,
-            targetSelections: ArrayList<SelectionIndex>
+            targetSelections: ArrayList<SelectionIndex>,
+            templateId: String? = null
         ) = Bundle().apply {
             putInt(ARG_TEMPLATE_INDEX, templateIndex)
+            templateId?.let { putString(ARG_TEMPLATE_ID, it) }
             putParcelableArrayList(ARG_SELECTIONS, targetSelections)
         }
     }

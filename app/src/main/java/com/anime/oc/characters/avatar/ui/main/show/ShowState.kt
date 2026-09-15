@@ -12,10 +12,12 @@ data class ShowState(
     val targetSelections: List<SelectionIndex> = emptyList(),
     /** Selections user đang chỉnh — giống CustomizeState.selections */
     val userSelections  : List<SelectionIndex> = emptyList(),
-    val currentNavIndex : Int     = 0,
-    val isFlipped       : Boolean = false,
-    val isLoading       : Boolean = true,
-    val matchPercent    : Int     = 0
+    val currentNavIndex     : Int     = 0,
+    val currentNavIndexChar1: Int     = 0,
+    val currentNavIndexChar2: Int     = 0,
+    val activeCharacter    : Int     = 1,
+    val isLoading          : Boolean = true,
+    val matchPercent       : Int     = 0
 ) {
     val currentColors: List<ColorModel>
         get() = listData.getOrNull(currentNavIndex)?.listPath ?: emptyList()

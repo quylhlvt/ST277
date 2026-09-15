@@ -1,27 +1,47 @@
 package com.anime.oc.characters.avatar.ui.main.successcosplay
 
-import android.animation.ValueAnimator
+import android.Manifest
+import android.content.Intent
+import android.graphics.Bitmap
+import android.os.Build
 import android.os.Bundle
-import android.view.animation.DecelerateInterpolator
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.updateLayoutParams
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import com.anime.oc.characters.avatar.R
 import com.anime.oc.characters.avatar.core.base.BaseActivity
-import com.anime.oc.characters.avatar.core.extention.InternetExtension.isInternetAvailable
+import com.anime.oc.characters.avatar.core.extention.checkPermissions
+import com.anime.oc.characters.avatar.core.extention.goToSettings
 import com.anime.oc.characters.avatar.core.extention.onClick
-import com.anime.oc.characters.avatar.core.extention.select
 import com.anime.oc.characters.avatar.core.extention.setImageActionBar
-import com.anime.oc.characters.avatar.core.extention.setTextActionBar
 import com.anime.oc.characters.avatar.databinding.ActivitySuccessCosplayBinding
-import com.anime.oc.characters.avatar.ui.main.cosplay.CosplayActivity
 import com.anime.oc.characters.avatar.ui.main.home.HomeActivity
+import com.anime.oc.characters.avatar.ui.main.show.ShowActivity
+import com.anime.oc.characters.avatar.ui.onboarding.permission.PermissionViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlin.math.roundToInt
+import java.io.File
+import java.io.FileOutputStream
 
 @AndroidEntryPoint
-class SuccessCosplayActivity : BaseActivity<ActivitySuccessCosplayBinding, SuccessCosplayViewModel>( ActivitySuccessCosplayBinding::inflate, SuccessCosplayViewModel::class.java) {
-    private var starAnimator: ValueAnimator? = null
+class SuccessCosplayActivity : BaseActivity<ActivitySuccessCosplayBinding, SuccessCosplayViewModel>(
+    ActivitySuccessCosplayBinding::inflate,
+    SuccessCosplayViewModel::class.java
+) {
+    private val permissionViewModel: PermissionViewModel by viewModels()
+    private var resultImagePath: String = ""
+
+    private val downloadPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+            if (permissions.entries.all { it.value }) {
+                permissionViewModel.onStorageGranted()
+                performDownload()
+            } else {
+                permissionViewModel.onStorageDenied()
+                showToast(getString(R.string.download_failed_please_try_again_later))
+            }
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupBackPressHandler()
@@ -37,116 +57,105 @@ class SuccessCosplayActivity : BaseActivity<ActivitySuccessCosplayBinding, Succe
             }
         )
     }
+    private fun replayShow() {
+        val replayIntent = Intent(
+            this@SuccessCosplayActivity,
+            ShowActivity::class.java
+        ).apply {
+            // Lấy lại template + selections đã được truyền từ Show
+            intent.extras?.let { putExtras(it) }
+        }
 
+        startActivity(replayIntent)
+        finish()
+    }
     override fun initView() {
         binding.apply {
+            setImageActionBar(actionBar.btnActionBarLeft, R.drawable.back_app1)
+            setImageActionBar(actionBar.btnActionBarRight, R.drawable.ic_home)
+            txtDownload.isSelected = true
 
-            txtShow.isSelected = true
-            setupActionBar()
-            val userBitmap = appSession.userResultBitmap
-            if (userBitmap != null && !userBitmap.isRecycled) {
-                imvImage2.setImageBitmap(userBitmap)
+            val resultBitmap = appSession.userResultBitmap
+                ?.takeUnless { it.isRecycled }
+            resultBitmap?.let {
+                imvImage.setImageBitmap(it)
+                resultImagePath = persistResultBitmap(it)
             }
 
-            // imvImage3 = ảnh cosplay gốc
-            val cosplayBitmap = appSession.cosplayBitmap
-            if (cosplayBitmap != null && !cosplayBitmap.isRecycled) {
-                imvImage3.setImageBitmap(cosplayBitmap)
-            }
-
-            val percent = appSession.cosplayPercent
-            val starCount = when (percent) {
-                0 -> 0
-                in 1..20 -> 1
-                in 21..40 -> 2
-                in 41..70 -> 3
-                in 71..98 -> 4
-                in 99..100 -> 5
-                else -> 0
-            }
-            binding.ll1.rating = starCount.toFloat()
-            updateProgressBar(percent)
+            updateOccupancy(appSession.cosplayPercent)
         }
     }
-    private fun updateProgressBar(percent: Int) {
+
+    private fun updateOccupancy(percent: Int) {
         val safePercent = percent.coerceIn(0, 100)
-        val targetBias = safePercent / 100f
-
-        binding.layoutProgress.post {
-            if (isFinishing || isDestroyed) return@post
-
-            val currentBias =
-                (binding.imgStar.layoutParams as ConstraintLayout.LayoutParams)
-                    .horizontalBias
-                    .coerceIn(0f, 1f)
-
-            starAnimator?.cancel()
-            starAnimator = ValueAnimator.ofFloat(currentBias, targetBias).apply {
-                duration = 400L
-                interpolator = DecelerateInterpolator()
-                addUpdateListener { animator ->
-                    val animatedBias = animator.animatedValue as Float
-
-                    binding.imgStar.updateLayoutParams<ConstraintLayout.LayoutParams> {
-                        horizontalBias = animatedBias
-                    }
-                    binding.tvMatchPercent.updateLayoutParams<ConstraintLayout.LayoutParams> {
-                        endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
-                        horizontalBias = animatedBias
-                    }
-                    val animatedPercent = (animatedBias * 100)
-                        .roundToInt()
-                        .coerceIn(0, safePercent)
-                    binding.tvMatchPercent.text = "$animatedPercent/100"
-                }
-                start()
-            }
+        val occupiedCount = when (safePercent) {
+            0 -> 0
+            in 1..33 -> 1
+            in 34..66 -> 2
+            else -> 3
         }
-    }
+        val indicators = listOf(binding.occupy1, binding.occupy2, binding.occupy3)
 
-    override fun onDestroy() {
-        starAnimator?.cancel()
-        starAnimator = null
-        super.onDestroy()
-    }
-    private fun ActivitySuccessCosplayBinding.setupActionBar() {
-        actionBar.apply {
-            tvCenter.select()
-            setImageActionBar(
-                btnActionBarRight,
-                R.drawable.ic_home
+        indicators.forEachIndexed { index, indicator ->
+            indicator.setImageResource(
+                if (index < occupiedCount) R.drawable.img_occupy
+                else R.drawable.img_unoccupy
             )
-//            setTextActionBar(tvCenter, getString(R.string.successfully))
         }
     }
 
     override fun viewListener() {
+
         binding.apply {
-            setupActionBarListeners()
-            setupNavigationListeners()
-        }
-    }
-
-    private fun ActivitySuccessCosplayBinding.setupActionBarListeners() {
-        actionBar.btnActionBarRight.onClick {
-                openActivity(HomeActivity::class.java, clearTop = true)
-
-        }
-    }
-
-    private fun ActivitySuccessCosplayBinding.setupNavigationListeners() {
-        btnTryAgain.onClick {
-            if (!isInternetAvailable(this@SuccessCosplayActivity)) {
-                showUnstableNetworkDialog(); return@onClick
+            actionBar.btnActionBarLeft.onClick {
+                replayShow()
             }
-            openActivity(CosplayActivity::class.java, Bundle().apply {
-                putBoolean(CosplayActivity.EXTRA_START_CHALLENGE, true)
-            }, clearTop = true)
-
+            actionBar.btnActionBarRight.onClick {
+                openActivity(HomeActivity::class.java, clearTop = true)
+            }
+            btnDownload.onClick { downloadImage() }
         }
     }
 
-    override fun observeData() {}
+    private fun persistResultBitmap(bitmap: Bitmap): String {
+        val file = File(filesDir, "cosplay_result.png")
+        runCatching {
+            FileOutputStream(file).use { bitmap.compress(Bitmap.CompressFormat.PNG, 100, it) }
+        }.onFailure { return "" }
+        return file.absolutePath
+    }
 
-    override fun bindViewModel() {}
+    private fun downloadImage() {
+        if (resultImagePath.isBlank()) {
+            showToast(getString(R.string.download_failed_please_try_again_later))
+            return
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            performDownload()
+            return
+        }
+        val permission = Manifest.permission.WRITE_EXTERNAL_STORAGE
+        when {
+            checkPermissions(arrayOf(permission)) -> performDownload()
+            permissionViewModel.shouldGoToSettings(isStorage = true) -> goToSettings()
+            else -> downloadPermissionLauncher.launch(arrayOf(permission))
+        }
+    }
+
+    private fun performDownload() {
+        viewModel.downloadFile(this@SuccessCosplayActivity, resultImagePath) { success ->
+            showToast(
+                if (success) getString(R.string.download_success, getString(R.string.app_name))
+                else getString(R.string.download_failed_please_try_again_later)
+            )
+        }
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this@SuccessCosplayActivity, message, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun observeData() = Unit
+
+    override fun bindViewModel() = Unit
 }

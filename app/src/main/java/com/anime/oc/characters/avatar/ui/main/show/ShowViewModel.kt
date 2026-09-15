@@ -3,6 +3,7 @@ package com.anime.oc.characters.avatar.ui.main.show
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.anime.oc.characters.avatar.data.datalocal.manager.AppDataManager
+import com.anime.oc.characters.avatar.data.model.custom.BodyPartModel
 import com.anime.oc.characters.avatar.data.model.custom.SelectionIndex
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -35,34 +36,48 @@ class ShowViewModel @Inject constructor(
      * [templateIndex]   : index template random từ CosplayViewModel
      * [targetSelections]: selections random từ CosplayViewModel (đáp án)
      */
-    fun init(templateIndex: Int, targetSelections: ArrayList<SelectionIndex>) {
+    fun init(
+        templateIndex: Int,
+        targetSelections: ArrayList<SelectionIndex>,
+        templateId: String? = null
+    ) {
 
         if (_state.value.listData.isNotEmpty()) return  // safe với process death
 
 
-        val template = appDataManager.getCharacterByIndex(templateIndex) ?: return
-        val sorted   = template.listPath.sortedBy { it.zIndex }
+        val template = templateId?.let(appDataManager::getTemplateById)
+            ?: appDataManager.getTemplateByIndex(templateIndex)
+            ?: return
+        val indexedSorted = template.listPath.withIndex()
+            .sortedWith(compareBy<IndexedValue<BodyPartModel>> { it.value.zIndex }.thenBy { it.index })
+        val sorted = indexedSorted.map { it.value }
 
         // Remap targetSelections từ unsorted sang sorted (giống CustomizeViewModel.initWithSelections)
-        val remapped = sorted.mapIndexed { sortedIdx, bp ->
-            val originalIdx = template.listPath.indexOf(bp)
+        val remapped = indexedSorted.mapIndexed { sortedIdx, indexedBodyPart ->
+            val originalIdx = indexedBodyPart.index
             val sel = targetSelections.getOrElse(originalIdx) { SelectionIndex(originalIdx, 0, 0) }
             SelectionIndex(sortedIdx, sel.colorIndex, sel.pathIndex)
         }
 
         // User bắt đầu với default (index 0) — giống "tạo nhân vật mới"
-        val userDefault = sorted.mapIndexed { i, _ ->
-            if (i == 0) SelectionIndex(i, 0, 1) else SelectionIndex(i, 0, 0)
-        }
+        val userDefault = buildDefaultSelections(sorted)
+        val navChar1 = firstNavIndexForChar(sorted, 1)
+        val navChar2 = firstNavIndexForChar(sorted, 2)
+        val activeCharacter = firstCharacterType(sorted)
 
         _state.value = ShowState(
             template         = template,
             listData         = sorted,
             targetSelections = remapped,
             userSelections   = userDefault,
-            currentNavIndex  = 0,
+            currentNavIndex  = if (activeCharacter == 2) navChar2 else navChar1,
+            currentNavIndexChar1 = navChar1,
+            currentNavIndexChar2 = navChar2,
+            activeCharacter  = activeCharacter,
             isLoading        = true,
-            matchPercent     = calcPercent(sorted.size, remapped, userDefault)
+            // Người chơi luôn bắt đầu ván mới ở 0%; điểm chỉ tăng sau khi
+            // thực hiện lựa chọn trong màn Show.
+            matchPercent     = 0
         )
     }
 
@@ -70,9 +85,32 @@ class ShowViewModel @Inject constructor(
 
     // ── USER INTERACTIONS (giống CustomizeViewModel) ──────────────────────────
 
-    fun selectNav(navIndex: Int) = _state.update { it.copy(currentNavIndex = navIndex) }
+    fun selectNav(navIndex: Int) {
+        _state.update { state ->
+            val safeNav = clampNavIndex(state.listData, state.activeCharacter, navIndex)
+            when (state.activeCharacter) {
+                2 -> state.copy(currentNavIndex = safeNav, currentNavIndexChar2 = safeNav)
+                else -> state.copy(currentNavIndex = safeNav, currentNavIndexChar1 = safeNav)
+            }
+        }
+    }
 
-    fun toggleFlip() = _state.update { it.copy(isFlipped = !it.isFlipped) }
+    fun toggleCharacter() {
+        _state.update { state ->
+            val nextCharacter = if (state.activeCharacter == 1) 2 else 1
+            if (state.listData.none { it.charType == nextCharacter }) return@update state
+
+            val storedNav = if (nextCharacter == 1) {
+                state.currentNavIndexChar1
+            } else {
+                state.currentNavIndexChar2
+            }
+            state.copy(
+                activeCharacter = nextCharacter,
+                currentNavIndex = clampNavIndex(state.listData, nextCharacter, storedNav)
+            )
+        }
+    }
 
     fun selectColor(colorIndex: Int) {
         updateUserSelection { state, old ->
@@ -112,18 +150,9 @@ class ShowViewModel @Inject constructor(
             val pathIdx  = if (paths.size > start) (start until paths.size).random() else start
             SelectionIndex(i, colorIdx, pathIdx)
         }
-        val percent = calcPercent(state.listData.size, state.targetSelections, newSel)
+        val percent = calculateMatchPercent(state.listData, state.targetSelections, newSel)
         _state.update { it.copy(userSelections = newSel, matchPercent = percent) }
         checkComplete(percent)
-    }
-
-    fun resetAll() {
-        val state   = _state.value
-        val newSel  = state.listData.mapIndexed { i, _ ->
-            if (i == 0) SelectionIndex(i, 0, 1) else SelectionIndex(i, 0, 0)
-        }
-        val percent = calcPercent(state.listData.size, state.targetSelections, newSel)
-        _state.update { it.copy(userSelections = newSel, matchPercent = percent) }
     }
 
     // ── PATH RESOLUTION ───────────────────────────────────────────────────────
@@ -148,24 +177,6 @@ class ShowViewModel @Inject constructor(
 
     // ── HELPERS ───────────────────────────────────────────────────────────────
 
-    /**
-     * Tính % nav khớp: mỗi nav đúng cả colorIndex lẫn pathIndex = 100/total
-     * Kết quả trả về Int 0..100
-     */
-    private fun calcPercent(
-        total : Int,
-        target: List<SelectionIndex>,
-        user  : List<SelectionIndex>
-    ): Int {
-        if (total == 0) return 0
-        val matched = (0 until total).count { i ->
-            val t = target.getOrNull(i) ?: return@count false
-            val u = user.getOrNull(i)   ?: return@count false
-            t.colorIndex == u.colorIndex && t.pathIndex == u.pathIndex
-        }
-        return (matched * 100f / total).roundToInt()
-    }
-
     private fun checkComplete(percent: Int) {
         if (percent >= 100) {
             viewModelScope.launch { _onComplete.emit(Unit) }
@@ -176,6 +187,33 @@ class ShowViewModel @Inject constructor(
         paths.firstOrNull() == "none" -> 2
         paths.firstOrNull() == "dice" -> 1
         else -> 0
+    }
+
+    private fun buildDefaultSelections(parts: List<BodyPartModel>): List<SelectionIndex> =
+        parts.mapIndexed { index, bodyPart ->
+            val firstIndexForCharacter = parts.indexOfFirst {
+                it.charType == bodyPart.charType
+            }
+            if (index == firstIndexForCharacter) SelectionIndex(index, 0, 1)
+            else SelectionIndex(index, 0, 0)
+        }
+
+    private fun firstCharacterType(parts: List<BodyPartModel>): Int = when {
+        parts.any { it.charType == 1 } -> 1
+        parts.any { it.charType == 2 } -> 2
+        else -> 1
+    }
+
+    private fun firstNavIndexForChar(parts: List<BodyPartModel>, charType: Int): Int =
+        parts.indexOfFirst { it.charType == charType }.takeIf { it >= 0 } ?: 0
+
+    private fun clampNavIndex(
+        parts: List<BodyPartModel>,
+        charType: Int,
+        navIndex: Int
+    ): Int {
+        if (parts.getOrNull(navIndex)?.charType == charType) return navIndex
+        return firstNavIndexForChar(parts, charType)
     }
 
     private fun updateUserSelection(
@@ -191,7 +229,7 @@ class ShowViewModel @Inject constructor(
                 while (updated.size < navIdx) updated.add(SelectionIndex(updated.size, 0, 0))
                 updated.add(new)
             }
-            val percent = calcPercent(state.listData.size, state.targetSelections, updated)
+            val percent = calculateMatchPercent(state.listData, state.targetSelections, updated)
             state.copy(userSelections = updated, matchPercent = percent)
         }
         checkComplete(_state.value.matchPercent)
@@ -200,4 +238,42 @@ class ShowViewModel @Inject constructor(
     fun reset() {
         _state.value = ShowState()
     }
+}
+
+/**
+ * Chấm item và màu độc lập để người chơi nhận được điểm ngay khi đúng từng phần.
+ * "dice" là một hành động random, không phải lựa chọn có thể giữ lại nên không
+ * được đưa vào mẫu số. Các target hỏng/thiếu cũng được bỏ qua để 100% luôn đạt được.
+ */
+internal fun calculateMatchPercent(
+    parts: List<BodyPartModel>,
+    target: List<SelectionIndex>,
+    user: List<SelectionIndex>
+): Int {
+    var matchedChoices = 0
+    var totalChoices = 0
+
+    parts.forEachIndexed { index, bodyPart ->
+        val targetSelection = target.getOrNull(index) ?: return@forEachIndexed
+        val userSelection = user.getOrNull(index)
+        val targetColor = bodyPart.listPath.getOrNull(targetSelection.colorIndex)
+
+        if (bodyPart.listPath.size > 1 && targetColor != null) {
+            totalChoices++
+            if (userSelection?.colorIndex == targetSelection.colorIndex) {
+                matchedChoices++
+            }
+        }
+
+        val targetPath = targetColor?.listPath?.getOrNull(targetSelection.pathIndex)
+        if (targetPath != null && targetPath != "dice") {
+            totalChoices++
+            if (userSelection?.pathIndex == targetSelection.pathIndex) {
+                matchedChoices++
+            }
+        }
+    }
+
+    if (totalChoices == 0) return 0
+    return (matchedChoices * 100f / totalChoices).roundToInt().coerceIn(0, 100)
 }

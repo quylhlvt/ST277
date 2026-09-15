@@ -84,12 +84,11 @@ class SuccessActivity : BaseActivity<ActivitySuccessBinding, SuccessViewModel>(
         binding.actionBar.btnActionBarRight1.isClickable = true
         binding.actionBar.btnActionBarRight.isEnabled = true
         binding.actionBar.btnActionBarRight.isClickable = true
-        binding.btnLang.isEnabled = true
-        binding.btnLang.isClickable = true
+        binding.btnDownload.isEnabled = true
+        binding.btnDownload.isClickable = true
         binding.root.requestLayout()
         binding.root.invalidate()
     }
-
     private fun restoreWindowInteractions() {
         this@SuccessActivity.window.clearFlags(
             WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE or
@@ -97,14 +96,10 @@ class SuccessActivity : BaseActivity<ActivitySuccessBinding, SuccessViewModel>(
         )
         this@SuccessActivity.window.decorView.isEnabled = true
     }
-
     override fun initView() {
-
         currentImagePath = imagePath
         binding.apply {
             loadImage(this@SuccessActivity, imagePath, imvImage)
-
-
             setImageActionBar(actionBar.btnActionBarLeft, R.drawable.back_app1)
             setImageActionBar(actionBar.btnActionBarRight2, R.drawable.ic_home)
             setImageActionBar(actionBar.btnActionBarRight1, R.drawable.ic_mycreation)
@@ -112,30 +107,25 @@ class SuccessActivity : BaseActivity<ActivitySuccessBinding, SuccessViewModel>(
             txtDownload.isSelected = true
         }
     }
-
     override fun viewListener() {
         binding.apply {
             actionBar.btnActionBarLeft.onClick1 { finish() }
-
             // Home
             actionBar.btnActionBarRight2.onClick1 {
                 openActivity(HomeActivity::class.java, clearTop = true)
             }
-
             // MyCreation
             actionBar.btnActionBarRight1.onClick1 {
                 openActivity(HomeActivity::class.java, Bundle().apply {
                     putBoolean(HomeActivity.EXTRA_OPEN_ALBUM, true)
                 }, clearTop = true)
             }
-
             // Share
             actionBar.btnActionBarRight.onClick(1500) {
                 shareImage()
             }
-
             // Download
-            btnLang.onClick1 { downloadImage() }
+            btnDownload.onClick1 { downloadImage() }
         }
     }
     private fun logSocialShareEvent(socialName: String) {
@@ -177,7 +167,6 @@ class SuccessActivity : BaseActivity<ActivitySuccessBinding, SuccessViewModel>(
         isReturningFromExternalScreen = true
         startActivity(Intent.createChooser(intent, getString(R.string.share)))
     }
-// ViewActivity.kt
 
     // Thêm vào ViewActivity
     private fun downloadImage() {

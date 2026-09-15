@@ -167,14 +167,15 @@ class CustomizeActivity : BaseActivity<ActivityCustomizeBinding, CustomizeViewMo
                     templateIndex = resolvedIndex,
                     customizedId = customizedId ?: "",
                     savedSelections = savedSelections,
-                    isFlipped = isFlipped
+                    isFlipped = isFlipped,
+                    templateId = templateId
                 )
             }
             savedSelections != null -> {
-                viewModel.initWithSelections(resolvedIndex, savedSelections)
+                viewModel.initWithSelections(resolvedIndex, savedSelections, templateId)
             }
             else -> {
-                viewModel.initNew(resolvedIndex)
+                viewModel.initNew(resolvedIndex, templateId)
             }
         }
     }

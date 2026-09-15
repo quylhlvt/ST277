@@ -96,11 +96,11 @@ class CustomizeViewModel @Inject constructor(
     // ── INIT ──────────────────────────────────────────────────────────────────
 
     /** Khởi tạo với template mới (không có saved selections). */
-    fun initNew(templateIndex: Int) {
+    fun initNew(templateIndex: Int, templateId: String? = null) {
         // ✅ Dùng state check thay vì flag — safe với process death
         if (_state.value.listData.isNotEmpty()) return
         editingCustomizedId = null
-        val template = appDataManager.getCharacterByIndex(templateIndex) ?: return
+        val template = resolveTemplate(templateIndex, templateId) ?: return
         _layerTransforms.value = template.layerTransforms
         val sorted   = sortBodyParts(template.listPath)
         val draft = restoreDraft(template.id, sorted)
@@ -123,9 +123,14 @@ class CustomizeViewModel @Inject constructor(
     }
 
     /** Khởi tạo để EDIT character đã lưu. */
-    fun initEdit(templateIndex: Int, savedSelections: List<SelectionIndex>, isFlipped: Boolean) {
+    fun initEdit(
+        templateIndex: Int,
+        savedSelections: List<SelectionIndex>,
+        isFlipped: Boolean,
+        templateId: String? = null
+    ) {
         if (_state.value.listData.isNotEmpty()) return
-        val template = appDataManager.getCharacterByIndex(templateIndex) ?: return
+        val template = resolveTemplate(templateIndex, templateId) ?: return
         _layerTransforms.value = template.layerTransforms
         val sorted   = sortBodyParts(template.listPath)
         val navChar1 = firstNavIndexForChar(sorted, 1)
@@ -145,13 +150,19 @@ class CustomizeViewModel @Inject constructor(
     }
     // CustomizeViewModel.kt — thêm hàm initWithSelections
 // Xóa hàm initWithSelections sai đi, thay bằng:
-    fun initWithSelections(templateIndex: Int, savedSelections: ArrayList<SelectionIndex>) {
+    fun initWithSelections(
+        templateIndex: Int,
+        savedSelections: ArrayList<SelectionIndex>,
+        templateId: String? = null
+    ) {
         if (_state.value.listData.isNotEmpty()) return
-        val template = appDataManager.getCharacterByIndex(templateIndex) ?: return
+        val template = resolveTemplate(templateIndex, templateId) ?: return
         _layerTransforms.value = template.layerTransforms
-        val sorted   = sortBodyParts(template.listPath)
-        val remapped = sorted.mapIndexed { sortedIdx, bp ->
-            val originalIdx = template.listPath.indexOf(bp)
+        val indexedSorted = template.listPath.withIndex()
+            .sortedWith(compareBy<IndexedValue<BodyPartModel>> { it.value.zIndex }.thenBy { it.index })
+        val sorted = indexedSorted.map { it.value }
+        val remapped = indexedSorted.mapIndexed { sortedIdx, indexedBodyPart ->
+            val originalIdx = indexedBodyPart.index
             val sel = savedSelections.getOrElse(originalIdx) { SelectionIndex(originalIdx, 0, 0) }
             SelectionIndex(sortedIdx, sel.colorIndex, sel.pathIndex)
         }
@@ -174,11 +185,13 @@ class CustomizeViewModel @Inject constructor(
         templateIndex: Int,
         customizedId: String,
         savedSelections: List<SelectionIndex>,
-        isFlipped: Boolean
+        isFlipped: Boolean,
+        templateId: String? = null
     ) {
         if (_state.value.listData.isNotEmpty()) return
         editingCustomizedId = customizedId
-        val template = appDataManager.getCharacterByIndex(templateIndex) ?: return
+        val customizedTemplateId = appDataManager.getCharacterById(customizedId)?.templateId
+        val template = resolveTemplate(templateIndex, templateId ?: customizedTemplateId) ?: return
         _layerTransforms.value = appDataManager.getCharacterById(customizedId)?.layerTransforms.orEmpty()
         val sorted   = sortBodyParts(template.listPath)
         val navChar1 = firstNavIndexForChar(sorted, 1)
@@ -352,6 +365,11 @@ class CustomizeViewModel @Inject constructor(
     }
 
     // ── HELPERS ───────────────────────────────────────────────────────────────
+
+    private fun resolveTemplate(templateIndex: Int, templateId: String?): CustomModel? {
+        return templateId?.let(appDataManager::getTemplateById)
+            ?: appDataManager.getTemplateByIndex(templateIndex)
+    }
 
     private fun sortBodyParts(parts: List<BodyPartModel>) = parts.sortedBy { it.zIndex }
 

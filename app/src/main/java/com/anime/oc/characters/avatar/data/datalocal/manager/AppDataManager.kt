@@ -476,6 +476,12 @@ class AppDataManager @Inject constructor(
 
     fun isTemplate(id: String)             = id.startsWith("template_") || id.startsWith("online_")
     fun getCharacterByIndex(index: Int)    = _characters.value.getOrNull(index)
+    /**
+     * Resolve an index that was created from [templates]. Do not use
+     * getCharacterByIndex() here: that list also contains saved characters.
+     */
+    fun getTemplateByIndex(index: Int)     = _templates.value.getOrNull(index)
+    fun getTemplateById(id: String)        = _templates.value.find { it.id == id }
     fun getCharacterById(id: String)       = _characters.value.find { it.id == id }
     fun getTemplateIndexByAvt(avt: String) = _characters.value.indexOfFirst { it.avatar == avt }
 

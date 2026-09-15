@@ -27,6 +27,11 @@ class CosplayViewModel @Inject constructor(
     val isDataReady: StateFlow<Boolean> = _isDataReady.asStateFlow()
     private var _cachedBitmap: Bitmap? = null
     val cachedBitmap get() = _cachedBitmap
+    private var _cachedGeneration: Long? = null
+    val cachedGeneration get() = _cachedGeneration
+    private var randomizeJob: kotlinx.coroutines.Job? = null
+    @Volatile
+    private var generationCounter = 0L
     init {
         viewModelScope.launch {
             appDataManager.templates
@@ -41,28 +46,34 @@ class CosplayViewModel @Inject constructor(
         val templateIndex: Int,
         val template     : CustomModel,
         val selections   : ArrayList<SelectionIndex>,
-        val resolvedPaths: List<String?>
+        val resolvedPaths: List<String?>,
+        val generation   : Long
     )
-    fun setCachedBitmap(bmp: Bitmap) { _cachedBitmap = bmp }
+    fun setCachedBitmap(bmp: Bitmap, generation: Long) {
+        _cachedBitmap = bmp
+        _cachedGeneration = generation
+    }
+    fun isCurrentGeneration(generation: Long): Boolean = generationCounter == generation
     override fun onCleared() {
         super.onCleared()
+        randomizeJob?.cancel()
         // ImageView/RenderThread có thể vẫn đang vẽ bitmap ở frame cuối.
         // Không recycle thủ công; để GC thu hồi sau khi view được giải phóng.
         _cachedBitmap = null
+        _cachedGeneration = null
     }
-    fun randomize(isOnline: Boolean = true) {
-        if (_randomItem.value != null) {
-            _cachedBitmap = null
+    fun randomize(isOnline: Boolean = true): Boolean {
+        val allTemplates = appDataManager.templates.value
+        val filtered = allTemplates.filter { template ->
+            (isOnline || !template.isOnlineTemplate()) && template.hasRenderableLayer()
         }
-        viewModelScope.launch(Dispatchers.IO) {
-            val allTemplates = appDataManager.templates.value
-            if (allTemplates.isEmpty()) return@launch
+        if (filtered.isEmpty()) return false
 
-            val filtered = if (isOnline) allTemplates
-            else allTemplates.filter { !it.id.startsWith("online_") }
-
-            if (filtered.isEmpty()) return@launch
-
+        _cachedBitmap = null
+        _cachedGeneration = null
+        randomizeJob?.cancel()
+        val generation = ++generationCounter
+        randomizeJob = viewModelScope.launch(Dispatchers.IO) {
             val template = filtered.random()
             // ✅ Lấy index từ allTemplates, không phải filtered
             val realIndex = allTemplates.indexOf(template)
@@ -70,36 +81,78 @@ class CosplayViewModel @Inject constructor(
             val sel   = randomSelections(template)
             val paths = resolvePaths(template, sel)
 
+            // The work above has no suspension point, so a cancelled old job
+            // could otherwise publish after a newer random request.
+            if (!isCurrentGeneration(generation)) return@launch
+
             _randomItem.value = RandomItem(
                 templateIndex = realIndex,  // ✅
                 template      = template,
                 selections    = sel,
-                resolvedPaths = paths
+                resolvedPaths = paths,
+                generation    = generation
             )
         }
+        return true
     }
 
     private fun randomSelections(template: CustomModel): ArrayList<SelectionIndex> {
-        val list = ArrayList<SelectionIndex>()
-        template.listPath.forEachIndexed { bpIdx, bp ->
-            val colorCount = bp.listPath.size
-            if (colorCount == 0) { list.add(SelectionIndex(bpIdx, 0, 0)); return@forEachIndexed }
-            val colorIdx = (0 until colorCount).random()
-            val color    = bp.listPath[colorIdx]
-            val paths    = color.listPath
-            val limited  = if (paths.size > 6) paths.subList(0, paths.size / 2) else paths
-            val validIdx = limited.indices.filter { limited[it] != "none" && limited[it] != "dice" }
-            val pathIdx  = if (validIdx.isNotEmpty()) validIdx.random() else limited.indices.random()
-            list.add(SelectionIndex(bpIdx, colorIdx, pathIdx))
-        }
-        return list
+        return ArrayList(template.listPath.mapIndexed { bodyPartIndex, bodyPart ->
+            val choices = bodyPart.listPath.flatMapIndexed { colorIndex, color ->
+                color.listPath.mapIndexedNotNull { pathIndex, path ->
+                    if (path.isRenderablePath()) colorIndex to pathIndex else null
+                }
+            }
+            val choice = choices.randomOrNull()
+            SelectionIndex(
+                bodyPartIndex = bodyPartIndex,
+                colorIndex = choice?.first ?: 0,
+                pathIndex = choice?.second ?: 0
+            )
+        })
     }
 
-    private fun resolvePaths(template: CustomModel, sel: ArrayList<SelectionIndex>): List<String?> =
-        template.listPath.mapIndexed { bpIdx, bp ->
-            val s     = sel.getOrNull(bpIdx) ?: return@mapIndexed null
-            val color = bp.listPath.getOrNull(s.colorIndex) ?: return@mapIndexed null
-            val path  = color.listPath.getOrNull(s.pathIndex) ?: return@mapIndexed null
-            if (path == "none") null else path
+    private fun resolvePaths(
+        template: CustomModel,
+        selections: List<SelectionIndex>
+    ): List<String?> {
+        return template.listPath.mapIndexedNotNull { bodyPartIndex, bodyPart ->
+            val selection = selections.getOrNull(bodyPartIndex) ?: return@mapIndexedNotNull null
+            val path = bodyPart.listPath
+                .getOrNull(selection.colorIndex)
+                ?.listPath
+                ?.getOrNull(selection.pathIndex)
+                ?.takeIf { it.isRenderablePath() }
+                ?: return@mapIndexedNotNull null
+
+            ResolvedLayer(bodyPart.position, bodyPart.zIndex, bodyPartIndex, path)
         }
+            .sortedWith(
+                compareBy<ResolvedLayer> { it.position }
+                    .thenBy { it.zIndex }
+                    .thenBy { it.sourceIndex }
+            )
+            .map { it.path }
+
+    }
+
+    private fun CustomModel.isOnlineTemplate() = id.startsWith("online_")
+
+    private fun CustomModel.hasRenderableLayer(): Boolean {
+        return listPath.any { bodyPart ->
+            bodyPart.listPath.any { color -> color.listPath.any { it.isRenderablePath() } }
+        }
+    }
+
+    private fun String.isRenderablePath(): Boolean {
+        return isNotBlank() && !equals("none", ignoreCase = true) &&
+            !equals("dice", ignoreCase = true)
+    }
+
+    private data class ResolvedLayer(
+        val position: Int,
+        val zIndex: Int,
+        val sourceIndex: Int,
+        val path: String
+    )
 }

@@ -14,6 +14,7 @@ import com.anime.oc.characters.avatar.core.extention.gone
 import com.anime.oc.characters.avatar.core.extention.onClick
 import com.anime.oc.characters.avatar.core.extention.select
 import com.anime.oc.characters.avatar.core.extention.setImageActionBar
+import com.anime.oc.characters.avatar.core.extention.setMaterialCardViewActionBar1
 import com.anime.oc.characters.avatar.core.extention.visible
 import com.anime.oc.characters.avatar.databinding.ActivityRandomBinding
 import com.anime.oc.characters.avatar.ui.main.customize.CustomizeActivity
@@ -42,6 +43,8 @@ class RandomActivity : BaseActivity<ActivityRandomBinding, RandomViewModel>(
     }
 
     private var renderJob: Job? = null
+    /** Random generation is started only after the user presses Random. */
+    private var randomRequested = false
 
     private fun hasUsableNetwork(): Boolean {
         return isNetworkConnected(this@RandomActivity) &&
@@ -75,18 +78,24 @@ class RandomActivity : BaseActivity<ActivityRandomBinding, RandomViewModel>(
 
     override fun initView() {
         binding.imvImage.gone()
-        binding.imageGif.visible()
-        setControlsEnabled(canEdit = false, canRandom = false)
+        binding.imageGif.gone()
+        binding.contrainFirst.visible()
+        // The first screen is idle and waiting for an explicit Random tap.
+        setControlsEnabled(canEdit = false, canRandom = true)
         binding.setupActionBar()
         binding.txtRandom.isSelected = true
-        binding.txtEdit.isSelected = true
     }
 
     private fun ActivityRandomBinding.setupActionBar() {
         actionBar.apply {
-            tvCenter.select()
             setImageActionBar(btnActionBarLeft, R.drawable.back_app)
-//            setTextActionBar(tvCenter, getString(R.string.random))
+            setMaterialCardViewActionBar1(
+                btnActionBarRightText,
+                tvRightText,
+                getString(R.string.edit)
+            )
+            btnActionBarRightText.gone()
+            setEditActionBarEnabled(false)
         }
     }
 
@@ -96,36 +105,39 @@ class RandomActivity : BaseActivity<ActivityRandomBinding, RandomViewModel>(
                 finish()
 
             }
-            random.onClick {
+            btnRandom.onClick {
+                randomRequested = true
+                // Hiện nút Edit ngay khi bắt đầu random, nhưng khóa cho tới
+                // khi ảnh đã render xong.
+                binding.actionBar.btnActionBarRightText.visible()
+                setEditActionBarEnabled(false)
                 requestRandomCharacter()
             }
-            btnEdit.onClick {
-                if (!btnEdit.isEnabled) return@onClick
+            actionBar.btnActionBarRightText.onClick {
+                if (!actionBar.btnActionBarRightText.isEnabled) return@onClick
                 val item = viewModel.randomItem.value ?: return@onClick
                 if (checkOnlineNetworkOrShowDialog(item.template.id)) return@onClick
-
-                // Online refreshes can reorder the template list. Resolve the
-                // live index from the stable id before opening Customize.
-                val templateIndex = appSession.templates.value
-                    .indexOfFirst { it.id == item.template.id }
-                if (templateIndex < 0) {
-                    showLoadingDataDialog()
-                    return@onClick
-                }
-                val args = CustomizeActivity.newArgs(
-                    templateIndex = templateIndex,
-                    templateId = item.template.id,
-                    isEdit = false,
-                    savedSelections = item.selections
+                val templateIndex = appSession.templates.value.indexOfFirst { it.id == item.template.id }
+                if (templateIndex < 0) return@onClick
+                openActivity(
+                    CustomizeActivity::class.java,
+                    CustomizeActivity.newArgs(
+                        templateIndex = templateIndex,
+                        templateId = item.template.id,
+                        isEdit = false,
+                        savedSelections = item.selections
+                    )
                 )
-                openActivity(CustomizeActivity::class.java, args)
-
             }
         }
     }
 
     private fun requestRandomCharacter() {
         val hasNetwork = hasUsableNetwork()
+        // The old render may still finish while the new random item is being
+        // generated. It must not be allowed to repopulate the image view/cache.
+        renderJob?.cancel()
+        renderJob = null
         val started = viewModel.randomize(isOnline = hasNetwork)
         if (started) {
             showLoading()
@@ -134,7 +146,7 @@ class RandomActivity : BaseActivity<ActivityRandomBinding, RandomViewModel>(
 
         val cached = viewModel.cachedBitmap
         setControlsEnabled(
-            canEdit = cached != null && !cached.isRecycled,
+            canEdit = false,
             canRandom = true
         )
         if (hasNetwork) showLoadingDataDialog() else showUnstableNetworkDialog()
@@ -143,18 +155,22 @@ class RandomActivity : BaseActivity<ActivityRandomBinding, RandomViewModel>(
     override fun observeData() {
         this@RandomActivity.lifecycleScope.launch {
             viewModel.isDataReady.collect { ready ->
-                if (ready && viewModel.randomItem.value == null) {
+                // Do not randomize automatically on entering from Home. If the
+                // user tapped Random before data finished loading, continue the
+                // requested action once templates become available.
+                if (ready && randomRequested && viewModel.randomItem.value == null) {
                     requestRandomCharacter()
                 }
             }
         }
         this@RandomActivity.lifecycleScope.launch {
             viewModel.randomItem.collectLatest { item ->
+                if (!randomRequested) return@collectLatest
                 item ?: return@collectLatest
 
                 // ✅ Nếu đã có cache bitmap thì không render lại
-                val cached = viewModel.cachedBitmap
-                if (cached != null && !cached.isRecycled) {
+                val cached = cachedBitmapFor(item)
+                if (cached != null) {
                     showBitmap(cached)
                     return@collectLatest
                 }
@@ -167,9 +183,16 @@ class RandomActivity : BaseActivity<ActivityRandomBinding, RandomViewModel>(
     override fun onResume() {
         super.onResume()
         // ✅ Khi back về: dùng lại bitmap đã cache
-        val cached = viewModel.cachedBitmap
-        if (cached != null && !cached.isRecycled) {
+        if (!randomRequested) return
+        val cached = viewModel.randomItem.value?.let(::cachedBitmapFor)
+        if (cached != null) {
             showBitmap(cached)
+        }
+    }
+
+    private fun cachedBitmapFor(item: RandomViewModel.RandomItem): Bitmap? {
+        return viewModel.cachedBitmap?.takeIf {
+            viewModel.cachedGeneration == item.generation && !it.isRecycled
         }
     }
 
@@ -213,17 +236,21 @@ class RandomActivity : BaseActivity<ActivityRandomBinding, RandomViewModel>(
             }
 
             val merged = withContext(Dispatchers.Default) { mergeBitmaps(bitmaps) }
-            if (!isActive || viewModel.randomItem.value != item) {
+            if (!isActive ||
+                !viewModel.isCurrentGeneration(item.generation) ||
+                viewModel.randomItem.value != item
+            ) {
                 merged.recycle()
                 return@launch
             }
 
-            viewModel.setCachedBitmap(merged)
+            viewModel.setCachedBitmap(merged, item.generation)
             showBitmap(merged)
         }
     }
 
     private fun showRenderFailure(showNetworkDialog: Boolean) {
+        binding.contrainFirst.gone()
         binding.imvImage.apply {
             setImageDrawable(null)
             gone()
@@ -234,6 +261,7 @@ class RandomActivity : BaseActivity<ActivityRandomBinding, RandomViewModel>(
     }
 
     private fun showLoading() {
+        binding.contrainFirst.gone()
         binding.imvImage.apply {
             setImageDrawable(null)
             gone()
@@ -243,6 +271,7 @@ class RandomActivity : BaseActivity<ActivityRandomBinding, RandomViewModel>(
     }
 
     private fun showBitmap(bitmap: Bitmap) {
+        binding.contrainFirst.gone()
         binding.imvImage.apply {
             scaleType = ImageView.ScaleType.CENTER_CROP
             setImageBitmap(bitmap)
@@ -253,13 +282,16 @@ class RandomActivity : BaseActivity<ActivityRandomBinding, RandomViewModel>(
     }
 
     private fun setControlsEnabled(canEdit: Boolean, canRandom: Boolean) {
-        binding.btnEdit.isEnabled = canEdit
-        binding.btnEdit.isClickable = canEdit
-        binding.btnEdit.alpha = if (canEdit) 1f else 0.5f
+        setEditActionBarEnabled(canEdit)
+        binding.btnRandom.isEnabled = canRandom
+        binding.btnRandom.isClickable = canRandom
+        binding.btnRandom.alpha = if (canRandom) 1f else 0.5f
+    }
 
-        binding.random.isEnabled = canRandom
-        binding.random.isClickable = canRandom
-        binding.random.alpha = if (canRandom) 1f else 0.5f
+    private fun setEditActionBarEnabled(enabled: Boolean) {
+        binding.actionBar.btnActionBarRightText.isEnabled = enabled
+        binding.actionBar.btnActionBarRightText.isClickable = enabled
+        binding.actionBar.btnActionBarRightText.alpha = if (enabled) 1f else 0.5f
     }
 
     private fun mergeBitmaps(bitmaps: List<Bitmap>): Bitmap {

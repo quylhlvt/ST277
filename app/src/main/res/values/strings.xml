@@ -126,4 +126,7 @@
     <string name="load_ads_fail">Load Ads Fail</string>
     <string name="watch_a_short_ad_to_generate_a_random_anime">Watch a short ad to generate a Random Anime</string>
     <string name="loading_">Loading...</string>
+    <string name="players_receive_a_random">Players receive a random reference image and must recreate the character by choosing matching hairstyles, outfits, colors, and accessories. Each correct choice increases the percentage score the closer the character matches the image, the higher the final score.</string>
+    <string name="click_the_random">Click the random button below to see what your character is!
+    </string>
 </resources>
