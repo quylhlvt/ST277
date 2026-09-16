@@ -101,7 +101,7 @@
                         android:fontFamily="@font/schoolbell_regular"
                         android:gravity="start|center_vertical"
                         android:text="@string/language"
-                        android:textColor="@color/app_color"
+                        android:textColor="@color/white"
                         android:textSize="@dimen/text_size_16"
                         app:layout_constraintBottom_toTopOf="@+id/bottom1"
                         app:layout_constraintEnd_toStartOf="@+id/btnRadio"

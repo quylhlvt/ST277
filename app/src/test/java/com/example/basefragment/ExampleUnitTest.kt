@@ -1,4 +1,4 @@
-package com.anime.oc.characters.avatar
+package com.duomaker.couplelove.vatar
 
 import org.junit.Test
 

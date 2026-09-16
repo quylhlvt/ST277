@@ -7,7 +7,7 @@
     android:background="@color/app_color2"
     android:clipChildren="false"
     android:clipToPadding="false"
-    tools:context="com.anime.oc.characters.avatar.ui.main.success.SuccessActivity">
+    tools:context="com.duomaker.couplelove.vatar.ui.main.success.SuccessActivity">
 
 
     <FrameLayout

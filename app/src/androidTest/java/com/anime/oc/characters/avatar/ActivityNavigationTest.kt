@@ -1,4 +1,4 @@
-package com.anime.oc.characters.avatar
+package com.duomaker.couplelove.vatar
 
 import android.app.Activity
 import android.content.Context
@@ -15,14 +15,14 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
 import androidx.test.runner.lifecycle.Stage
 import androidx.viewpager2.widget.ViewPager2
-import com.anime.oc.characters.avatar.ui.language.LanguageActivity
-import com.anime.oc.characters.avatar.ui.language.LanguageViewModel
-import com.anime.oc.characters.avatar.ui.main.home.HomeActivity
-import com.anime.oc.characters.avatar.ui.main.myPony.MyPonyActivity
-import com.anime.oc.characters.avatar.ui.main.setting.SettingActivity
-import com.anime.oc.characters.avatar.ui.main.success.SuccessActivity
-import com.anime.oc.characters.avatar.ui.onboarding.intro.IntroActivity
-import com.anime.oc.characters.avatar.ui.onboarding.permission.PermissionActivity
+import com.duomaker.couplelove.vatar.ui.language.LanguageActivity
+import com.duomaker.couplelove.vatar.ui.language.LanguageViewModel
+import com.duomaker.couplelove.vatar.ui.main.home.HomeActivity
+import com.duomaker.couplelove.vatar.ui.main.myPony.MyPonyActivity
+import com.duomaker.couplelove.vatar.ui.main.setting.SettingActivity
+import com.duomaker.couplelove.vatar.ui.main.success.SuccessActivity
+import com.duomaker.couplelove.vatar.ui.onboarding.intro.IntroActivity
+import com.duomaker.couplelove.vatar.ui.onboarding.permission.PermissionActivity
 import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before

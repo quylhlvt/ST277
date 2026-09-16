@@ -21,7 +21,7 @@
                 android:background="@drawable/img_home1"
                 android:layout_height="match_parent"
 >
-            <com.anime.oc.characters.avatar.core.extention.OuterStrokeTextView2
+            <com.duomaker.couplelove.vatar.core.extention.OuterStrokeTextView2
                     android:id="@+id/tvTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

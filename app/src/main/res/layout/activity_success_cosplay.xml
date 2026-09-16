@@ -8,7 +8,7 @@
         android:background="@drawable/img_bg_success_cosplay"
         android:clipChildren="false"
         android:clipToPadding="false"
-        tools:context="com.anime.oc.characters.avatar.ui.main.successcosplay.SuccessCosplayActivity">
+        tools:context="com.duomaker.couplelove.vatar.ui.main.successcosplay.SuccessCosplayActivity">
 
     <FrameLayout
             android:id="@+id/layoutActionBar"

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/app_color2"
-    tools:context="com.anime.oc.characters.avatar.ui.language.LanguageActivity">
+    tools:context="com.duomaker.couplelove.vatar.ui.language.LanguageActivity">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimension_0"

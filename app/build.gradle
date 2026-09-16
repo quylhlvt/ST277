@@ -9,20 +9,20 @@ plugins {
 }
 
 android {
-    namespace 'com.anime.oc.characters.avatar'
+    namespace 'com.duomaker.couplelove.vatar'
     compileSdk {
         version = release(36)
     }
 
     defaultConfig {
-        applicationId "com.anime.oc.characters.avatar"
+        applicationId "com.duomaker.couplelove.vatar"
         minSdk 24
         targetSdk 36
         versionCode 1
         versionName "1.0.0"
         testInstrumentationRunner= "androidx.test.runner.AndroidJUnitRunner"
         def formattedDate = new Date().format('MM.dd.yyyy')
-        archivesBaseName = "ST279_Anime_OC_Maker_Avatar_Creator_v${versionName}_${formattedDate}"
+        archivesBaseName = "ST283_Duo_Maker_Couple_Avatar_v${versionName}_${formattedDate}"
     }
     buildTypes {
         release {

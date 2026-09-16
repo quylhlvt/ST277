@@ -6,7 +6,7 @@
         android:layout_height="match_parent"
         android:background="@color/app_color2"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        tools:context="com.anime.oc.characters.avatar.ui.main.customize.CustomizeActivity">
+        tools:context="com.duomaker.couplelove.vatar.ui.main.customize.CustomizeActivity">
 
     <FrameLayout
             android:id="@+id/layoutActionBar"
@@ -131,18 +131,7 @@
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintStart_toEndOf="@+id/imgFlip"
                     app:layout_constraintTop_toBottomOf="@+id/view17"/>
-            <ImageView
-                    android:id="@+id/gender"
-                    android:layout_width="@dimen/dimension_0"
-                    android:layout_height="@dimen/dimension_0"
-                    android:src="@drawable/img_gender1"
-                    app:layout_constraintHorizontal_bias="0"
-                    app:layout_constraintStart_toEndOf="@+id/imgScale"
-                    app:layout_constraintTop_toTopOf="@+id/imgScale"
-                    android:layout_marginStart="@dimen/dimension_8"
-                    app:layout_constraintBottom_toBottomOf="@+id/imgScale"
-                    app:layout_constraintDimensionRatio="7.6:4"
-                    app:layout_constraintEnd_toStartOf="@+id/imgRandom"/>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/frame_rando_all"
@@ -397,7 +386,7 @@
                             android:src="@drawable/ratio_left"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <com.anime.oc.characters.avatar.ui.main.customize.vertical.VerticalSizeSlider
+                <com.duomaker.couplelove.vatar.ui.main.customize.vertical.VerticalSizeSlider
                         android:id="@+id/sliderSize"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dimension_0"

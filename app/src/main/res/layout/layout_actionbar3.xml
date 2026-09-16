@@ -140,6 +140,17 @@
             app:layout_constraintEnd_toStartOf="@+id/btnActionBarRightText"
             app:layout_constraintStart_toEndOf="@+id/btnActionBarCenter1"
             app:layout_constraintTop_toTopOf="@+id/btnActionBarLeft" />
+ <ImageView
+            android:id="@+id/btnActionBarCenter3"
+            android:layout_width="@dimen/dimension_0"
+            android:layout_height="@dimen/dimension_0"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/btnActionBarLeft"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toStartOf="@+id/btnActionBarRight1"
+            app:layout_constraintStart_toEndOf="@+id/btnActionBarLeft"
+            app:layout_constraintTop_toTopOf="@+id/btnActionBarLeft" />
 
         <!--    btnActionBarNextToRight-->
         <ImageView
@@ -230,7 +241,6 @@
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:fontFamily="@font/schoolbell_regular"
-                        android:foreground="@drawable/forground_next"
                         android:gravity="center"
                         android:text="@string/next"
                         android:textColor="@color/white"

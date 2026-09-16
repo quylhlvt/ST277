@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                   xmlns:tools="http://schemas.android.com/tools"
-                                                   android:id="@+id/main"
-                                                   android:background="@color/app_color2"
-                                                   android:layout_width="match_parent"
-                                                   android:layout_height="match_parent"
-                                                   tools:context="com.anime.oc.characters.avatar.ui.main.myPony.MyPonyActivity">
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/main"
+        android:background="@color/app_color2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.duomaker.couplelove.vatar.ui.main.myPony.MyPonyActivity">
 
     <!-- layoutActionBar -->
     <FrameLayout
@@ -18,14 +19,22 @@
                 android:id="@+id/actionBar"
                 layout="@layout/layout_actionbar4"/>
     </FrameLayout>
-
+    <View
+            android:layout_width="@dimen/dimension_0"
+            android:layout_height="@dimen/dimension_0"
+            app:layout_constraintTop_toBottomOf="@+id/layoutActionBar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@color/app_color9"
+    />
     <!--    cvType-->
     <LinearLayout
             android:id="@+id/cvType"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimension_0"
             app:layout_constraintDimensionRatio="3.6:0.36"
-            android:layout_marginTop="@dimen/dimension_5"
+            android:layout_marginTop="@dimen/dimension_10"
             android:weightSum="360"
             android:orientation="horizontal"
             app:layout_constraintTop_toBottomOf="@id/layoutActionBar">
@@ -79,8 +88,6 @@
                 </androidx.cardview.widget.CardView>
 
 
-
-
             </com.google.android.material.card.MaterialCardView>
 
             <Space
@@ -125,8 +132,6 @@
                 </androidx.cardview.widget.CardView>
 
 
-
-
             </com.google.android.material.card.MaterialCardView>
 
             <!--            btnMyDesign-->
@@ -155,22 +160,45 @@
             app:layout_constraintTop_toBottomOf="@+id/cvType"
             app:strokeWidth="@dimen/dimension_0">
 
-        <TextView
+        <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/noItem"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="@dimen/dimension_0"
-                app:layout_constraintDimensionRatio="3.28:0.56"
+                app:layout_constraintDimensionRatio="2:2.2"
                 android:layout_gravity="center"
-                android:fontFamily="@font/pacifico_regular"
+                android:layout_marginHorizontal="@dimen/dimension_70"
                 android:gravity="center"
-                android:text="@string/no_item_here"
-                android:textColor="@color/app_color2"
-                android:textSize="@dimen/text_size_20"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:outerStrokeColor="@color/white"
-                app:outerStrokeWidth="@dimen/dimension_2"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+        >
+            <ImageView
+                    android:id="@+id/img_Noitem"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_width="@dimen/dimension_0"
+                    android:layout_height="@dimen/dimension_0"
+                    app:layout_constraintDimensionRatio="1"
+                    android:src="@drawable/img_noitem"/>
+            <TextView
+                    android:id="@+id/txtItem"
+                    style="@style/single_marquee"
+                    android:layout_width="match_parent" android:layout_height="@dimen/dimension_0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/img_Noitem"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:text="@string/no_item_here"
+                    android:textColor="@color/white"
+                    android:gravity="center"
+                    android:fontFamily="@font/schoolbell_regular"
+                    android:textSize="@dimen/text_size_16"
+            />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycleAvatar"
                 android:layout_width="match_parent"
@@ -194,30 +222,29 @@
                 tools:listitem="@layout/item_my_design"/>
 
 
+        <!--        lnlBottomTop-->
+        <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/lnlBottom"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimension_0"
+                android:orientation="horizontal"
+                android:layout_marginBottom="@dimen/dimension_8"
+                android:weightSum="328"
+                android:layout_marginHorizontal="@dimen/dimension_4"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="3.28:0.44">
 
-            <!--        lnlBottomTop-->
-            <androidx.appcompat.widget.LinearLayoutCompat
-                    android:id="@+id/lnlBottom"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimension_0"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="@dimen/dimension_8"
-                    android:weightSum="328"
-                    android:layout_marginHorizontal="@dimen/dimension_4"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintDimensionRatio="3.28:0.44">
+            <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/btnTelegram"
 
-                <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/btnWhatsapp"
-
-                        app:strokeColor="@color/black"
-                        app:cardCornerRadius="@dimen/dimension_16"
-                        android:layout_width="@dimen/dimension_0"
-                        android:layout_height="match_parent"
-                        android:layout_weight="160"
-                        app:strokeWidth="@dimen/dimension_1"
-                        app:cardBackgroundColor="@color/app_color5"
-                >
+                    app:strokeColor="@color/black"
+                    app:cardCornerRadius="@dimen/dimension_16"
+                    android:layout_width="@dimen/dimension_0"
+                    android:layout_height="match_parent"
+                    android:layout_weight="160"
+                    app:strokeWidth="@dimen/dimension_1"
+                    app:cardBackgroundColor="@color/app_color5"
+            >
                 <androidx.cardview.widget.CardView
                         android:id="@+id/cardWhatsapp"
                         android:layout_margin="@dimen/dimension_4"
@@ -227,55 +254,55 @@
                         app:cardBackgroundColor="@color/app_color6"
                         app:cardCornerRadius="@dimen/dimension_13">
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/btnWhatsapp2"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-                    <View
-                            android:id="@+id/view3"
-                            app:layout_constraintStart_toStartOf="parent"
-                            android:layout_width="@dimen/dimension_0"
-                            android:layout_height="match_parent"
-                            app:layout_constraintDimensionRatio="0.8:4.4"/>
-                    <View
-                            android:id="@+id/view4"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            android:layout_width="@dimen/dimension_0"
-                            android:layout_height="match_parent"
-                            app:layout_constraintDimensionRatio="0.8:4.4"/>
+                            android:id="@+id/btnWhatsapp2"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+                        <View
+                                android:id="@+id/view3"
+                                app:layout_constraintStart_toStartOf="parent"
+                                android:layout_width="@dimen/dimension_0"
+                                android:layout_height="match_parent"
+                                app:layout_constraintDimensionRatio="0.8:4.4"/>
+                        <View
+                                android:id="@+id/view4"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                android:layout_width="@dimen/dimension_0"
+                                android:layout_height="match_parent"
+                                app:layout_constraintDimensionRatio="0.8:4.4"/>
 
-                    <TextView
-                            android:id="@+id/tvWhatApp"
-                            style="@style/single_marquee"
-                            android:layout_width="@dimen/dimension_0"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center"
-                            android:fontFamily="@font/schoolbell_regular"
-                            android:gravity="center"
-                            android:text="@string/add_to_telegram"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/text_size_16"
-                            app:layout_constraintEnd_toStartOf="@+id/view4"
-                            app:layout_constraintStart_toEndOf="@+id/view3"/>
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                        <TextView
+                                android:id="@+id/tvWhatApp"
+                                style="@style/single_marquee"
+                                android:layout_width="@dimen/dimension_0"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center"
+                                android:fontFamily="@font/schoolbell_regular"
+                                android:gravity="center"
+                                android:text="@string/add_to_telegram"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/text_size_16"
+                                app:layout_constraintEnd_toStartOf="@+id/view4"
+                                app:layout_constraintStart_toEndOf="@+id/view3"/>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </androidx.cardview.widget.CardView>
-                </com.google.android.material.card.MaterialCardView>
-                <Space
-                        android:layout_width="@dimen/dimension_0"
-                        android:layout_height="match_parent"
-                        android:layout_weight="8"/>
+            </com.google.android.material.card.MaterialCardView>
+            <Space
+                    android:layout_width="@dimen/dimension_0"
+                    android:layout_height="match_parent"
+                    android:layout_weight="8"/>
 
-                <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/btnTelegram"
+            <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/btnWhatsapp"
 
-                        app:strokeColor="@color/black"
-                        app:cardCornerRadius="@dimen/dimension_16"
-                        android:layout_width="@dimen/dimension_0"
-                        android:layout_height="match_parent"
-                        android:layout_weight="160"
-                        app:strokeWidth="@dimen/dimension_1"
-                        app:cardBackgroundColor="@color/app_color7"
-                >
+                    app:strokeColor="@color/black"
+                    app:cardCornerRadius="@dimen/dimension_16"
+                    android:layout_width="@dimen/dimension_0"
+                    android:layout_height="match_parent"
+                    android:layout_weight="160"
+                    app:strokeWidth="@dimen/dimension_1"
+                    app:cardBackgroundColor="@color/app_color7"
+            >
                 <androidx.cardview.widget.CardView
                         android:id="@+id/cardTelegram"
                         android:layout_margin="@dimen/dimension_4"
@@ -284,44 +311,42 @@
                         app:cardElevation="@dimen/dimension_0"
                         app:cardBackgroundColor="@color/app_color8"
                         app:cardCornerRadius="@dimen/dimension_13">
-                <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/btnTelegram2"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-                    <View
-                            android:id="@+id/view1"
-                            app:layout_constraintStart_toStartOf="parent"
-                            android:layout_width="@dimen/dimension_0"
-                            android:layout_height="match_parent"
-                            app:layout_constraintDimensionRatio="0.8:4.4"/>
-                    <View
-                            android:id="@+id/view2"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            android:layout_width="@dimen/dimension_0"
-                            android:layout_height="match_parent"
-                            app:layout_constraintDimensionRatio="0.8:4.4"/>
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/btnTelegram2"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+                        <View
+                                android:id="@+id/view1"
+                                app:layout_constraintStart_toStartOf="parent"
+                                android:layout_width="@dimen/dimension_0"
+                                android:layout_height="match_parent"
+                                app:layout_constraintDimensionRatio="0.8:4.4"/>
+                        <View
+                                android:id="@+id/view2"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                android:layout_width="@dimen/dimension_0"
+                                android:layout_height="match_parent"
+                                app:layout_constraintDimensionRatio="0.8:4.4"/>
 
-                    <TextView
-                            android:id="@+id/tvTelegram"
-                            style="@style/single_marquee"
-                            android:layout_width="@dimen/dimension_0"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center"
-                            android:fontFamily="@font/schoolbell_regular"
-                            android:gravity="center"
-                            android:text="@string/add_to_whatsapp"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/text_size_16"
-                            app:layout_constraintEnd_toStartOf="@+id/view2"
-                            app:layout_constraintStart_toEndOf="@+id/view1"/>
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                        <TextView
+                                android:id="@+id/tvTelegram"
+                                style="@style/single_marquee"
+                                android:layout_width="@dimen/dimension_0"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center"
+                                android:fontFamily="@font/schoolbell_regular"
+                                android:gravity="center"
+                                android:text="@string/add_to_whatsapp"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/text_size_16"
+                                app:layout_constraintEnd_toStartOf="@+id/view2"
+                                app:layout_constraintStart_toEndOf="@+id/view1"/>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.cardview.widget.CardView>
-                </com.google.android.material.card.MaterialCardView>
+            </com.google.android.material.card.MaterialCardView>
 
-            </androidx.appcompat.widget.LinearLayoutCompat>
-            <!--        lnlBottomTop-->
-
-
+        </androidx.appcompat.widget.LinearLayoutCompat>
+        <!--        lnlBottomTop-->
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

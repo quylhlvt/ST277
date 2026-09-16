@@ -22,24 +22,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:strokeColor="@color/app_color"
-            app:strokeWidth="@dimen/dimension_3">
+            app:strokeWidth="@dimen/dimension_0">
 
-<com.google.android.material.card.MaterialCardView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    app:cardBackgroundColor="@color/white"
-    android:layout_marginHorizontal="@dimen/dimension_3"
-    android:layout_marginTop="@dimen/dimension_3"
-    android:layout_marginBottom="@dimen/dimension_8"
-    app:strokeWidth="@dimen/dimension_0"
-    app:cardCornerRadius="@dimen/dimension_12">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/contrainRate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:foreground="@color/transparent"
-        android:paddingHorizontal="@dimen/dimension_30"
+        android:paddingHorizontal="@dimen/dimension_20"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -58,13 +49,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dimension_16"
-            android:fontFamily="@font/roboto_medium"
+            android:fontFamily="@font/montserrat_bold"
             android:freezesText="true"
             android:gravity="center"
 
             android:text="@string/zero_star_title"
-            android:textColor="@color/app_color"
-            android:textSize="@dimen/text_size_18"
+            android:textColor="#663300"
+            android:textSize="@dimen/text_size_16"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/imvAvtRate"
@@ -75,11 +66,11 @@
             android:id="@+id/tv2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_regular"
+            android:fontFamily="@font/montserrat_medium"
             android:freezesText="true"
             android:gravity="center"
             android:text="@string/zero_star"
-            android:textColor="@color/black5"
+            android:textColor="#836342"
             android:textSize="@dimen/text_size_14"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -90,6 +81,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dimension_8"
+            android:layout_marginHorizontal="@dimen/dimension_10"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv2"
@@ -117,25 +109,27 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ll1">
 
-            <FrameLayout
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimension_35"
                 android:layout_marginTop="@dimen/dimension_20"
-                android:background="@drawable/bg_rated"
+                app:strokeWidth="@dimen/dimension_0"
+                app:cardCornerRadius="@dimen/dimension_8"
+                app:cardBackgroundColor="#FF7F7F"
                 app:cardElevation="@dimen/dimension_0">
 
                 <TextView
                     android:id="@+id/btnVote"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:fontFamily="@font/roboto_medium"
+                    android:fontFamily="@font/montserrat_bold"
                     android:gravity="center"
                     android:paddingVertical="@dimen/dimension_5"
                     android:text="@string/rate"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_size_16" />
-            </FrameLayout>
+            </com.google.android.material.card.MaterialCardView>
             <!--                <androidx.appcompat.widget.AppCompatButton-->
             <!--                    android:id="@+id/btnVote"-->
             <!--                    android:layout_width="match_parent"-->
@@ -153,18 +147,17 @@
                 android:id="@+id/btnExit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_medium"
+                android:fontFamily="@font/montserrat_bold"
                 android:gravity="center"
                 android:paddingHorizontal="@dimen/dimension_30"
                 android:paddingVertical="@dimen/dimension_10"
                 android:text="@string/exit"
                 android:textAllCaps="false"
-                android:textColor="@color/app_color"
+                android:textColor="#663300"
                 android:textSize="@dimen/text_size_16" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</com.google.android.material.card.MaterialCardView>
 
         </com.google.android.material.card.MaterialCardView>
 

@@ -223,8 +223,7 @@
 
                 <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/forground_next">
+                    android:layout_height="match_parent">
 
                     <TextView
                         android:id="@+id/tvRightText"
@@ -233,7 +232,6 @@
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:fontFamily="@font/pacifico_regular"
-                        android:foreground="@drawable/forground_next"
                         android:gravity="center"
                         android:text="@string/next"
                         android:textColor="@color/app_color"

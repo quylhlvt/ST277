@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "718879524422",
-    "project_id": "st279-anime-oc-maker",
-    "storage_bucket": "st279-anime-oc-maker.firebasestorage.app"
+    "project_number": "893101365520",
+    "project_id": "st283-duo-maker-couple-avatar",
+    "storage_bucket": "st283-duo-maker-couple-avatar.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:718879524422:android:4708890ca21a7e6178ac47",
+        "mobilesdk_app_id": "1:893101365520:android:0bf6e6d3ffc491c1b52d95",
         "android_client_info": {
-          "package_name": "com.anime.oc.characters.avatar"
+          "package_name": "com.duomaker.couplelove.vatar"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBQtNvOurVpy2cBaxE9giwFFj5UndmSUwE"
+          "current_key": "AIzaSyAFFDCZCdjOWLacw8Yc1q0c--NuijeurSo"
         }
       ],
       "services": {
