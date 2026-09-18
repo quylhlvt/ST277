@@ -18,7 +18,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.duomaker.couplelove.vatar.R
-import com.duomaker.couplelove.vatar.core.base.BaseActivity
 import com.duomaker.couplelove.vatar.core.dialog.CreateNameDialog
 import com.duomaker.couplelove.vatar.core.extention.InternetExtension
 import com.duomaker.couplelove.vatar.core.extention.checkPermissions
@@ -87,13 +86,15 @@ class MyPonyActivity : WhatsappSharingActivity<ActivityMyPonyBinding, MyPonyView
     private fun setupActionBar() {
         binding.actionBar.apply {
             setImageActionBar(btnActionBarLeft, R.drawable.back_app)
-            setImageActionBar(btnActionBarRight2, R.drawable.ic_delete_all)
-            setImageActionBar(btnActionBarRight1, R.drawable.ic_share_all)
-            setImageActionBar(btnActionBarRight, R.drawable.ic_download_all)
+            setImageActionBar(btnActionBarNextToRight1, R.drawable.ic_delete_all)
+            setTextActionBar(tvCenter, getString(R.string.my_creation))
+            setImageActionBar(
+                btnActionBarRight1,
+                R.drawable.ic_select_all
+            )
 
-            btnActionBarRight2.invisible()
             btnActionBarRight1.invisible()
-            btnActionBarRight.invisible()
+            btnActionBarNextToRight1.invisible()
         }
     }
 
@@ -112,7 +113,6 @@ class MyPonyActivity : WhatsappSharingActivity<ActivityMyPonyBinding, MyPonyView
 
     private fun applyTabUI(isAvatar: Boolean) {
         binding.apply {
-
             if (isAvatar) {
                 btnMyAvatar.strokeColor = ContextCompat.getColor(this@MyPonyActivity, R.color.black)
                 cardAvatar.setCardBackgroundColor(ContextCompat.getColor(this@MyPonyActivity, R.color.app_color3))
@@ -185,14 +185,12 @@ class MyPonyActivity : WhatsappSharingActivity<ActivityMyPonyBinding, MyPonyView
         binding.apply {
             btnWhatsapp.onClick(1000) { handleWhatsAppShare() }
             btnTelegram.onClick(1000) { handleTelegramShare() }
+            btnDownload.onClick(1000) { handleDownload() }
+            btnShare.onClick(1000) { handleShare() }
             actionBar.apply {
-
-                btnActionBarRight2.onClick(1000) { handleDeleteSelected() }
-                btnActionBarRight1.onClick(1000) { handleShare() }
-                btnActionBarRight.onClick(1000) { handleDownload() }
+                btnActionBarNextToRight1.onClick(1000) { handleDeleteSelected() }
+                btnActionBarRight1.onClick(1000) { handleSelectAll() }
             }
-
-
         }
     }
 
@@ -305,61 +303,55 @@ class MyPonyActivity : WhatsappSharingActivity<ActivityMyPonyBinding, MyPonyView
         binding.noItem.isVisible = isEmpty
     }
 
-    private fun hideSelectionActions() {
-        binding.apply {
-            lnlBottom.gone()
-            actionBar.apply {
-                btnActionBarRight2.invisible()
-                btnActionBarRight1.invisible()
-                btnActionBarRight.invisible()
-            }
-        }
-    }
-
     private fun updateSelectionUI() {
         val currentList = if (isAvatarTab.value) myAvatarAdapter.items else myDesignAdapter.items
         val hasSelection = currentList.any { it.isShowSelection }
+        val allSelected = currentList.isNotEmpty() && currentList.all { it.isSelected }
 
         binding.apply {
             if (isAvatarTab.value) {
                 val hasAvatars = myAvatarAdapter.items.isNotEmpty()
 
                 if (!hasAvatars) {
-                    // ✅ Không có item → ẩn hết
-                    hideSelectionActions()
+                    lnlBottom.gone()
+                    llBottom.gone()
+                    actionBar.btnActionBarNextToRight1.invisible()
+                    actionBar.btnActionBarRight1.invisible()
                     return
                 }
 
-                lnlBottom.visible()
-
                 if (hasSelection) {
-                    // ✅ Long click: hiện cả 4 nút
-                    lnlBottom.visible()  // WhatsApp + Telegram
+                    lnlBottom.visible()
+                    llBottom.visible()
                     actionBar.apply {
-                        btnActionBarRight2.visible()
+                        btnActionBarNextToRight1.visible()
                         btnActionBarRight1.visible()
-                        btnActionBarRight.visible()
-
+                        btnActionBarRight1.setImageResource(
+                            if (allSelected) R.drawable.ic_select_all else R.drawable.ic_not_select
+                        )
                     }
-                    // Share + Download
                 } else {
-                    // ✅ Bình thường có item: chỉ WhatsApp + Telegram
-                    hideSelectionActions()
+                    lnlBottom.visible()
+                    llBottom.gone()
+                    actionBar.btnActionBarNextToRight1.invisible()
+                    actionBar.btnActionBarRight1.invisible()
                 }
-
             } else {
-                // Design tab
                 if (hasSelection) {
-                    // ✅ Long click: chỉ Share + Download
                     lnlBottom.gone()
+                    llBottom.visible()
                     actionBar.apply {
-                        btnActionBarRight2.visible()
+                        btnActionBarNextToRight1.visible()
                         btnActionBarRight1.visible()
-                        btnActionBarRight.visible()
+                        btnActionBarRight1.setImageResource(
+                            if (allSelected) R.drawable.ic_select_all else R.drawable.ic_not_select
+                        )
                     }
                 } else {
-                    // ✅ Bình thường hoặc không có item: ẩn hết
-                    hideSelectionActions()
+                    lnlBottom.gone()
+                    llBottom.gone()
+                    actionBar.btnActionBarNextToRight1.invisible()
+                    actionBar.btnActionBarRight1.invisible()
                 }
             }
         }
@@ -400,10 +392,10 @@ class MyPonyActivity : WhatsappSharingActivity<ActivityMyPonyBinding, MyPonyView
         }
         if (isAvatar) {
             myAvatarAdapter.submitList(updatedList)
-            setRecyclerBottomMargin(binding.recycleAvatar, 0)
+            setRecyclerBottomMargin(binding.recycleAvatar, 100)
         } else {
             myDesignAdapter.submitList(updatedList)
-            setRecyclerBottomMargin(binding.recycleDesign, 0)
+            setRecyclerBottomMargin(binding.recycleDesign, 50)
         }
         updateSelectionUI()
     }
@@ -459,7 +451,6 @@ class MyPonyActivity : WhatsappSharingActivity<ActivityMyPonyBinding, MyPonyView
         setRecyclerBottomMargin(binding.recycleAvatar, 0)
         setRecyclerBottomMargin(binding.recycleDesign, 0)
 
-        hideSelectionActions()
         updateSelectionUI()
     }
 
@@ -689,6 +680,13 @@ class MyPonyActivity : WhatsappSharingActivity<ActivityMyPonyBinding, MyPonyView
                 finish()
             }
         }
+    }
+
+    override fun handleBackPressed(): Boolean {
+        val isSelecting = myAvatarAdapter.items.any { it.isShowSelection } ||
+                myDesignAdapter.items.any { it.isShowSelection }
+        if (isSelecting) resetSelection()
+        return isSelecting
     }
 
     override fun bindViewModel() {}

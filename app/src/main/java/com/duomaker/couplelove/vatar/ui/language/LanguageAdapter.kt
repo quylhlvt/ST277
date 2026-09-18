@@ -17,7 +17,7 @@ class LanguageAdapter (val context: Context) : BaseAdapter<LanguageModel, ItemLa
     ) {
         binding.apply {
             imvFlag.setImageResource(item.flag)
-
+            bg.setBackgroundResource(if (item.activate) R.drawable.bg_linear_color else R.color.app_color5)
             btnRadio.setImageResource(if (item.activate) R.drawable.ic_select_lang else R.drawable.ic_un_select_lang)
             tvLang.text = item.name
             root.onClick { onItemClick.invoke(item.code) }

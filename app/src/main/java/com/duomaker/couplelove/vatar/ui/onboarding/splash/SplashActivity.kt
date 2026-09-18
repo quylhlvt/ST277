@@ -1,10 +1,13 @@
 package com.duomaker.couplelove.vatar.ui.onboarding.splash
 
+import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Bundle
+import android.view.View
+import android.view.animation.LinearInterpolator
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.lifecycleScope
 import com.duomaker.couplelove.vatar.R
@@ -43,6 +46,18 @@ class SplashActivity : BaseActivity<ActivitySplashBinding, SplashViewModel>(
     // ── INIT ──────────────────────────────────────────────────────────────────
 
     override fun initView() {
+        progressAnimator = ObjectAnimator.ofFloat(
+            binding.progressFill,
+            View.ROTATION,
+            0f,
+            -360f
+        ).apply {
+            duration = 1_600L
+            interpolator = LinearInterpolator()
+            repeatCount = ValueAnimator.INFINITE
+            start()
+        }
+
         preloadHomeDrawables { appSession.notifyImagesReady() }
         // ✅ Warm up font — giữ nguyên, nhẹ
         ResourcesCompat.getFont(this@SplashActivity, R.font.baloo2_extrabold)

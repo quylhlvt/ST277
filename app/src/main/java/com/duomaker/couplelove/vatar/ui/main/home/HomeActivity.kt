@@ -22,8 +22,6 @@ import com.duomaker.couplelove.vatar.utils.BlockableFrameLayout
 import com.duomaker.couplelove.vatar.utils.state.RateState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-//import com.duomaker.couplelove.vatar.core.extention.loadNativeCollabAds
-//import com.duomaker.couplelove.vatar.core.extention.showInter
 
 @AndroidEntryPoint
 class HomeActivity : BaseActivity<ActivityHomeBinding, HomeViewModel>(

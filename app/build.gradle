@@ -90,7 +90,6 @@ dependencies {
     implementation("jp.wasabeef:glide-transformations:4.3.0")
 
     // UI Components
-    implementation("com.tbuonomo:dotsindicator:5.1.0")
     implementation("androidx.cardview:cardview:1.0.0")
     implementation("com.github.ome450901:SimpleRatingBar:1.5.1")
     implementation("com.airbnb.android:lottie:6.7.1")

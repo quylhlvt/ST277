@@ -40,10 +40,10 @@ class PagerIntroViewHolder(
         binding.run {
 //            if (adapterPosition == 1) {
 //                // Page 0 — hiện 2 dòng, không marquee
-                tvContent.maxLines = 2
-                tvContent.ellipsize = null
-                tvContent.isSelected = false
-                tvContent.isSingleLine = false
+//                tvContent.maxLines = 2
+//                tvContent.ellipsize = null
+                tvContent.isSelected = true
+                tvContent.isSingleLine = true
 //            } else {
                 // Page 1, 2 — chạy chữ marquee
 //                tvContent.maxLines = 1

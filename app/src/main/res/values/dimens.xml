@@ -47,6 +47,7 @@
     <dimen name="dimension_28">28dp</dimen>
     <dimen name="dimension_28_draw">38dp</dimen>
     <dimen name="dimension_30">30dp</dimen>
+    <dimen name="dimension_minus_30">-30dp</dimen>
     <dimen name="dimension_32">32dp</dimen>
     <dimen name="dimension_34">34dp</dimen>
     <dimen name="dimension_35">35dp</dimen>

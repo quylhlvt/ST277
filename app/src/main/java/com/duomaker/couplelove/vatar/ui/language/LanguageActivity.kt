@@ -75,7 +75,7 @@ class LanguageActivity : BaseActivity<ActivityLanguageBinding, LanguageViewModel
                 setTextActionBar(actionBar.tvStart, getString(R.string.language))
                 actionBar.btnActionBarRight.setImageResource(R.drawable.select_language)
             } else {
-//                setTextActionBar(actionBar.tvCenter, getString(R.string.language))
+                setTextActionBar(actionBar.tvCenter, getString(R.string.language))
                 actionBar.btnActionBarLeft.visible()
 //                actionBar.btnActionBarRight.setImageResource(R.drawable.select_language)
             }

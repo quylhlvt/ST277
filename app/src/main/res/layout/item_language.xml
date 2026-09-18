@@ -12,23 +12,39 @@
 
     <com.google.android.material.card.MaterialCardView
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintDimensionRatio="3.28:0.48"
+            app:layout_constraintDimensionRatio="3.28:0.52"
             android:id="@+id/imgLangFor"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:strokeColor="@color/black"
-            app:strokeWidth="@dimen/dimension_1"
-            app:cardCornerRadius="@dimen/dimension_16"
+            app:strokeWidth="@dimen/dimension_0"
+            app:cardCornerRadius="@dimen/dimension_10"
             app:cardBackgroundColor="@color/app_color2">
         <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="@dimen/dimension_4"
+                android:layout_marginBottom="@dimen/dimension_1"
                 app:strokeWidth="@dimen/dimension_0"
-                app:cardCornerRadius="@dimen/dimension_14"
+                app:cardCornerRadius="@dimen/dimension_10"
+                app:cardBackgroundColor="@color/app_color3">
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/dimension_3"
+                app:strokeWidth="@dimen/dimension_0"
+                app:cardCornerRadius="@dimen/dimension_10"
                 app:cardBackgroundColor="@color/app_color4">
+                <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/dimension_1"
+                app:strokeWidth="@dimen/dimension_0"
+                app:cardCornerRadius="@dimen/dimension_10"
+                app:cardBackgroundColor="@color/transparent">
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/bg"
                     android:layout_width="match_parent"
+                android:background="@drawable/bg_linear_color"
                     android:layout_height="match_parent">
                 <View
                         android:id="@+id/top1"
@@ -47,7 +63,7 @@
                         android:id="@+id/top2"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dimension_0"
-                        app:layout_constraintDimensionRatio="3.2:0.12"
+                        app:layout_constraintDimensionRatio="3.2:0.14"
                         app:layout_constraintTop_toTopOf="parent"/>
 
                 <View
@@ -55,7 +71,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dimension_0"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintDimensionRatio="3.2:0.12"/>
+                        app:layout_constraintDimensionRatio="3.2:0.14"/>
 
                 <View
                         android:id="@+id/start1"
@@ -98,11 +114,11 @@
                         android:layout_width="@dimen/dimension_0"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dimension_12"
-                        android:fontFamily="@font/schoolbell_regular"
+                        android:fontFamily="@font/jockey_one_regular"
                         android:gravity="start|center_vertical"
                         android:text="@string/language"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/text_size_16"
+                        android:textColor="@color/app_color"
+                        android:textSize="@dimen/text_size_20"
                         app:layout_constraintBottom_toTopOf="@+id/bottom1"
                         app:layout_constraintEnd_toStartOf="@+id/btnRadio"
                         app:layout_constraintStart_toEndOf="@+id/imvFlag"
@@ -110,6 +126,8 @@
                         app:outerStrokeColor="@color/app_color"
                         app:outerStrokeWidth="@dimen/dimension_1"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+        </com.google.android.material.card.MaterialCardView>
         </com.google.android.material.card.MaterialCardView>
 
     </com.google.android.material.card.MaterialCardView>

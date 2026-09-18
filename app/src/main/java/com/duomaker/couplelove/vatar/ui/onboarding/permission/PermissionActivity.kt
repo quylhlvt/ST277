@@ -66,6 +66,7 @@ class PermissionActivity : BaseActivity<ActivityPermissionBinding, PermissionVie
 
     override fun initView() {
 //        updateContinueMargin()
+
         binding.setupActionBar()
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
             binding.btnStorage.visible()
@@ -83,8 +84,7 @@ class PermissionActivity : BaseActivity<ActivityPermissionBinding, PermissionVie
 
     private fun ActivityPermissionBinding.setupActionBar() {
         actionBar.apply {
-            tvCenter.select()
-            setTextActionBar(tvCenter, getString(R.string.permission))
+            setTextActionBar(tvStart, getString(R.string.permission))
         }
     }
 
@@ -177,17 +177,16 @@ class PermissionActivity : BaseActivity<ActivityPermissionBinding, PermissionVie
     override fun observeData() {}
 
     override fun initText() {
-        binding.actionBar.tvCenter.select()
         val textRes = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
             R.string.to_access_13 else R.string.to_access
 
-//        binding.txtPermission.text = buildString {
-//            append(getString(R.string.allow))
-//            append(" ")
-//            append(getString(R.string.app_name))
-//            append(" ")
-//            append(getString(textRes))
-//        }
+        binding.txtPermission.text = buildString {
+            append(getString(R.string.allow))
+            append(" ")
+            append(getString(R.string.app_name))
+            append(" ")
+            append(getString(textRes))
+        }
     }
 
     private fun handleContinue() {

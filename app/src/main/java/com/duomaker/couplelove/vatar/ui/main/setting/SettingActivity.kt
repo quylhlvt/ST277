@@ -64,10 +64,10 @@ class SettingActivity : BaseActivity<ActivitySettingBinding, SettingViewModel>(
             txt3.isSelected = true
             txt4.isSelected = true
 //
-//            setTextActionBar(
-//                actionBar.tvCenter,
-//                getString(R.string.settings)
-//            )
+            setTextActionBar(
+                actionBar.tvCenter,
+                getString(R.string.settings)
+            )
             actionBar.tvCenter.isSelected = true
         }
 

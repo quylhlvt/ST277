@@ -3,12 +3,12 @@
     <string name="app_name">Duo Maker: Couple Avatar</string>
     <string name="next">Next</string>
     <string name="language">Language</string>
-    <string name="title_1">\u00A0Create your own avatar however you like\u00A0</string>
-    <string name="title_2">\u00A0Unlock your stylish &amp; classy look\u00A0</string>
-    <string name="title_3">\u00A0A diverse collection of trendy accessories\u00A0</string>
+    <string name="title_1">\u00A0Create a fearless feline hero.\u00A0</string>
+    <string name="title_2">\u00A0Craft every detail your way.\u00A0</string>
+    <string name="title_3">\u00A0ABring your warrior legend to life.\u00A0</string>
     <string name="not_select_lang">Please select a language</string>
-    <string name="pony_maker">DUO\nMAKER</string>
-    <string name="cat_random">DUO\nLUCKY ROLL</string>
+    <string name="pony_maker">Cat Maker</string>
+    <string name="cat_random">Cat Random</string>
     <string name="permission">Permission</string>
     <string name="storage">Storage\u00A0</string>
     <string name="continue_per">\u00A0Continue\u00A0</string>
@@ -79,10 +79,10 @@
     <string name="rate_us_0">You have not rated it yet!</string>
     <string name="have_rated">Thank you for rate our app</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="cosplay">DUO\nCOSPLAY</string>
+    <string name="cosplay">Cosplay Cat</string>
     <string name="cosplay2">Cosplay</string>
     <string name="random">Random</string>
-    <string name="my_creation">MY\nCREATION</string>
+    <string name="my_creation">My Creation</string>
     <string name="category">Category</string>
     <string name="image">Image</string>
     <string name="color">Color</string>

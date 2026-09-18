@@ -13,7 +13,6 @@ enum class HomeMenuAction {
 
 data class HomeMenuItem(
     @StringRes val titleRes: Int,
-    @StringRes val imgRes: Int,
     val action: HomeMenuAction
 )
 
@@ -22,10 +21,10 @@ class HomeMenuAdapter(
 ) : RecyclerView.Adapter<HomeMenuAdapter.HomeMenuViewHolder>() {
 
     private val items = listOf(
-        HomeMenuItem(R.string.pony_maker, R.drawable.img_home1,HomeMenuAction.CREATE),
-        HomeMenuItem(R.string.cosplay, R.drawable.img_home2, HomeMenuAction.COSPLAY),
-        HomeMenuItem(R.string.cat_random, R.drawable.img_home3, HomeMenuAction.RANDOM),
-        HomeMenuItem(R.string.my_creation, R.drawable.img_home4, HomeMenuAction.MY_ALBUM)
+        HomeMenuItem(R.string.pony_maker, HomeMenuAction.CREATE),
+        HomeMenuItem(R.string.cosplay, HomeMenuAction.COSPLAY),
+        HomeMenuItem(R.string.cat_random, HomeMenuAction.RANDOM),
+        HomeMenuItem(R.string.my_creation, HomeMenuAction.MY_ALBUM)
     )
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeMenuViewHolder {
@@ -50,7 +49,6 @@ class HomeMenuAdapter(
         fun bind(item: HomeMenuItem) {
             binding.tvTitle.isSelected = true
             binding.tvTitle.setText(item.titleRes)
-            binding.menuContainer.setBackgroundResource(item.imgRes)
             binding.root.setOnClickListener { onItemClick(item.action) }
         }
     }

@@ -33,6 +33,7 @@ class IntroActivity : BaseActivity<ActivityIntroBinding, IntroViewModel>(
             OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
+                updatePageIndicator(position)
 //                if (position == 1) {
 //                    binding.nativeAds.gone()
 //                } else {
@@ -56,7 +57,7 @@ class IntroActivity : BaseActivity<ActivityIntroBinding, IntroViewModel>(
     override fun initView() {
 
         binding.viewPager2.adapter = introAdapter
-        binding.dotsIndicator.attachTo(binding.viewPager2)
+        updatePageIndicator(binding.viewPager2.currentItem)
         setOnChangeViewPager2()
 //        binding.textView.text = "Home Activity"
 //        binding.btnTest.setOnClickListener {
@@ -102,6 +103,23 @@ class IntroActivity : BaseActivity<ActivityIntroBinding, IntroViewModel>(
                 viewModel.getPage(binding.viewPager2.currentItem, introAdapter.itemCount)
             }
         })
+    }
+
+    private fun updatePageIndicator(selectedPosition: Int) {
+        val indicators = listOf(
+            binding.introDotFirst,
+            binding.introDotSecond,
+            binding.introDotThird
+        )
+        indicators.forEachIndexed { index, indicator ->
+            indicator.setBackgroundResource(
+                if (index == selectedPosition) {
+                    R.drawable.bg_intro_dot_active
+                } else {
+                    R.drawable.bg_intro_dot_inactive
+                }
+            )
+        }
     }
 
     override fun handleBackPressed(): Boolean {
