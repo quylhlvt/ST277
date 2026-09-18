@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/img_bg_splash"
+    tools:context="com.duomaker.couplelove.vatar.ui.onboarding.permission.PermissionActivity">
+
+    <FrameLayout
+        android:id="@+id/layoutActionBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/dimension_1"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <include
+            android:id="@+id/actionBar"
+            layout="@layout/layout_actionbar" />
+    </FrameLayout>
+
+
+    <ImageView
+        android:id="@+id/imgPermission"
+        android:layout_width="@dimen/dimension_0"
+        android:layout_height="@dimen/dimension_0"
+        android:adjustViewBounds="true"
+        android:src="@drawable/image_per"
+        app:layout_constraintBottom_toTopOf="@+id/txtPermission"
+        app:layout_constraintDimensionRatio="3.6:1.82"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutActionBar" />
+
+    <TextView
+        android:id="@+id/txtPermission"
+        android:layout_width="@dimen/dimension_0"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dimension_20"
+        android:gravity="center"
+        android:layout_marginBottom="@dimen/dimension_10"
+        app:layout_constraintTop_toBottomOf="@+id/imgPermission"
+        android:fontFamily="@font/jockey_one_regular"
+        android:textSize="@dimen/text_size_16"
+        android:textColor="@color/app_color6"
+        app:layout_constraintBottom_toTopOf="@+id/scrollView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dimension_30"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toTopOf="@+id/tvContinue">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/dimension_20"
+            android:orientation="vertical">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/btnStorage"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:cardBackgroundColor="@color/app_color2"
+                app:cardCornerRadius="@dimen/dimension_10"
+                app:layout_constraintDimensionRatio="3.28:0.52"
+                app:layout_constraintTop_toTopOf="parent"
+                app:strokeWidth="@dimen/dimension_0">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="@dimen/dimension_1"
+                    app:cardBackgroundColor="@color/app_color3"
+                    app:cardCornerRadius="@dimen/dimension_10"
+                    app:strokeWidth="@dimen/dimension_0">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="@dimen/dimension_3"
+                        app:cardBackgroundColor="@color/app_color4"
+                        app:cardCornerRadius="@dimen/dimension_10"
+                        app:strokeWidth="@dimen/dimension_0">
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="@dimen/dimension_1"
+                            app:cardBackgroundColor="@color/transparent"
+                            app:cardCornerRadius="@dimen/dimension_10"
+                            app:strokeWidth="@dimen/dimension_0">
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/bg_linear_color">
+
+                                <View
+                                    android:id="@+id/top1"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="@dimen/dimension_0"
+                                    app:layout_constraintDimensionRatio="3.2:0.09"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <View
+                                    android:id="@+id/bottom1"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="@dimen/dimension_0"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintDimensionRatio="3.2:0.09" />
+
+                                <View
+                                    android:id="@+id/top2"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="@dimen/dimension_0"
+                                    app:layout_constraintDimensionRatio="3.2:0.12"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <View
+                                    android:id="@+id/bottom2"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="@dimen/dimension_0"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintDimensionRatio="3.2:0.12" />
+
+                                <View
+                                    android:id="@+id/start1"
+                                    android:layout_width="@dimen/dimension_0"
+                                    android:layout_height="match_parent"
+                                    app:layout_constraintDimensionRatio="1.2:4"
+                                    app:layout_constraintStart_toStartOf="parent" />
+
+                                <View
+                                    android:id="@+id/end1"
+                                    android:layout_width="@dimen/dimension_0"
+                                    android:layout_height="match_parent"
+                                    app:layout_constraintDimensionRatio="1.2:4"
+                                    app:layout_constraintEnd_toEndOf="parent" />
+
+
+                                <TextView
+                                    style="@style/single_marquee"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+
+                                    android:fontFamily="@font/jockey_one_regular"
+                                    android:gravity="center_vertical"
+                                    android:text="@string/storage"
+                                    android:textColor="@color/app_color"
+                                    android:textSize="@dimen/text_size_20"
+                                    app:layout_constraintBottom_toTopOf="@+id/bottom1"
+                                    app:layout_constraintStart_toEndOf="@+id/start1"
+                                    app:layout_constraintTop_toBottomOf="@+id/top1" />
+
+                                <ImageView
+                                    android:id="@+id/swPermission"
+                                    android:layout_width="@dimen/dimension_0"
+                                    android:layout_height="@dimen/dimension_0"
+                                    android:src="@drawable/switch_on"
+                                    app:layout_constraintBottom_toTopOf="@+id/bottom2"
+                                    app:layout_constraintDimensionRatio="2.6:1.6"
+                                    app:layout_constraintEnd_toStartOf="@+id/end1"
+                                    app:layout_constraintTop_toBottomOf="@+id/top2" />
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+                        </com.google.android.material.card.MaterialCardView>
+                    </com.google.android.material.card.MaterialCardView>
+                </com.google.android.material.card.MaterialCardView>
+
+            </com.google.android.material.card.MaterialCardView>
+            <!-- btnStorage-->
+            <Space
+                android:id="@+id/space"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimension_0"
+                app:layout_constraintDimensionRatio="3.28:0.00"
+                app:layout_constraintTop_toBottomOf="@+id/btnStorage" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/btnNotification"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:cardBackgroundColor="@color/app_color2"
+                app:cardCornerRadius="@dimen/dimension_10"
+                app:layout_constraintDimensionRatio="3.28:0.52"
+                app:layout_constraintTop_toBottomOf="@+id/space"
+                app:strokeColor="@color/black"
+                app:strokeWidth="@dimen/dimension_0">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="@dimen/dimension_1"
+                    app:cardBackgroundColor="@color/app_color3"
+                    app:cardCornerRadius="@dimen/dimension_10"
+                    app:strokeWidth="@dimen/dimension_0">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="@dimen/dimension_3"
+                        app:cardBackgroundColor="@color/app_color4"
+                        app:cardCornerRadius="@dimen/dimension_10"
+                        app:strokeWidth="@dimen/dimension_0">
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="@dimen/dimension_1"
+                            app:cardBackgroundColor="@color/transparent"
+                            app:cardCornerRadius="@dimen/dimension_10"
+                            app:strokeWidth="@dimen/dimension_0">
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/bg_linear_color">
+
+                                <View
+                                    android:id="@+id/top3"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="@dimen/dimension_0"
+                                    app:layout_constraintDimensionRatio="3.2:0.09"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <View
+                                    android:id="@+id/bottom3"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="@dimen/dimension_0"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintDimensionRatio="3.2:0.09" />
+
+                                <View
+                                    android:id="@+id/top4"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="@dimen/dimension_0"
+                                    app:layout_constraintDimensionRatio="3.2:0.12"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <View
+                                    android:id="@+id/bottom4"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="@dimen/dimension_0"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintDimensionRatio="3.2:0.12" />
+
+                                <View
+                                    android:id="@+id/start3"
+                                    android:layout_width="@dimen/dimension_0"
+                                    android:layout_height="match_parent"
+                                    app:layout_constraintDimensionRatio="1.2:4"
+                                    app:layout_constraintStart_toStartOf="parent" />
+
+                                <View
+                                    android:id="@+id/end3"
+                                    android:layout_width="@dimen/dimension_0"
+                                    android:layout_height="match_parent"
+                                    app:layout_constraintDimensionRatio="1.2:4"
+                                    app:layout_constraintEnd_toEndOf="parent" />
+
+
+                                <TextView
+                                    style="@style/single_marquee"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+
+                                    android:fontFamily="@font/jockey_one_regular"
+                                    android:gravity="center_vertical"
+                                    android:text="@string/notification"
+                                    android:textColor="@color/app_color"
+                                    android:textSize="@dimen/text_size_20"
+                                    app:layout_constraintBottom_toTopOf="@+id/bottom3"
+                                    app:layout_constraintStart_toEndOf="@+id/start3"
+                                    app:layout_constraintTop_toBottomOf="@+id/top3" />
+
+                                <ImageView
+                                    android:id="@+id/swNotification"
+                                    android:layout_width="@dimen/dimension_0"
+                                    android:layout_height="@dimen/dimension_0"
+                                    android:src="@drawable/switch_on"
+                                    app:layout_constraintBottom_toTopOf="@+id/bottom4"
+                                    app:layout_constraintDimensionRatio="2.6:1.6"
+                                    app:layout_constraintEnd_toStartOf="@+id/end3"
+                                    app:layout_constraintTop_toBottomOf="@+id/top4" />
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+                        </com.google.android.material.card.MaterialCardView>
+                    </com.google.android.material.card.MaterialCardView>
+                </com.google.android.material.card.MaterialCardView>
+
+            </com.google.android.material.card.MaterialCardView>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/tvContinue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dimension_16"
+        android:layout_marginBottom="@dimen/dimension_180"
+        android:fontFamily="@font/jockey_one_regular"
+        android:gravity="center"
+        android:text="@string/continue_per"
+        android:textColor="@color/app_color"
+        android:textSize="@dimen/text_size_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

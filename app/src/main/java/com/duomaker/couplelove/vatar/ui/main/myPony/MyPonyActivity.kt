@@ -114,19 +114,14 @@ class MyPonyActivity : WhatsappSharingActivity<ActivityMyPonyBinding, MyPonyView
     private fun applyTabUI(isAvatar: Boolean) {
         binding.apply {
             if (isAvatar) {
-                btnMyAvatar.strokeColor = ContextCompat.getColor(this@MyPonyActivity, R.color.black)
-                cardAvatar.setCardBackgroundColor(ContextCompat.getColor(this@MyPonyActivity, R.color.app_color3))
-                btnMyDesign.strokeColor = ContextCompat.getColor(this@MyPonyActivity, R.color.gray1)
-                cardDesign.setCardBackgroundColor(ContextCompat.getColor(this@MyPonyActivity, R.color.gray1))
+                btnMyAvatar.setBackgroundResource(R.drawable.bg_linear_color_mycreation)
+                btnMyDesign.setBackgroundResource(R.drawable.bg_unselect_tag_mycreation)
                 recycleAvatar.visible()
                 recycleDesign.gone()
                 updateEmptyState(myAvatarAdapter.items.isEmpty())
             } else {
-                btnMyAvatar.strokeColor = ContextCompat.getColor(this@MyPonyActivity, R.color.gray1)
-                cardAvatar.setCardBackgroundColor(ContextCompat.getColor(this@MyPonyActivity, R.color.gray1))
-                btnMyDesign.strokeColor = ContextCompat.getColor(this@MyPonyActivity, R.color.black)
-                cardDesign.setCardBackgroundColor(ContextCompat.getColor(this@MyPonyActivity, R.color.app_color3))
-
+                btnMyAvatar.setBackgroundResource(R.drawable.bg_unselect_tag_mycreation)
+                btnMyDesign.setBackgroundResource(R.drawable.bg_linear_color_mycreation)
                 recycleAvatar.gone()
                 recycleDesign.visible()
                 updateEmptyState(myDesignAdapter.items.isEmpty())
@@ -135,7 +130,6 @@ class MyPonyActivity : WhatsappSharingActivity<ActivityMyPonyBinding, MyPonyView
             updateSelectionUI()
         }
     }
-
     private fun setupRecyclerViews() {
         myAvatarAdapter = MyAvatarAdapter(this@MyPonyActivity).apply {
             onItemClick = { item -> handleItemClick(item.path, true, 1, item.idEdit) }
@@ -327,7 +321,7 @@ class MyPonyActivity : WhatsappSharingActivity<ActivityMyPonyBinding, MyPonyView
                         btnActionBarNextToRight1.visible()
                         btnActionBarRight1.visible()
                         btnActionBarRight1.setImageResource(
-                            if (allSelected) R.drawable.ic_select_all else R.drawable.ic_not_select
+                            if (allSelected) R.drawable.ic_select_all else R.drawable.ic_unselect_all
                         )
                     }
                 } else {

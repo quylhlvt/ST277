@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:clipChildren="false"
+    android:background="@drawable/img_bg_splash"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.duomaker.couplelove.vatar.ui.onboarding.intro.IntroActivity">
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/dimension_10"
+        app:layout_constraintBottom_toTopOf="@+id/frame_layout_continue"
+        app:layout_constraintTop_toTopOf="parent" />
+    <FrameLayout
+        android:id="@+id/frame_layout_continue"
+        android:layout_width="match_parent"
+        android:clipToPadding="false"
+        android:clipChildren="false"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/dimension_16"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="@dimen/dimension_150"
+        >
+
+        <LinearLayout
+            android:id="@+id/dotsIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <View
+                android:id="@+id/introDotFirst"
+                android:layout_width="@dimen/dimension_24"
+                android:layout_height="@dimen/dimension_6"
+                android:background="@drawable/bg_intro_dot_active" />
+
+            <View
+                android:id="@+id/introDotSecond"
+                android:layout_width="@dimen/dimension_24"
+                android:layout_height="@dimen/dimension_6"
+                android:layout_marginStart="@dimen/dimension_12"
+                android:background="@drawable/bg_intro_dot_inactive" />
+
+            <View
+                android:id="@+id/introDotThird"
+                android:layout_width="@dimen/dimension_24"
+                android:layout_height="@dimen/dimension_6"
+                android:layout_marginStart="@dimen/dimension_12"
+                android:background="@drawable/bg_intro_dot_inactive" />
+        </LinearLayout>
+        <include
+            android:id="@+id/btnNextPager"
+            layout="@layout/bottom_bottom_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|end"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

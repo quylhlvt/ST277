@@ -103,15 +103,14 @@ class ViewActivity : BaseActivity<ActivityViewBinding, ViewViewModel>(
         binding.apply {
             setImageActionBar(actionBar.btnActionBarLeft, R.drawable.back_app)
             loadImage(this@ViewActivity, imagePath, imvImage)
-            setImageActionBar(actionBar.btnActionBarRight2, R.drawable.ic_delete_all)
-            setImageActionBar(actionBar.btnActionBarRight1, R.drawable.ic_share_all)
-            setImageActionBar(actionBar.btnActionBarRight, R.drawable.ic_download_all)
+            setImageActionBar(actionBar.btnActionBarRight1, R.drawable.ic_edit1)
+            setImageActionBar(actionBar.btnActionBarRight, R.drawable.ic_delete_view)
             when (imageType) {
                 1 -> {
-                    btnEdit.visible()
+                    actionBar.btnActionBarRight1.visible()
                 }
                 2 -> {
-                    btnEdit.gone()
+                    actionBar.btnActionBarRight1.gone()
                 }
             }
         }
@@ -120,19 +119,27 @@ class ViewActivity : BaseActivity<ActivityViewBinding, ViewViewModel>(
     override fun viewListener() {
         binding.apply {
             actionBar.btnActionBarLeft.onClick { finish() }
+            btnFacebook.onClick(1500) {
+                logSocialShareEvent("facebook")
+                shareToSocialApp(SocialShareManager.SocialApp.FACEBOOK)
+            }
+            btnInstagram.onClick(1500) {
+                logSocialShareEvent("instagram")
+                shareToSocialApp(SocialShareManager.SocialApp.INSTAGRAM)
+            }
 
             when (imageType) {
                 1 -> {
-                    actionBar.btnActionBarRight2.onClick1 { confirmDelete() }
-                    actionBar.btnActionBarRight1.onClick(1500) { shareImage() }
-                    actionBar.btnActionBarRight.onClick1 { downloadImage() }
-                    btnEdit.onClick1 { navigateToEdit() }
+                    actionBar.btnActionBarRight.onClick1 { confirmDelete() }
+                    btnShare.onClick(1500) { shareImage() }
+                    btnDownload.onClick1 { downloadImage() }
+                    actionBar.btnActionBarRight1.onClick1 { navigateToEdit() }
                 }
 
                 2 -> {
-                    actionBar.btnActionBarRight2.onClick1 { confirmDelete() }
-                    actionBar.btnActionBarRight1.onClick(1500) { shareImage() }
-                    actionBar.btnActionBarRight.onClick1 { downloadImage() }
+                    actionBar.btnActionBarRight.onClick1 { confirmDelete() }
+                    btnShare.onClick(1500) { shareImage() }
+                    btnDownload.onClick1 { downloadImage() }
                 }
             }
         }

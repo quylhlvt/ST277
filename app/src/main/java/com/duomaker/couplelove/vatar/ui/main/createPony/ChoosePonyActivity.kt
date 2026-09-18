@@ -30,7 +30,7 @@ class ChoosePonyActivity : BaseActivity<ActivityChoosePonyBinding, ChoosePonyVie
     private var isFirstLoad = true
     override fun initView() {
         setImageActionBar(binding.actionBar.btnActionBarLeft, R.drawable.back_app)
-//        setTextActionBar(binding.actionBar.tvCenter, getString(R.string.category))
+        setTextActionBar(binding.actionBar.tvCenter, getString(R.string.category))
 
         adapter = ChoosePonyAdapter { character, position ->
             val number = character.id.filter { it.isDigit() }

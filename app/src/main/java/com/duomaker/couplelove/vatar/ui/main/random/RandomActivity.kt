@@ -12,14 +12,14 @@ import com.duomaker.couplelove.vatar.core.extention.InternetExtension.isInternet
 import com.duomaker.couplelove.vatar.core.extention.InternetExtension.isNetworkConnected
 import com.duomaker.couplelove.vatar.core.extention.gone
 import com.duomaker.couplelove.vatar.core.extention.onClick
-import com.duomaker.couplelove.vatar.core.extention.select
 import com.duomaker.couplelove.vatar.core.extention.setImageActionBar
-import com.duomaker.couplelove.vatar.core.extention.setMaterialCardViewActionBar1
 import com.duomaker.couplelove.vatar.core.extention.visible
 import com.duomaker.couplelove.vatar.databinding.ActivityRandomBinding
 import com.duomaker.couplelove.vatar.ui.main.customize.CustomizeActivity
 import com.bumptech.glide.Glide
+import com.bumptech.glide.Priority
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.duomaker.couplelove.vatar.core.extention.setTextActionBar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
@@ -73,28 +73,33 @@ class RandomActivity : BaseActivity<ActivityRandomBinding, RandomViewModel>(
 
     override fun setupPreViews() {
         super.setupPreViews()
-        Glide.with(binding.imageGif).asGif().load(R.drawable.gif).into(binding.imageGif)
+        // Show the actual GIF as soon as its first frame is decoded. Give it
+        // priority so random layer requests cannot starve the animation.
+        binding.imageGif.visible()
+        Glide.with(binding.imageGif)
+            .asGif()
+            .load(R.drawable.gif)
+            .priority(Priority.IMMEDIATE)
+            .into(binding.imageGif)
     }
 
     override fun initView() {
         binding.imvImage.gone()
-        binding.imageGif.gone()
-        binding.contrainFirst.visible()
-        // The first screen is idle and waiting for an explicit Random tap.
-        setControlsEnabled(canEdit = false, canRandom = true)
         binding.setupActionBar()
+        // Start in the loading state. The first random result is requested as
+        // soon as the template data is ready (see observeData()).
+        randomRequested = true
+        binding.btnEdit.visible()
+        showLoading()
         binding.txtRandom.isSelected = true
+        binding.txtEdit.isSelected = true
     }
 
     private fun ActivityRandomBinding.setupActionBar() {
         actionBar.apply {
             setImageActionBar(btnActionBarLeft, R.drawable.back_app)
-            setMaterialCardViewActionBar1(
-                btnActionBarRightText,
-                tvRightText,
-                getString(R.string.edit)
-            )
-            btnActionBarRightText.gone()
+            setTextActionBar(tvCenter, getString(R.string.random))
+
             setEditActionBarEnabled(false)
         }
     }
@@ -109,12 +114,12 @@ class RandomActivity : BaseActivity<ActivityRandomBinding, RandomViewModel>(
                 randomRequested = true
                 // Hiện nút Edit ngay khi bắt đầu random, nhưng khóa cho tới
                 // khi ảnh đã render xong.
-                binding.actionBar.btnActionBarRightText.visible()
+                btnEdit.visible()
                 setEditActionBarEnabled(false)
                 requestRandomCharacter()
             }
-            actionBar.btnActionBarRightText.onClick {
-                if (!actionBar.btnActionBarRightText.isEnabled) return@onClick
+            btnEdit.onClick {
+                if (!btnEdit.isEnabled) return@onClick
                 val item = viewModel.randomItem.value ?: return@onClick
                 if (checkOnlineNetworkOrShowDialog(item.template.id)) return@onClick
                 val templateIndex = appSession.templates.value.indexOfFirst { it.id == item.template.id }
@@ -144,7 +149,6 @@ class RandomActivity : BaseActivity<ActivityRandomBinding, RandomViewModel>(
             return
         }
 
-        val cached = viewModel.cachedBitmap
         setControlsEnabled(
             canEdit = false,
             canRandom = true
@@ -289,9 +293,9 @@ class RandomActivity : BaseActivity<ActivityRandomBinding, RandomViewModel>(
     }
 
     private fun setEditActionBarEnabled(enabled: Boolean) {
-        binding.actionBar.btnActionBarRightText.isEnabled = enabled
-        binding.actionBar.btnActionBarRightText.isClickable = enabled
-        binding.actionBar.btnActionBarRightText.alpha = if (enabled) 1f else 0.5f
+        binding.btnEdit.isEnabled = enabled
+        binding.btnEdit.isClickable = enabled
+        binding.btnEdit.alpha = if (enabled) 1f else 0.5f
     }
 
     private fun mergeBitmaps(bitmaps: List<Bitmap>): Bitmap {

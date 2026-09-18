@@ -1,0 +1,1 @@
+-keep,allowobfuscation,allowshrinking class com.duomaker.couplelove.vatar.ui.main.cosplay.CosplayViewModel
