@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.util.Log
 import com.duomaker.couplelove.vatar.data.datalocal.manager.AppDataManager
+import com.duomaker.couplelove.vatar.data.model.addcharacter.BackgroundCategoryModel
 import com.duomaker.couplelove.vatar.data.model.addcharacter.SpeechCategoryModel
 import com.duomaker.couplelove.vatar.data.model.addcharacter.StickerCategoryModel
 import com.duomaker.couplelove.vatar.data.model.custom.CustomModel
@@ -63,7 +64,10 @@ class AppSession @Inject constructor(
         private set
     var stickerQuantity: Int = 0
         private set
-    val bgBaseUrl = "https://lvtglobal.tech/public/app/ST283_DuoMakerCoupleAvatar/bg"
+    val bgBaseUrl = "https://lvtglobal.tech/public/app/ST301_FantasyAvatarOCMaker/bg"
+    private val _backgroundCategories = MutableStateFlow<List<BackgroundCategoryModel>>(emptyList())
+    val backgroundCategories: StateFlow<List<BackgroundCategoryModel>> =
+        _backgroundCategories.asStateFlow()
     private val _stickerCategories = MutableStateFlow<List<StickerCategoryModel>>(emptyList())
     val stickerCategories: StateFlow<List<StickerCategoryModel>> = _stickerCategories.asStateFlow()
     private val _speechCategories = MutableStateFlow<List<SpeechCategoryModel>>(emptyList())
@@ -128,22 +132,61 @@ class AppSession @Inject constructor(
         return results.toSortedMap().values.toList()
     }
 
-    private fun loadBgQuantities(): Pair<Int, Int> {
+    private data class BackgroundCatalog(
+        val backgroundCategories: List<BackgroundCategoryModel>,
+        val stickerCategories: List<StickerCategoryModel>,
+        val speechCategories: List<SpeechCategoryModel>
+    ) {
+        val backgrounds: List<String>
+            get() = backgroundCategories.flatMap { it.imageUrls() }
+    }
+
+    private fun loadBackgroundCatalog(): BackgroundCatalog {
         val connection = URL("$bgBaseUrl/bg.json").openConnection() as HttpURLConnection
         return try {
             connection.connectTimeout = 10_000
             connection.readTimeout = 10_000
             val json = connection.inputStream.bufferedReader().use { it.readText() }
             val jsonObject = org.json.JSONObject(json)
-            val backgroundQuantity = jsonObject
-                .getJSONArray("Background")
-                .getJSONObject(0)
-                .getInt("quantity")
-            val stickerQuantity = jsonObject
-                .getJSONArray("Sticker")
-                .getJSONObject(0)
-                .getInt("quantity")
-            backgroundQuantity to stickerQuantity
+
+            val backgroundCategories = buildList {
+                val items = jsonObject.getJSONArray("background")
+                for (itemIndex in 0 until items.length()) {
+                    val item = items.getJSONObject(itemIndex)
+                    add(
+                        BackgroundCategoryModel(
+                            category = item.getString("category"),
+                            quantity = item.getInt("quantity")
+                        )
+                    )
+                }
+            }
+            val stickerCategories = buildList {
+                val items = jsonObject.getJSONArray("sticker")
+                for (itemIndex in 0 until items.length()) {
+                    val item = items.getJSONObject(itemIndex)
+                    add(
+                        StickerCategoryModel(
+                            category = item.getString("category"),
+                            quantity = item.getInt("quantity")
+                        )
+                    )
+                }
+            }
+            val speechCategories = buildList {
+                val items = jsonObject.getJSONArray("SpeechBubbles")
+                for (itemIndex in 0 until items.length()) {
+                    val item = items.getJSONObject(itemIndex)
+                    add(
+                        SpeechCategoryModel(
+                            category = item.getString("category"),
+                            quantity = item.getInt("quantity")
+                        )
+                    )
+                }
+            }
+
+            BackgroundCatalog(backgroundCategories, stickerCategories, speechCategories)
         } finally {
             connection.disconnect()
         }
@@ -162,20 +205,33 @@ class AppSession @Inject constructor(
             _bgLoading.value = true
             _bgStickerReady.value = false
             try {
-                val (backgroundCount, stickerCount) = loadBgQuantities()
-                check(backgroundCount > 0 && stickerCount > 0) {
-                    "Background/Sticker quantity is empty"
+                val catalog = loadBackgroundCatalog()
+                check(
+                    catalog.backgrounds.isNotEmpty() &&
+                        catalog.stickerCategories.isNotEmpty() &&
+                        catalog.speechCategories.isNotEmpty()
+                ) {
+                    "Background/Sticker/Speech catalog is empty"
                 }
 
-                bgQuantity = backgroundCount
-                stickerQuantity = stickerCount
-                _stickerCategories.value = emptyList()
-                _speechCategories.value = emptyList()
+                bgQuantity = catalog.backgrounds.size
+                stickerQuantity = catalog.stickerCategories.sumOf { it.quantity }
+                _backgroundCategories.value = catalog.backgroundCategories
+                _stickerCategories.value = catalog.stickerCategories
+                _speechCategories.value = catalog.speechCategories
+                appDataManager.updateBackgroundsStickersAndSpeech(
+                    bgs = catalog.backgrounds,
+                    stickers = catalog.stickerCategories.flatMap { it.imageUrls() },
+                    speech = catalog.speechCategories.flatMap { it.imageUrls() }
+                )
                 _bgStickerFailed.value = false
                 _bgStickerReady.value = true
                 Log.d(
                     "AppSession",
-                    "✅ bgQuantity=$bgQuantity stickerQuantity=$stickerQuantity"
+                    "✅ backgrounds=$bgQuantity " +
+                        "backgroundCategories=${catalog.backgroundCategories.size} " +
+                        "stickerCategories=${catalog.stickerCategories.size} " +
+                        "speechCategories=${catalog.speechCategories.size}"
                 )
             } catch (e: Exception) {
                 Log.e("AppSession", "❌ loadBgSticker: ${e.message}")

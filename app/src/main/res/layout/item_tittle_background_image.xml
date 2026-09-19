@@ -21,7 +21,7 @@
         android:gravity="center"
         android:paddingBottom="@dimen/dimension_3"
         app:outerStrokeWidth="@dimen/dimension_0"
-        android:fontFamily="@font/pacifico_regular"
+        android:fontFamily="@font/jockey_one_regular"
         android:textSize="@dimen/text_size_16"
         android:textColor="@color/white"/>
 </FrameLayout>

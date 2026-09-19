@@ -15,7 +15,7 @@
         android:elevation="@dimen/dimension_1"
         app:cardBackgroundColor="@color/white"
 
-        app:cardCornerRadius="@dimen/dimension_8"
+        app:cardCornerRadius="@dimen/dimension_4"
         app:cardElevation="@dimen/dimension_0"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="1:1"
@@ -24,21 +24,13 @@
         app:layout_constraintTop_toTopOf="parent"
 
         app:strokeColor="@color/gray3"
-        app:strokeWidth="@dimen/dimension_0_4">
+        app:strokeWidth="@dimen/dimension_0">
 
         <ImageView
             android:id="@+id/imvColor"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop" />
-
-        <ImageView
-            android:id="@+id/imvColorNone"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_none_item"
-            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/imvAddColor"
@@ -59,13 +51,13 @@
         android:elevation="@dimen/dimension_3"
         android:visibility="gone"
         app:cardBackgroundColor="@color/transparent"
-        app:cardCornerRadius="@dimen/dimension_8"
+        app:cardCornerRadius="@dimen/dimension_4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:strokeColor="@color/app_color18"
-        app:strokeWidth="@dimen/dimension_2" />
+        app:strokeColor="@color/app_color"
+        app:strokeWidth="@dimen/dimension_3" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

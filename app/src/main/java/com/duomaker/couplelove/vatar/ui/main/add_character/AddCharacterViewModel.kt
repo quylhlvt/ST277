@@ -6,6 +6,7 @@ import androidx.core.graphics.drawable.toDrawable
 import androidx.lifecycle.ViewModel
 import com.duomaker.couplelove.vatar.core.custom.Draw
 import com.duomaker.couplelove.vatar.core.custom.DrawableDraw
+import com.duomaker.couplelove.vatar.data.model.addcharacter.BackgroundCategoryModel
 import com.duomaker.couplelove.vatar.data.model.addcharacter.SelectedAddModel
 import com.duomaker.couplelove.vatar.data.model.addcharacter.SpeechCategoryModel
 import com.duomaker.couplelove.vatar.data.model.addcharacter.StickerCategoryModel
@@ -30,6 +31,7 @@ class AddCharacterViewModel @Inject constructor(
 
     // ========== Adapter Lists ==========
     var backgroundImageList: ArrayList<SelectedAddModel> = arrayListOf()
+    var backgroundCategoryList: ArrayList<BackgroundCategoryModel> = arrayListOf()
     var stickerCategoryList: ArrayList<StickerCategoryModel> = arrayListOf()
     var speechCategoryList: ArrayList<SpeechCategoryModel> = arrayListOf()
     var backgroundColorList: ArrayList<SelectedAddModel> = arrayListOf()
@@ -92,25 +94,14 @@ class AddCharacterViewModel @Inject constructor(
         stickers: List<String>,
         speeches: List<String>
     ) {
-        val selectedPath = selectedBackgroundImagePath
-        backgroundImageList = arrayListOf(
-            SelectedAddModel(
-                path = "",
-                isSelected = selectedBackgroundImagePosition == NONE_BACKGROUND_POSITION
-            ),
-            SelectedAddModel(
-                path = "",
-                isSelected = selectedBackgroundImagePosition == ADD_BACKGROUND_POSITION
-            )
-        ).apply {
-            addAll(backgrounds.map { path ->
-                SelectedAddModel(path = path, isSelected = path == selectedPath)
-            })
-        }
+        backgroundImageList = createBackgroundImageList(backgrounds)
         selectedBackgroundImagePosition = backgroundImageList.indexOfFirst { it.isSelected }
 
+        backgroundCategoryList.indexOfFirst { it.isSelected }
+            .takeIf { it >= 0 }
+            ?.let(::selectBackgroundCategory)
+
         backgroundColorList.clear()
-        backgroundColorList.add(SelectedAddModel()) // None
         backgroundColorList.add(SelectedAddModel()) // Choose custom color
         backgroundColorList.addAll(DataLocal.getBackgroundColorDefault(context))
         backgroundColorList.forEachIndexed { index, item ->
@@ -139,15 +130,49 @@ class AddCharacterViewModel @Inject constructor(
 
     }
 
-    fun loadDataFromQuantity(
-        bgQuantity: Int,
-        stickerQuantity: Int,
-        bgBaseUrl: String,
-        speeches: List<String>
-    ) {
-        val backgrounds = (1..bgQuantity).map { "$bgBaseUrl/Background/$it.jpg" }
-        val stickers = (1..stickerQuantity).map { "$bgBaseUrl/Sticker/$it.png" }
-        loadDataFromMainViewModel(backgrounds, stickers, speeches)
+    private fun createBackgroundImageList(
+        backgrounds: List<String>
+    ): ArrayList<SelectedAddModel> = arrayListOf(
+            SelectedAddModel(
+                path = "",
+                isSelected = selectedBackgroundImagePosition == ADD_BACKGROUND_POSITION
+            ),
+            SelectedAddModel(
+                path = "",
+                isSelected = selectedBackgroundImagePosition == NONE_BACKGROUND_POSITION
+            )
+        ).apply {
+            val selectedPath = selectedBackgroundImagePath
+            addAll(backgrounds.map { path ->
+                SelectedAddModel(path = path, isSelected = path == selectedPath)
+            })
+        }
+
+    fun setBackgroundCategories(categories: List<BackgroundCategoryModel>) {
+        val selectedCategory = backgroundCategoryList
+            .firstOrNull { it.isSelected }
+            ?.category
+        backgroundCategoryList = categories.mapIndexed { index, category ->
+            category.copy(
+                isSelected = selectedCategory
+                    ?.let { it == category.category }
+                    ?: (index == 0)
+            )
+        }.toCollection(ArrayList())
+
+        backgroundCategoryList.indexOfFirst { it.isSelected }
+            .takeIf { it >= 0 }
+            ?.let(::selectBackgroundCategory)
+    }
+
+    fun selectBackgroundCategory(position: Int) {
+        backgroundCategoryList.forEachIndexed { index, item ->
+            item.isSelected = index == position
+        }
+        backgroundImageList = createBackgroundImageList(
+            backgroundCategoryList.getOrNull(position)?.imageUrls().orEmpty()
+        )
+        selectedBackgroundImagePosition = backgroundImageList.indexOfFirst { it.isSelected }
     }
 
     fun setStickerCategories(categories: List<StickerCategoryModel>) {
@@ -223,26 +248,25 @@ class AddCharacterViewModel @Inject constructor(
         }
     }
 
-    /** None là trạng thái dùng chung cho cả tab Image và tab Color. */
+    /** None chỉ hiển thị trong tab Image; tab Color không chọn item nào. */
     fun selectNoBackground() {
         setBackgroundImage(null)
         selectedBackgroundImagePath = null
         selectedBackgroundImagePosition = NONE_BACKGROUND_POSITION
-        selectedBackgroundColorPosition = NONE_BACKGROUND_COLOR_POSITION
+        selectedBackgroundColorPosition = -1
         savedBackgroundColor = null
 
         backgroundImageList.forEachIndexed { index, model ->
             model.isSelected = index == NONE_BACKGROUND_POSITION
         }
-        backgroundColorList.forEachIndexed { index, model ->
-            model.isSelected = index == NONE_BACKGROUND_COLOR_POSITION
+        backgroundColorList.forEach { model ->
+            model.isSelected = false
         }
     }
 
     private companion object {
-        const val NONE_BACKGROUND_POSITION = 0
-        const val ADD_BACKGROUND_POSITION = 1
-        const val NONE_BACKGROUND_COLOR_POSITION = 0
+        const val ADD_BACKGROUND_POSITION = 0
+        const val NONE_BACKGROUND_POSITION = 1
     }
 
     fun updateTextFontSelected(position: Int) {
@@ -313,6 +337,7 @@ class AddCharacterViewModel @Inject constructor(
 
     fun clearAllData() {
         backgroundImageList.clear()
+        backgroundCategoryList.clear()
         stickerCategoryList.clear()
         speechCategoryList.clear()
         backgroundColorList.clear()

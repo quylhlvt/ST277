@@ -11,7 +11,6 @@ import com.duomaker.couplelove.vatar.databinding.ItemBackgroundColorBinding
 class BackgroundColorAdapter : BaseAdapter<SelectedAddModel, ItemBackgroundColorBinding>(
     ItemBackgroundColorBinding::inflate
 ) {
-    var onNoneColorClick: (() -> Unit) = {}
     var onChooseColorClick: (() -> Unit) = {}
     var onBackgroundColorClick: ((Int, Int) -> Unit) = { _, _ -> }
     var currentSelected = -1
@@ -24,22 +23,13 @@ class BackgroundColorAdapter : BaseAdapter<SelectedAddModel, ItemBackgroundColor
                 materiaForcus.gone()
             }
             when (position) {
-                NONE_COLOR_POSITION -> {
-                    imvColorNone.visible()
-                    imvAddColor.gone()
-                    imvColor.gone()
-                    root.onClick { onNoneColorClick() }
-                }
-
                 ADD_COLOR_POSITION -> {
-                    imvColorNone.gone()
                     imvAddColor.visible()
                     imvColor.gone()
                     root.onClick { onChooseColorClick() }
                 }
 
                 else -> {
-                    imvColorNone.gone()
                     imvAddColor.gone()
                     imvColor.visible()
                     imvColor.setBackgroundColor(item.color)
@@ -66,7 +56,6 @@ class BackgroundColorAdapter : BaseAdapter<SelectedAddModel, ItemBackgroundColor
     }
 
     private companion object {
-        const val NONE_COLOR_POSITION = 0
-        const val ADD_COLOR_POSITION = 1
+        const val ADD_COLOR_POSITION = 0
     }
 }

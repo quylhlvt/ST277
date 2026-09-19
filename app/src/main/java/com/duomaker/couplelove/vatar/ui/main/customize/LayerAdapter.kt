@@ -36,7 +36,7 @@ class NavAdapter :
 
     private fun bindFocus(binding: ItemBottomCustomBinding, position: Int) {
         binding.frame1.strokeColor = if (posNav == position) {
-            ContextCompat.getColor(binding.root.context, R.color.app_color3)
+            ContextCompat.getColor(binding.root.context, R.color.app_color)
         } else {
             ContextCompat.getColor(binding.root.context, R.color.white)
         }
@@ -91,11 +91,7 @@ class ColorAdapter : BaseAdapter<ColorModel, ItemColorBinding>(ItemColorBinding:
     }
 
     private fun bindFocus(binding: ItemColorBinding, position: Int) {
-        binding.colorSelected.strokeColor = if (posColor == position) {
-            ContextCompat.getColor(binding.root.context, R.color.app_color3)
-        } else {
-            ContextCompat.getColor(binding.root.context, R.color.white)
-        }
+        binding.colorSelected.visibility = if (posColor == position) View.VISIBLE else View.GONE
     }
 
     override fun onBind(binding: ItemColorBinding, item: ColorModel, position: Int) {
@@ -141,7 +137,7 @@ class PartAdapter : BaseAdapter<String, ItemLayerBinding>(ItemLayerBinding::infl
 
     private fun bindFocus(binding: ItemLayerBinding, position: Int) {
         binding.materialParent.strokeColor = if (posPath == position) {
-            ContextCompat.getColor(binding.root.context, R.color.app_color3)
+            ContextCompat.getColor(binding.root.context, R.color.app_color)
         } else {
             ContextCompat.getColor(binding.root.context, R.color.white)
         }

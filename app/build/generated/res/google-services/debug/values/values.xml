@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="gcm_defaultSenderId" translatable="false">893101365520</string>
-    <string name="google_api_key" translatable="false">AIzaSyAFFDCZCdjOWLacw8Yc1q0c--NuijeurSo</string>
-    <string name="google_app_id" translatable="false">1:893101365520:android:0bf6e6d3ffc491c1b52d95</string>
-    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyAFFDCZCdjOWLacw8Yc1q0c--NuijeurSo</string>
-    <string name="google_storage_bucket" translatable="false">st283-duo-maker-couple-avatar.firebasestorage.app</string>
-    <string name="project_id" translatable="false">st283-duo-maker-couple-avatar</string>
-</resources>

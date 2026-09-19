@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -17,14 +18,14 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimension_0"
             app:layout_constraintDimensionRatio="3.6:0.4"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <View
             android:id="@+id/view2"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimension_0"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="3.6:0.11" />
+            app:layout_constraintDimensionRatio="3.6:0.11"/>
 
         <!--    btnActionBarLeft-->
         <ImageView
@@ -39,7 +40,7 @@
             app:layout_constraintBottom_toTopOf="@+id/view2"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view1" />
+            app:layout_constraintTop_toBottomOf="@+id/view1"/>
 
         <!--    cvLogo-->
         <androidx.cardview.widget.CardView
@@ -62,7 +63,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="centerCrop" />
+                android:scaleType="centerCrop"/>
         </androidx.cardview.widget.CardView>
 
         <!--    tvStart-->
@@ -83,7 +84,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view1"
             app:outerStrokeColor="@color/app_color"
-            app:outerStrokeWidth="@dimen/dimension_3" />
+            app:outerStrokeWidth="@dimen/dimension_3"/>
 
         <!--    tvCenter-->
         <TextView
@@ -103,7 +104,7 @@
             app:layout_constraintStart_toEndOf="@+id/btnActionBarLeft"
             app:layout_constraintTop_toBottomOf="@+id/view1"
             app:outerStrokeColor="@color/app_color"
-            app:outerStrokeWidth="@dimen/dimension_3" />
+            app:outerStrokeWidth="@dimen/dimension_3"/>
 
         <!--    btnActionBarCenter-->
         <ImageView
@@ -116,7 +117,7 @@
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toStartOf="@+id/btnActionBarCenter1"
             app:layout_constraintStart_toEndOf="@+id/btnActionBarLeft"
-            app:layout_constraintTop_toTopOf="@+id/btnActionBarLeft" />
+            app:layout_constraintTop_toTopOf="@+id/btnActionBarLeft"/>
 
         <ImageView
             android:id="@+id/btnActionBarCenter1"
@@ -127,7 +128,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/btnActionBarLeft"
             app:layout_constraintEnd_toStartOf="@+id/btnActionBarCenter2"
             app:layout_constraintStart_toEndOf="@+id/btnActionBarCenter"
-            app:layout_constraintTop_toTopOf="@+id/btnActionBarLeft" />
+            app:layout_constraintTop_toTopOf="@+id/btnActionBarLeft"/>
         <!--    btnActionBarCenter-->
         <ImageView
             android:id="@+id/btnActionBarCenter2"
@@ -137,9 +138,9 @@
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="@+id/btnActionBarLeft"
             app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toStartOf="@+id/btnActionBarRight"
+            app:layout_constraintEnd_toStartOf="@+id/btnActionBarRightText"
             app:layout_constraintStart_toEndOf="@+id/btnActionBarCenter1"
-            app:layout_constraintTop_toTopOf="@+id/btnActionBarLeft" />
+            app:layout_constraintTop_toTopOf="@+id/btnActionBarLeft"/>
 
         <!--    btnActionBarNextToRight-->
         <ImageView
@@ -152,7 +153,7 @@
             app:layout_constraintBottom_toTopOf="@+id/view2"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toStartOf="@+id/btnActionBarRight"
-            app:layout_constraintTop_toBottomOf="@+id/view1" />
+            app:layout_constraintTop_toBottomOf="@+id/view1"/>
 
         <!--    btnActionBarRight-->
         <ImageView
@@ -166,7 +167,7 @@
             app:layout_constraintBottom_toTopOf="@+id/view2"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view1" />
+            app:layout_constraintTop_toBottomOf="@+id/view1"/>
 
         <ImageView
             android:id="@+id/btnActionBarNextToRight1"
@@ -179,7 +180,7 @@
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toStartOf="@+id/btnActionBarRight1"
 
-            app:layout_constraintTop_toTopOf="@+id/btnActionBarRight1" />
+            app:layout_constraintTop_toTopOf="@+id/btnActionBarRight1"/>
 
         <ImageView
             android:id="@+id/btnActionBarRight1"
@@ -192,10 +193,10 @@
             app:layout_constraintBottom_toBottomOf="@+id/btnActionBarRight"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/btnActionBarRight" />
+            app:layout_constraintTop_toTopOf="@+id/btnActionBarRight"/>
 
         <!--            btnActionBarRightText-->
-        <com.google.android.material.card.MaterialCardView
+        <androidx.cardview.widget.CardView
             android:id="@+id/btnActionBarRightText"
             android:layout_width="@dimen/dimension_0"
             android:layout_height="@dimen/dimension_0"
@@ -204,41 +205,60 @@
             app:cardBackgroundColor="@color/app_color2"
             app:cardCornerRadius="@dimen/dimension_10"
             app:layout_constraintBottom_toBottomOf="@+id/btnActionBarRight"
-            app:layout_constraintDimensionRatio="0.64:0.36"
+            app:layout_constraintDimensionRatio="0.8:0.4"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/btnActionBarRight"
-            app:strokeColor="@color/app_color"
-            app:strokeWidth="@dimen/dimension_2">
+            android:elevation="@dimen/dimension_0"
+            app:cardElevation="@dimen/dimension_0"
+        >
 
-            <com.google.android.material.card.MaterialCardView
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginHorizontal="@dimen/dimension_2"
-
-                android:layout_marginTop="@dimen/dimension_2"
-                android:layout_marginBottom="@dimen/dimension_5"
-                app:cardBackgroundColor="@color/app_color8"
-                app:cardCornerRadius="@dimen/dimension_8"
-                app:strokeWidth="@dimen/dimension_0">
-
-                <FrameLayout
+                android:elevation="@dimen/dimension_0"
+                app:cardElevation="@dimen/dimension_0"
+                android:layout_marginBottom="@dimen/dimension_1"
+                app:cardBackgroundColor="@color/app_color3"
+                app:cardCornerRadius="@dimen/dimension_10">
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:elevation="@dimen/dimension_0"
+                    app:cardElevation="@dimen/dimension_0"
+                    android:layout_marginBottom="@dimen/dimension_2"
+                    app:cardBackgroundColor="@color/app_color4"
+                    app:cardCornerRadius="@dimen/dimension_10">
 
-                    <TextView
-                        android:id="@+id/tvRightText"
-                        style="@style/single_marquee"
+                    <androidx.cardview.widget.CardView
+                        android:layout_marginBottom="@dimen/dimension_1"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:fontFamily="@font/jockey_one_regular"
-                        android:gravity="center"
-                        android:text="@string/next"
-                        android:textColor="@color/app_color"
-                        android:textSize="@dimen/dimension_16" />
-                </FrameLayout>
+                        app:cardElevation="@dimen/dimension_0"
+                        android:elevation="@dimen/dimension_0"
+                        app:cardBackgroundColor="@color/transparent"
+                        app:cardCornerRadius="@dimen/dimension_10">
+                        <FrameLayout
+                            android:background="@drawable/bg_linear_color"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
 
-            </com.google.android.material.card.MaterialCardView>
-        </com.google.android.material.card.MaterialCardView>
+                            <TextView
+                                android:id="@+id/tvRightText"
+                                style="@style/single_marquee"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center"
+                                android:fontFamily="@font/jockey_one_regular"
+                                android:gravity="center"
+                                android:text="@string/next"
+                                android:textColor="@color/app_color"
+                                android:textSize="@dimen/text_size_16"/>
+                        </FrameLayout>
+                    </androidx.cardview.widget.CardView>
+
+
+                </androidx.cardview.widget.CardView>
+            </androidx.cardview.widget.CardView>
+        </androidx.cardview.widget.CardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

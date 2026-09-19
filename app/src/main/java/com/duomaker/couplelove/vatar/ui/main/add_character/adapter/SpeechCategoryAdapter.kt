@@ -15,7 +15,7 @@ class SpeechCategoryAdapter :
     override fun onBind(binding: ItemTittleBackgroundImageBinding, item: SpeechCategoryModel, position: Int) {
         val context = binding.root.context
         binding.apply {
-            txtTittle.text = context.getString(R.string.bubbles)+" "+item.category
+            txtTittle.text = item.category.replace('_', ' ')
             if (item.isSelected) {
                 txtTittle.setTextColor(ContextCompat.getColor(context,R.color.app_color))
                 frameTittle.background = ContextCompat.getDrawable(context, R.drawable.bg_8_title)

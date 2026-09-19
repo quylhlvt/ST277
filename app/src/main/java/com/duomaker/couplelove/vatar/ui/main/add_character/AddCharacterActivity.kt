@@ -51,6 +51,7 @@ import com.duomaker.couplelove.vatar.core.helper.BitmapHelper
 import com.duomaker.couplelove.vatar.data.datalocal.manager.CharacterImageManager
 import com.duomaker.couplelove.vatar.data.model.addcharacter.SelectedAddModel
 import com.duomaker.couplelove.vatar.databinding.ActivityAddCharacterBinding
+import com.duomaker.couplelove.vatar.ui.main.add_character.adapter.BackgroundCategoryAdapter
 import com.duomaker.couplelove.vatar.ui.main.add_character.adapter.BackgroundColorAdapter
 import com.duomaker.couplelove.vatar.ui.main.add_character.adapter.BackgroundImageAdapter
 import com.duomaker.couplelove.vatar.ui.main.add_character.adapter.SpeechAdapter
@@ -105,6 +106,7 @@ class AddCharacterActivity : BaseActivity<ActivityAddCharacterBinding, AddCharac
 
     // ── Adapters ─────────────────────────────────────────────────────────────
     private val backgroundImageAdapter by lazy { BackgroundImageAdapter() }
+    private val backgroundCategoryAdapter by lazy { BackgroundCategoryAdapter() }
     private val stickerCategoryAdapter by lazy { StickerCategoryAdapter() }
     private val speechCategoryAdapter by lazy { SpeechCategoryAdapter() }
     private val backgroundColorAdapter by lazy { BackgroundColorAdapter() }
@@ -184,15 +186,26 @@ class AddCharacterActivity : BaseActivity<ActivityAddCharacterBinding, AddCharac
                 launch {
                     appSession.bgStickerReady.collect { ready ->
                         if (!ready || !isCatalogUiReady) return@collect
-                        viewModel.loadDataFromQuantity(
-                            bgQuantity = appSession.bgQuantity,
-                            stickerQuantity = appSession.stickerQuantity,
-                            bgBaseUrl = appSession.bgBaseUrl,
-                            speeches = appSession.speechs.value
+                        viewModel.loadDataFromMainViewModel(
+                            appSession.backgrounds.value,
+                            appSession.stickers.value,
+                            appSession.speechs.value
                         )
                         submitBackgroundImages(viewModel.backgroundImageList)
                         stickerAdapter.submitList(viewModel.stickerList, true)
                         speechAdapter.submitList(viewModel.speechList)
+                    }
+                }
+                launch {
+                    appSession.backgroundCategories.collectLatest { categories ->
+                        if (isCatalogUiReady && categories.isNotEmpty()) {
+                            viewModel.setBackgroundCategories(categories)
+                            backgroundCategoryAdapter.submitList(viewModel.backgroundCategoryList)
+                            submitBackgroundImages(viewModel.backgroundImageList)
+                            backgroundImageAdapter.selectItem(
+                                viewModel.backgroundImageList.indexOfFirst { it.isSelected }
+                            )
+                        }
                     }
                 }
                 launch {
@@ -241,7 +254,7 @@ class AddCharacterActivity : BaseActivity<ActivityAddCharacterBinding, AddCharac
             // Action bar
             actionBar.btnActionBarLeft.onClick { confirmExit() }
             actionBar.btnActionBarCenter3.onClick { confirmReset() }
-            actionBar.btnActionBarRight1.onClick { handleSave() }
+            actionBar.btnActionBarRightText.onClick { handleSave() }
 
             // Background tabs
             lnlBackground.btnBackgroundImage.onClick {
@@ -305,10 +318,18 @@ class AddCharacterActivity : BaseActivity<ActivityAddCharacterBinding, AddCharac
                     handleSetBackgroundImage(path, position)
                 }
             }
-            backgroundColorAdapter.onNoneColorClick = { handleRemoveBackground() }
             backgroundColorAdapter.onChooseColorClick = { handleChooseColor() }
             backgroundColorAdapter.onBackgroundColorClick = { color, position ->
                 handleSetBackgroundColor(color, position)
+            }
+            backgroundCategoryAdapter.onCategoryClick = { _, position ->
+                viewModel.selectBackgroundCategory(position)
+                backgroundCategoryAdapter.submitList(viewModel.backgroundCategoryList)
+                submitBackgroundImages(viewModel.backgroundImageList)
+                backgroundImageAdapter.selectItem(
+                    viewModel.backgroundImageList.indexOfFirst { it.isSelected }
+                )
+                lnlBackground.rcvBackgroundImage.scrollToPosition(0)
             }
             stickerAdapter.onItemClick = { path, position ->
                 if (checkNetworkBeforeRemoteAsset(path)) {
@@ -489,8 +510,11 @@ class AddCharacterActivity : BaseActivity<ActivityAddCharacterBinding, AddCharac
         binding.actionBar.apply {
             setImageActionBar(btnActionBarLeft, R.drawable.back_app)
             setImageActionBar(btnActionBarCenter3, R.drawable.ic_reset_all_add)
-            setImageActionBar(btnActionBarRight1, R.drawable.ic_save_all_add)
-
+            setMaterialCardViewActionBar1(
+                btnActionBarRightText,
+                tvRightText,
+                getString(R.string.save)
+            )
         }
     }
 
@@ -507,6 +531,10 @@ class AddCharacterActivity : BaseActivity<ActivityAddCharacterBinding, AddCharac
                 adapter = backgroundColorAdapter; itemAnimator = null
                 (layoutManager as? GridLayoutManager)?.spanCount = contentSpanCount
             }
+            lnlBackground.rcvBackgroundTitles.apply {
+                adapter = backgroundCategoryAdapter
+                itemAnimator = null
+            }
             rcvSticker.apply {
                 adapter = stickerAdapter; itemAnimator = null
                 setHasFixedSize(true); setItemViewCacheSize(10)
@@ -516,6 +544,14 @@ class AddCharacterActivity : BaseActivity<ActivityAddCharacterBinding, AddCharac
                 adapter = speechAdapter; itemAnimator = null
                 setHasFixedSize(true); setItemViewCacheSize(10)
                 (layoutManager as? GridLayoutManager)?.spanCount = contentSpanCount
+            }
+            rcvtTittle.apply {
+                adapter = stickerCategoryAdapter
+                itemAnimator = null
+            }
+            rcvtTittle2.apply {
+                adapter = speechCategoryAdapter
+                itemAnimator = null
             }
             lnlText.rcvFont.apply { adapter = textFontAdapter; itemAnimator = null }
             lnlText.rcvTextColor.apply { adapter = textColorAdapter; itemAnimator = null }
@@ -561,12 +597,14 @@ class AddCharacterActivity : BaseActivity<ActivityAddCharacterBinding, AddCharac
                 // Màn đã có frame đầu; lúc này mới chuẩn bị các danh sách
                 // Background/Sticker/Speech/Text và khởi động load thumbnail.
                 isCatalogUiReady = true
-                viewModel.loadDataFromQuantity(
-                    bgQuantity = appSession.bgQuantity,
-                    stickerQuantity = appSession.stickerQuantity,
-                    bgBaseUrl = appSession.bgBaseUrl,
-                    speeches = appSession.speechs.value
+                viewModel.loadDataFromMainViewModel(
+                    appSession.backgrounds.value,
+                    appSession.stickers.value,
+                    appSession.speechs.value
                 )
+                if (appSession.backgroundCategories.value.isNotEmpty()) {
+                    viewModel.setBackgroundCategories(appSession.backgroundCategories.value)
+                }
                 if (appSession.stickerCategories.value.isNotEmpty()) {
                     viewModel.setStickerCategories(appSession.stickerCategories.value)
                 }
@@ -576,7 +614,7 @@ class AddCharacterActivity : BaseActivity<ActivityAddCharacterBinding, AddCharac
                     if (selected >= 0) viewModel.selectSpeechCategory(selected)
                 }
 
-                // None là trạng thái chung: cùng focus ở tab Image và Color.
+                // None chỉ nằm trong tab Image; tab Color không có item None.
                 if (viewModel.selectedBackgroundImagePosition < 0 &&
                     viewModel.selectedBackgroundImagePath == null &&
                     viewModel.savedBackgroundColor == null
@@ -601,6 +639,7 @@ class AddCharacterActivity : BaseActivity<ActivityAddCharacterBinding, AddCharac
 
     private fun submitAllAdapters(onBackgroundReady: (() -> Unit)? = null) {
         submitBackgroundImages(viewModel.backgroundImageList, onBackgroundReady)
+        backgroundCategoryAdapter.submitList(viewModel.backgroundCategoryList)
         stickerCategoryAdapter.submitList(viewModel.stickerCategoryList)
         speechCategoryAdapter.submitList(viewModel.speechCategoryList)
         backgroundColorAdapter.submitList(viewModel.backgroundColorList, true)
@@ -801,28 +840,26 @@ class AddCharacterActivity : BaseActivity<ActivityAddCharacterBinding, AddCharac
     private fun setupTypeBackground(type: Int) {
         binding.apply {
             val isImageSelected = type == ValueKey.IMAGE_BACKGROUND
-
-            lnlBackground.btnBackgroundImage.strokeColor =
-                ContextCompat.getColor(this@AddCharacterActivity, if (isImageSelected) R.color.black else R.color.gray1)
-
-            lnlBackground.btnBackgroundColor.strokeColor =
-                ContextCompat.getColor(this@AddCharacterActivity, if (!isImageSelected) R.color.black else R.color.gray1)
-            lnlBackground.cardBackgroundImage.setCardBackgroundColor(
+            lnlBackground.btnBackgroundImage.setBackgroundResource(
+                if (isImageSelected) R.drawable.bg_tag else 0
+            )
+            lnlBackground.btnBackgroundColor.setBackgroundResource(
+                if (!isImageSelected) R.drawable.bg_tag else 0
+            )
+            lnlBackground.txtBackgroundImage.setTextColor(
                 ContextCompat.getColor(
                     this@AddCharacterActivity,
-                    if (isImageSelected) R.color.app_color3 else R.color.gray1
+                    if (isImageSelected) R.color.app_color else R.color.white
                 )
             )
-            lnlBackground.cardBackgroundColor.setCardBackgroundColor(
+            lnlBackground.txtBackgroundColor.setTextColor(
                 ContextCompat.getColor(
                     this@AddCharacterActivity,
-                    if (!isImageSelected) R.color.app_color3 else R.color.gray1
+                    if (!isImageSelected) R.color.app_color else R.color.white
                 )
             )
-
             lnlBackground.txtBackgroundImage.isSelected = isImageSelected
             lnlBackground.txtBackgroundColor.isSelected = !isImageSelected
-
             when (type) {
                 ValueKey.IMAGE_BACKGROUND -> {
                     lnlBackground.rcvBackgroundColor.gone()
@@ -874,11 +911,10 @@ class AddCharacterActivity : BaseActivity<ActivityAddCharacterBinding, AddCharac
             title = getString(R.string.reset),
             onYes = {
                 showLoadingSafe()
-                viewModel.loadDataFromQuantity(
-                    bgQuantity = appSession.bgQuantity,
-                    stickerQuantity = appSession.stickerQuantity,
-                    bgBaseUrl = appSession.bgBaseUrl,
-                    speeches = appSession.speechs.value
+                viewModel.loadDataFromMainViewModel(
+                    appSession.backgrounds.value,
+                    appSession.stickers.value,
+                    appSession.speechs.value
                 )
                 textFontAdapter.submitListReset(viewModel.textFontList)
                 textColorAdapter.submitListReset(viewModel.textColorList)
@@ -903,7 +939,6 @@ class AddCharacterActivity : BaseActivity<ActivityAddCharacterBinding, AddCharac
                 backgroundImageAdapter.selectItem(NONE_BACKGROUND_POSITION)
                 backgroundColorAdapter.submitList(viewModel.backgroundColorList)
                 backgroundColorAdapter.clearSelection()
-                backgroundColorAdapter.selectItem(NONE_BACKGROUND_COLOR_POSITION)
                 stickerAdapter.clearSelection()
                 speechAdapter.clearSelection()
                 hideLoadingSafe()
@@ -955,7 +990,7 @@ class AddCharacterActivity : BaseActivity<ActivityAddCharacterBinding, AddCharac
         )
 
         backgroundImageAdapter.selectItem(NONE_BACKGROUND_POSITION)
-        backgroundColorAdapter.selectItem(NONE_BACKGROUND_COLOR_POSITION)
+        backgroundColorAdapter.clearSelection()
     }
 
     private fun launchImagePicker() {
@@ -968,10 +1003,9 @@ class AddCharacterActivity : BaseActivity<ActivityAddCharacterBinding, AddCharac
     }
 
     private companion object {
-        const val NONE_BACKGROUND_POSITION = 0
-        const val ADD_BACKGROUND_POSITION = 1
-        const val NONE_BACKGROUND_COLOR_POSITION = 0
-        const val CUSTOM_BACKGROUND_COLOR_POSITION = 1
+        const val ADD_BACKGROUND_POSITION = 0
+        const val NONE_BACKGROUND_POSITION = 1
+        const val CUSTOM_BACKGROUND_COLOR_POSITION = 0
         const val BACKGROUND_BATCH_SIZE = 5
         const val BACKGROUND_FIRST_PAGE_SIZE = 20
         const val BACKGROUND_BATCH_DELAY_MS = 32L

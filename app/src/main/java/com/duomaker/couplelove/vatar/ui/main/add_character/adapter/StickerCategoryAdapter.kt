@@ -21,7 +21,7 @@ class StickerCategoryAdapter :
     ) {
 
         binding.apply {
-            txtTittle.text = item.category
+            txtTittle.text = item.category.replace('_', ' ')
             val context = binding.root.context
 
             if (item.isSelected) {

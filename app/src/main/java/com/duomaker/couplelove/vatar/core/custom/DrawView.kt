@@ -120,10 +120,10 @@ open class DrawView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) :
             )
             borderPaint.alpha = typedArray.getInteger(R.styleable.StickerView_borderAlpha, 255)
             borderPaint.style = Paint.Style.STROKE
-            borderPaint.strokeWidth = dpToPx(3)
+            borderPaint.strokeWidth = dpToPx(5)
             borderPaint.strokeJoin = Paint.Join.ROUND
             borderPaint.strokeCap = Paint.Cap.ROUND
-            borderPaint.pathEffect = DashPathEffect(floatArrayOf(30f, 35f), 0f)
+            borderPaint.pathEffect = DashPathEffect(floatArrayOf(20f, 35f), 0f)
 
             setupDefaultIcons()
         } finally {
@@ -1014,7 +1014,7 @@ open class DrawView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) :
 
     private fun setupDefaultIcons() {
         val deleteIcon = BitmapDrawIcon(
-            ContextCompat.getDrawable(context, R.drawable.ic_close), DrawKey.LEFT_BOTTOM
+            ContextCompat.getDrawable(context, R.drawable.ic_close), DrawKey.RIGHT_TOP
         )
         deleteIcon.event = DeleteEvent()
         val zoomIcon = BitmapDrawIcon(
@@ -1022,7 +1022,7 @@ open class DrawView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) :
         )
         zoomIcon.event = ZoomEvent()
         val flipIcon = BitmapDrawIcon(
-            ContextCompat.getDrawable(context, R.drawable.ic_flip_add), DrawKey.RIGHT_TOP
+            ContextCompat.getDrawable(context, R.drawable.ic_flip_add), DrawKey.TOP_LEFT
         )
         flipIcon.event = FlipEvent()
         iconList.clear()

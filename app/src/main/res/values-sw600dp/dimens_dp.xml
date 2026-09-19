@@ -58,7 +58,7 @@
     <dimen name="dimension_42">63dp</dimen>
     <dimen name="dimension_44">66dp</dimen>
     <dimen name="dimension_45">67.5dp</dimen>
-    <dimen name="dimension_46">69dp</dimen>
+    <dimen name="dimension_46">200dp</dimen>
     <dimen name="dimension_48">72dp</dimen>
     <dimen name="dimension_50">75dp</dimen>
     <dimen name="dimension_50_">-75dp</dimen>

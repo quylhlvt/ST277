@@ -5,6 +5,6 @@ import retrofit2.Response
 import retrofit2.http.GET
 
 interface CatalogueApi {
-    @GET("api/ST183_PrincessAvatarMaker")
+    @GET("api/app/ST301_FantasyAvatarOCMaker")
     suspend fun getData(): Response<CharacterResponse>
 }

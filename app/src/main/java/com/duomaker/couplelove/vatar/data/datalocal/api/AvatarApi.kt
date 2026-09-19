@@ -16,7 +16,7 @@ import javax.inject.Singleton
 object ApiConfig {
     const val BASE_URL_1   = "https://lvtglobal.tech/"
     const val BASE_URL_2   = "https://lvt-api-tech.io.vn/"
-    const val BASE_CONNECT = "public/app/ST283_DuoMakerCoupleAvatar/"
+    const val BASE_CONNECT = "public/app/ST301_FantasyAvatarOCMaker/"
 
     var BASE_URL = BASE_URL_1
 }
@@ -40,7 +40,7 @@ data class X10(
 }
 // ── SERVICE ───────────────────────────────────────────────────────────────────
 interface AvatarApiService {
-    @GET("api/app/ST283_DuoMakerCoupleAvatar")
+    @GET("api/app/ST301_FantasyAvatarOCMaker")
     suspend fun getAllData(): Map<String, List<X10>>
 }
 // ── MAPPER ────────────────────────────────────────────────────────────────────

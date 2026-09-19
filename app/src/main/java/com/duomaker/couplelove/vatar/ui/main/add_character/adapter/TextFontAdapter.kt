@@ -20,7 +20,7 @@ class TextFontAdapter(val context: Context) : BaseAdapter<SelectedAddModel, Item
             if (item.isSelected) {
                 frame.apply {
 //                    setCardBackgroundColor(ContextCompat.getColor(context, R.color.app_color6))
-                    strokeColor = ContextCompat.getColor(context, R.color.app_color18)
+                    strokeColor = ContextCompat.getColor(context, R.color.app_color)
                 }
             } else {
                 frame.apply {

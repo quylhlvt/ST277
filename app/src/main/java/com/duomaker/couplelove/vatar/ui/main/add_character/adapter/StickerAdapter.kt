@@ -18,11 +18,11 @@ class StickerAdapter : BaseAdapter<SelectedAddModel, ItemStickerBinding>(ItemSti
 
     override fun onBind(binding: ItemStickerBinding, item: SelectedAddModel, position: Int) {
         binding.apply {
-            if (currentSelected == position) {
-                materiaForcus.visible()
-            } else {
-                materiaForcus.gone()
-            }
+//            if (currentSelected == position) {
+//                materiaForcus.visible()
+//            } else {
+//                materiaForcus.gone()
+//            }
             val shimmerDrawable = ShimmerDrawable().apply { setShimmer(DataLocal.shimmer1) }
             if (imvImage.tag != item.path) {
                 imvImage.tag = item.path

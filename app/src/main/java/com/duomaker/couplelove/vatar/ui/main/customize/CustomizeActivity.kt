@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -71,7 +72,6 @@ class CustomizeActivity : BaseActivity<ActivityCustomizeBinding, CustomizeViewMo
     private var canSave = false
     private var hasTriggeredReInit = false
     private var holdActionJob: Job? = null
-    private var isUpdatingScaleSlider = false
     private var scrollPartAfterRandom = false
     private var initialLoadingPending = false
     private var hasShownInitialLoading = false
@@ -115,6 +115,8 @@ class CustomizeActivity : BaseActivity<ActivityCustomizeBinding, CustomizeViewMo
         }
         binding.actionBar.apply {
             setImageActionBar(btnActionBarLeft, R.drawable.back_app)
+            setImageActionBar(btnActionBarCenter, R.drawable.ic_flip_all_custom)
+            setImageActionBar(btnActionBarCenter2, R.drawable.ic_reset_all_custom)
             setMaterialCardViewActionBar1(
                 btnActionBarRightText,
                 tvRightText,
@@ -217,6 +219,7 @@ class CustomizeActivity : BaseActivity<ActivityCustomizeBinding, CustomizeViewMo
     private fun closeScalePanel(animate: Boolean = false) {
         binding.frameScale.animate().cancel()
         isScaleActive = false
+        binding.imgScale.setImageResource(R.drawable.ic_scale_cus)
         if (animate && binding.frameScale.visibility == View.VISIBLE) {
             binding.frameScale.animate().alpha(0f).setDuration(200).withEndAction {
                 binding.frameScale.visibility = View.GONE
@@ -234,12 +237,12 @@ class CustomizeActivity : BaseActivity<ActivityCustomizeBinding, CustomizeViewMo
         binding.frameScale.animate().cancel()
         isScaleActive = !isScaleActive
         if (isScaleActive) {
+            binding.imgScale.setImageResource(R.drawable.ic_scale_cus_open)
             binding.frameScale.visibility = View.VISIBLE
             binding.rcvPart.visibility = View.INVISIBLE
             binding.frameScale.alpha = 0f
             binding.frameScale.animate().alpha(1f).setDuration(200).start()
         } else {
-            binding.imgScale.setImageResource(R.drawable.ic_scale_cus)
             closeScalePanel(animate = true)
         }
     }
@@ -249,10 +252,6 @@ class CustomizeActivity : BaseActivity<ActivityCustomizeBinding, CustomizeViewMo
         binding.imgScale.onClick {
             if (viewModel.resolvePathAt(viewModel.state.value.currentNavIndex) == null) return@onClick
             toggleScalePanel()
-        }
-        binding.btnExitScale.onClick {
-            binding.imgScale.setImageResource(R.drawable.ic_scale_cus)
-            closeScalePanel(animate = true)
         }
 //        binding.gender.onClick {
 //            if (!checkOnlineNetworkOrShowDialog()) {
@@ -278,16 +277,16 @@ class CustomizeActivity : BaseActivity<ActivityCustomizeBinding, CustomizeViewMo
                 )
             }
         }
+        binding.ratioPlus.onClickAndHold {
+            changeCurrentTransform { it.copy(scale = it.scale + SCALE_BUTTON_STEP) }
+        }
+        binding.ratioMinus.onClickAndHold {
+            changeCurrentTransform { it.copy(scale = it.scale - SCALE_BUTTON_STEP) }
+        }
         binding.transitionLeft.onClickAndHold { changeCurrentTransform { it.copy(translationX = it.translationX - 20f) } }
         binding.transitionRight.onClickAndHold { changeCurrentTransform { it.copy(translationX = it.translationX + 20f) } }
         binding.transitionTop.onClickAndHold { changeCurrentTransform { it.copy(translationY = it.translationY - 20f) } }
         binding.transitionBottom.onClickAndHold { changeCurrentTransform { it.copy(translationY = it.translationY + 20f) } }
-        binding.sliderSize.onProgressChanged = { progress ->
-            if (!isUpdatingScaleSlider) {
-                val scale = MIN_LAYER_SCALE + progress * LAYER_SCALE_RANGE
-                changeCurrentTransform { it.copy(scale = scale) }
-            }
-        }
         binding.btnResetScale.onClick {
             viewModel.resetTransform(viewModel.state.value.currentNavIndex)
             applyTransformsToAllLayers(viewModel.state.value)
@@ -329,21 +328,18 @@ class CustomizeActivity : BaseActivity<ActivityCustomizeBinding, CustomizeViewMo
             }
         }
         binding.apply {
-//            imgChangColor.onClick {
-//                val navPos = viewModel.state.value.currentNavIndex
-//                if (!viewModel.state.value.hasMultipleColors) return@onClick
-//                if (llColor.isVisible) {
-//                    if (navPos < arrShowColor.size) arrShowColor[navPos] = false
-//                    llColor.animate().alpha(0f).setDuration(200).withEndAction {
-//                        llColor.visibility = View.INVISIBLE
-//                    }.start()
-//                } else {
-//                    if (navPos < arrShowColor.size) arrShowColor[navPos] = true
-//                    llColor.visibility = View.VISIBLE
-//                    llColor.alpha = 0f
-//                    llColor.animate().alpha(1f).setDuration(200).start()
-//                }
-//            }
+            imgColor.onClick {
+                val state = viewModel.state.value
+                val navPos = state.currentNavIndex
+                val hasColorCodes = state.currentColors.any { it.color.isNotBlank() }
+                if (!hasColorCodes || navPos !in arrShowColor.indices) return@onClick
+
+                arrShowColor[navPos] = !arrShowColor[navPos]
+                updateColorSectionVisibility(
+                    showColors = true,
+                    expanded = arrShowColor[navPos]
+                )
+            }
             imgRandom.onClick {
                 if (!checkOnlineNetworkOrShowDialog()) {
                     showConfirmDialog(
@@ -368,10 +364,10 @@ class CustomizeActivity : BaseActivity<ActivityCustomizeBinding, CustomizeViewMo
                     )
                 }
             }
-            imgFlip.setOnClickListener {
+            actionBar.btnActionBarCenter.setOnClickListener {
                 viewModel.toggleFlip()
             }
-            imgReset.setOnClickListener {
+            actionBar.btnActionBarCenter2.setOnClickListener {
                 showConfirmDialog(
                     title = getString(R.string.reset),
                     message = getString(R.string.do_you_want_to_reset_all),
@@ -636,8 +632,6 @@ class CustomizeActivity : BaseActivity<ActivityCustomizeBinding, CustomizeViewMo
             adapterNav.submitList(visibleNavItems)
         }
         adapterNav.setPos(visibleNavPosition.coerceIn(0, maxOf(0, visibleNavItems.lastIndex)))
-//        binding.imgChangColor.isVisible = state.hasMultipleColors
-
         // ── Color ──────────────────────────────────────────────────────────────
         adapterColor.setPos(state.currentColorIndex)
 
@@ -648,8 +642,9 @@ class CustomizeActivity : BaseActivity<ActivityCustomizeBinding, CustomizeViewMo
         }
 
         val navPos = state.currentNavIndex
+        val hasColorCodes = state.currentColors.any { it.color.isNotBlank() }
 
-        if (state.hasMultipleColors) {
+        if (hasColorCodes) {
             if (adapterColor.items != state.currentColors) {
                 adapterColor.submitList(state.currentColors)
             }
@@ -692,7 +687,8 @@ class CustomizeActivity : BaseActivity<ActivityCustomizeBinding, CustomizeViewMo
 
     private fun updateColorSectionVisibility(showColors: Boolean, expanded: Boolean) {
         val showPanel = showColors && expanded
-//        binding.imgChangColor.visibility = if (showColors) View.VISIBLE else View.GONE
+        binding.imgColor.visibility = if (showColors) View.VISIBLE else View.GONE
+        binding.imgColor.isEnabled = showColors
 
         if (showPanel &&
             (binding.llColor.visibility != View.VISIBLE || binding.llColor.alpha != 1f)
@@ -774,29 +770,62 @@ class CustomizeActivity : BaseActivity<ActivityCustomizeBinding, CustomizeViewMo
         val canMoveRight = hasLayer && transform.translationX < maxX - TRANSFORM_EPSILON
         val canMoveUp = hasLayer && transform.translationY > -maxY + TRANSFORM_EPSILON
         val canMoveDown = hasLayer && transform.translationY < maxY - TRANSFORM_EPSILON
+        val canScaleUp = hasLayer && scale < MAX_LAYER_SCALE - TRANSFORM_EPSILON
+        val canScaleDown = hasLayer && scale > MIN_LAYER_SCALE + TRANSFORM_EPSILON
 
+        // The scale action only applies to an actual layer.  A `none` (or
+        // `dice`) selection must not leave an enabled-looking scale button.
+        binding.imgScale.visibility = if (hasLayer) View.VISIBLE else View.INVISIBLE
         binding.imgScale.isEnabled = hasLayer
-        binding.imgScale.setImageResource( R.drawable.ic_scale_cus )
-        binding.sliderSize.isEnabled = hasLayer
-        binding.sliderSize.alpha = if (hasLayer) 1f else 0.4f
-        isUpdatingScaleSlider = true
-        try {
-            binding.sliderSize.progress =
-                ((scale - MIN_LAYER_SCALE) / LAYER_SCALE_RANGE)
-                    .coerceIn(0f, 1f)
-        } finally {
-            isUpdatingScaleSlider = false
-        }
+        binding.imgScale.setImageResource(
+            if (hasLayer && isScaleActive) R.drawable.ic_scale_cus_open
+            else R.drawable.ic_scale_cus
+        )
+        binding.ratioPlus.isEnabled = canScaleUp
+        binding.ratioPlus.setImageResource(
+            if (canScaleUp) R.drawable.ratio_plus else R.drawable.ratio_plus_un
+        )
+        binding.ratioPlus.alpha = 1f
+        binding.ratioMinus.isEnabled = canScaleDown
+        binding.ratioMinus.setImageResource(
+            if (canScaleDown) R.drawable.ratio_minus else R.drawable.ratio_minus_un
+        )
+        binding.ratioMinus.alpha = 1f
         binding.transitionLeft.isEnabled = canMoveLeft
-        binding.transitionLeft.alpha = if (canMoveLeft) 1f else 0.4f
+        binding.transitionLeft.setImageResource(
+            if (canMoveLeft) R.drawable.transition_left else R.drawable.transition_left_un
+        )
+        binding.transitionLeft.alpha = 1f
         binding.transitionRight.isEnabled = canMoveRight
-        binding.transitionRight.alpha = if (canMoveRight) 1f else 0.4f
+        binding.transitionRight.setImageResource(
+            if (canMoveRight) R.drawable.transition_right else R.drawable.transition_right_un
+        )
+        binding.transitionRight.alpha = 1f
         binding.transitionTop.isEnabled = canMoveUp
-        binding.transitionTop.alpha = if (canMoveUp) 1f else 0.4f
+        binding.transitionTop.setImageResource(
+            if (canMoveUp) R.drawable.transition_top else R.drawable.transition_top_un
+        )
+        binding.transitionTop.alpha = 1f
         binding.transitionBottom.isEnabled = canMoveDown
-        binding.transitionBottom.alpha = if (canMoveDown) 1f else 0.4f
-        binding.btnResetScale.isEnabled = hasLayer && !viewModel.isTransformDefault(index)
-        binding.btnResetScale.alpha = if (binding.btnResetScale.isEnabled) 1f else 0.4f
+        binding.transitionBottom.setImageResource(
+            if (canMoveDown) R.drawable.transition_bottom else R.drawable.transition_bottom_un
+        )
+        binding.transitionBottom.alpha = 1f
+        val canReset = hasLayer && !viewModel.isTransformDefault(index)
+        binding.btnResetScale.isEnabled = canReset
+        binding.btnResetScale.alpha = 1f
+        binding.cardReset.setCardBackgroundColor(
+            ContextCompat.getColor(
+                this,
+                if (canReset) R.color.app_color7 else R.color.gray4
+            )
+        )
+        binding.txtReset.setTextColor(
+            ContextCompat.getColor(
+                this,
+                if (canReset) R.color.app_color else R.color.brown
+            )
+        )
         if (!hasLayer) {
             closeScalePanel()
         }
@@ -956,7 +985,7 @@ class CustomizeActivity : BaseActivity<ActivityCustomizeBinding, CustomizeViewMo
     companion object {
         private const val MIN_LAYER_SCALE = 0.3f
         private const val MAX_LAYER_SCALE = 2f
-        private const val LAYER_SCALE_RANGE = MAX_LAYER_SCALE - MIN_LAYER_SCALE
+        private const val SCALE_BUTTON_STEP = 0.1f
         private const val MAX_TRANSLATION_X_FRACTION = 0.65f
         private const val TRANSFORM_EPSILON = 0.01f
         const val ARG_TEMPLATE_INDEX = "template_index"

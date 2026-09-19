@@ -11,6 +11,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.annotation.FontRes
+import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import com.duomaker.couplelove.vatar.core.helper.CustomTypefaceSpan
@@ -47,7 +48,7 @@ fun setImageActionBar(imageView: ImageView, res: Int) {
     imageView.visible()
 }
 
-fun setMaterialCardViewActionBar1(materialCardView: MaterialCardView, textView: TextView, text: String) {
+fun setMaterialCardViewActionBar1(materialCardView: CardView, textView: TextView, text: String) {
     textView.text = text
     materialCardView.visible()
     textView.isSelected = true

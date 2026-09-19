@@ -5,7 +5,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="@dimen/dimension_5"
+        app:cardCornerRadius="@dimen/dimension_4"
         app:cardElevation="@dimen/dimension_0"
         app:cardBackgroundColor="@color/transparent"
         android:layout_marginHorizontal="@dimen/dimension_4"
