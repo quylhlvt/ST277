@@ -5,21 +5,21 @@
     android:layout_marginEnd="@dimen/dimension_8"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 <FrameLayout
-    android:layout_width="@dimen/dimension_0"
+    android:layout_width="wrap_content"
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     android:layout_height="match_parent"
-    android:id="@+id/frame_tittle"
-    app:layout_constraintDimensionRatio="9:3.6">
+    android:id="@+id/frame_tittle">
     <TextView
         android:id="@+id/txtTittle"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:text="@string/next"
         android:layout_gravity="center"
         android:gravity="center"
         android:paddingBottom="@dimen/dimension_3"
+        android:paddingHorizontal="@dimen/dimension_2"
         app:outerStrokeWidth="@dimen/dimension_0"
         android:fontFamily="@font/jockey_one_regular"
         android:textSize="@dimen/text_size_16"

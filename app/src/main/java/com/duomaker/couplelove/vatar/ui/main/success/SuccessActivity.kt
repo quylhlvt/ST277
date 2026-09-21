@@ -28,14 +28,12 @@ import com.duomaker.couplelove.vatar.ui.onboarding.permission.PermissionViewMode
 import com.duomaker.couplelove.vatar.utils.share.SocialShareManager
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
-
 @AndroidEntryPoint
 class SuccessActivity : BaseActivity<ActivitySuccessBinding, SuccessViewModel>(
     ActivitySuccessBinding::inflate,
     SuccessViewModel::class.java
 ) {
     private val storageHelper = PermissionRequestHelper()
-
     private val permissionViewModel: PermissionViewModel by viewModels()
     private val socialShareManager by lazy(LazyThreadSafetyMode.NONE) {
         SocialShareManager(this@SuccessActivity)
@@ -47,11 +45,9 @@ class SuccessActivity : BaseActivity<ActivitySuccessBinding, SuccessViewModel>(
 
     private val imageType: Int    by lazy { intent.extras?.getInt("imageType", 0) ?: 0 }
     private val idEdit: String    by lazy { intent.extras?.getString("idEdit") ?: "" }
-
     companion object {
         private const val EXTERNAL_SCREEN_RESTORE_DELAY_MS = 500L
     }
-
     override fun onResume() {
         super.onResume()
         hideLoadingSafe()
@@ -72,7 +68,6 @@ class SuccessActivity : BaseActivity<ActivitySuccessBinding, SuccessViewModel>(
             isReturningFromExternalScreen = false
         }, EXTERNAL_SCREEN_RESTORE_DELAY_MS)
     }
-
     private fun restoreViewInteractions() {
         binding.root.isEnabled = true
         binding.actionBar.root.isEnabled = true
@@ -133,7 +128,6 @@ class SuccessActivity : BaseActivity<ActivitySuccessBinding, SuccessViewModel>(
             .dropLast(1)
             .lastOrNull()
             .orEmpty()
-
 //        logEventSocial(
 //            "click_share_$socialName",
 //            "click_share_${socialName}_$dataName",
@@ -167,8 +161,6 @@ class SuccessActivity : BaseActivity<ActivitySuccessBinding, SuccessViewModel>(
         isReturningFromExternalScreen = true
         startActivity(Intent.createChooser(intent, getString(R.string.share)))
     }
-
-    // Thêm vào ViewActivity
     private fun downloadImage() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) { performDownload(); return }
         val permission = Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -181,7 +173,6 @@ class SuccessActivity : BaseActivity<ActivitySuccessBinding, SuccessViewModel>(
             else -> downloadPermissionLauncher.launch(arrayOf(permission))
         }
     }
-
     private val downloadPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
             val allGranted = permissions.entries.all { it.value }
@@ -203,10 +194,8 @@ class SuccessActivity : BaseActivity<ActivitySuccessBinding, SuccessViewModel>(
             )
         }
     }
-
     private fun showToast(msg: String) =
         Toast.makeText(this@SuccessActivity, msg, Toast.LENGTH_SHORT).show()
-
     override fun observeData() {}
     override fun bindViewModel() {}
 }
