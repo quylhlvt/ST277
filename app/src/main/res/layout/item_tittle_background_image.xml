@@ -5,6 +5,7 @@
     android:layout_marginEnd="@dimen/dimension_8"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 <FrameLayout
+    android:background="@drawable/bg_8_title"
     android:layout_width="wrap_content"
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintBottom_toBottomOf="parent"
@@ -19,7 +20,7 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:paddingBottom="@dimen/dimension_3"
-        android:paddingHorizontal="@dimen/dimension_2"
+        android:paddingHorizontal="@dimen/dimension_1"
         app:outerStrokeWidth="@dimen/dimension_0"
         android:fontFamily="@font/jockey_one_regular"
         android:textSize="@dimen/text_size_16"

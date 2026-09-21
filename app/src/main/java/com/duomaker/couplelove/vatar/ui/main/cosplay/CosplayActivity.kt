@@ -24,6 +24,7 @@ import com.duomaker.couplelove.vatar.core.extention.visible
 import com.duomaker.couplelove.vatar.databinding.ActivityCosplayBinding
 import com.duomaker.couplelove.vatar.ui.main.show.ShowActivity
 import com.bumptech.glide.Glide
+import com.bumptech.glide.Priority
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CancellationException
@@ -32,13 +33,11 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeoutOrNull
 
 @AndroidEntryPoint
 class CosplayActivity : BaseActivity<ActivityCosplayBinding, CosplayViewModel>(
@@ -50,8 +49,8 @@ class CosplayActivity : BaseActivity<ActivityCosplayBinding, CosplayViewModel>(
     companion object {
         const val EXTRA_START_CHALLENGE = "start_challenge"
         private const val STATE_START_CHALLENGE = "pending_challenge"
-        private const val MISSING_LAYER_RETRY_DELAY_MS = 700L
-        private const val NETWORK_RECHECK_DELAY_MS = 500L
+        private const val RENDER_SIZE = 800
+        private const val RENDER_TIMEOUT_MS = 15_000L
     }
     private var startChallengeWhenReady = false
     private var randomRequestPending = false
@@ -133,7 +132,12 @@ class CosplayActivity : BaseActivity<ActivityCosplayBinding, CosplayViewModel>(
 
     override fun setupPreViews() {
         super.setupPreViews()
-        Glide.with(binding.imageGif).asGif().load(R.drawable.gif).into(binding.imageGif)
+        binding.imageGif.visible()
+        Glide.with(binding.imageGif)
+            .asGif()
+            .load(R.drawable.gif)
+            .priority(Priority.IMMEDIATE)
+            .into(binding.imageGif)
     }
     override fun initView() {
         binding.imvImage.gone()
@@ -154,7 +158,7 @@ class CosplayActivity : BaseActivity<ActivityCosplayBinding, CosplayViewModel>(
 //            tvCenter.select()
             setImageActionBar(btnActionBarLeft, R.drawable.back_app)
             setImageActionBar(btnActionBarRight, R.drawable.guid)
-//            setTextActionBar(tvCenter, getString(R.string.cosplay))
+            setTextActionBar(tvCenter, getString(R.string.cosplay))
         }
     }
 
@@ -163,7 +167,7 @@ class CosplayActivity : BaseActivity<ActivityCosplayBinding, CosplayViewModel>(
 
             actionBar.btnActionBarLeft.onClick { finish() }
 
-            random.onClick {
+            btnRandom.onClick {
                 requestRandomCharacter(isOnline = hasUsableNetwork())
             }
             actionBar.btnActionBarRight.onClick {
@@ -172,8 +176,8 @@ class CosplayActivity : BaseActivity<ActivityCosplayBinding, CosplayViewModel>(
             closeGuide.onClick {
                 showGuide.gone()
             }
-            show.onClick {
-                if (!show.isEnabled) return@onClick
+            btnShow.onClick {
+                if (!btnShow.isEnabled) return@onClick
                 val item = viewModel.randomItem.value ?: return@onClick
                 if (checkOnlineNetworkOrShowDialog(item.template.id)) return@onClick
                 val cached = cachedBitmapFor(item)
@@ -255,74 +259,48 @@ class CosplayActivity : BaseActivity<ActivityCosplayBinding, CosplayViewModel>(
 
     private fun renderCharacter(item: CosplayViewModel.RandomItem) {
         renderJob?.cancel()
-        setShowButtonEnabled(false)
         renderJob = this@CosplayActivity.lifecycleScope.launch {
             val paths = item.resolvedPaths.filterNotNull()
-            if (paths.isEmpty()) return@launch
+            if (paths.isEmpty()) {
+                showRenderFailure(showNetworkDialog = false)
+                return@launch
+            }
             showLoading()
 
-            var networkDialogShown = false
-            val loadedBitmaps = MutableList<Bitmap?>(paths.size) { null }
-
-            while (isActive &&
-                viewModel.isCurrentGeneration(item.generation) &&
-                viewModel.randomItem.value == item
-            ) {
-                val missingIndices = loadedBitmaps.indices.filter { loadedBitmaps[it] == null }
-                if (missingIndices.isEmpty()) break
-
-                val loaded = withContext(Dispatchers.IO) {
+            val loaded = withTimeoutOrNull(RENDER_TIMEOUT_MS) {
+                withContext(Dispatchers.IO) {
                     coroutineScope {
-                        missingIndices.map { index ->
+                        paths.map { path ->
                             async {
-                                val bitmap = try {
-                                    Glide.with(this@CosplayActivity).asBitmap().load(paths[index])
+                                try {
+                                    Glide.with(this@CosplayActivity)
+                                        .asBitmap()
+                                        .load(path)
                                         .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                                        .override(512).submit().get()
+                                        .override(RENDER_SIZE)
+                                        .submit()
+                                        .get()
                                 } catch (error: CancellationException) {
                                     throw error
                                 } catch (_: Exception) {
                                     null
                                 }
-                                index to bitmap
                             }
                         }.awaitAll()
                     }
                 }
-                loaded.forEach { (index, bitmap) ->
-                    if (bitmap != null) loadedBitmaps[index] = bitmap
-                }
-                if (loadedBitmaps.all { it != null }) break
+            }
+            if (!isActive) return@launch
 
-                if (!hasUsableNetwork()) {
-                    if (!networkDialogShown) {
-                        showUnstableNetworkDialog()
-                        networkDialogShown = true
-                    }
-
-                    // Keep the same selections and all successfully loaded
-                    // layers. Resume only the missing paths when network returns.
-                    while (isActive &&
-                        viewModel.isCurrentGeneration(item.generation) &&
-                        viewModel.randomItem.value == item &&
-                        !hasUsableNetwork()
-                    ) {
-                        appSession.networkOnline.filter { it }.first()
-                        if (!hasUsableNetwork()) delay(NETWORK_RECHECK_DELAY_MS)
-                    }
-                } else {
-                    delay(MISSING_LAYER_RETRY_DELAY_MS)
-                }
+            val bitmaps = loaded?.filterNotNull().orEmpty()
+            if (bitmaps.size != paths.size) {
+                showRenderFailure(showNetworkDialog = !hasUsableNetwork())
+                return@launch
             }
 
-            if (!isActive ||
-                !viewModel.isCurrentGeneration(item.generation) ||
-                viewModel.randomItem.value != item
-            ) return@launch
-
-            val bitmaps = loadedBitmaps.map { it ?: return@launch }
-
-            val merged = mergeBitmaps(bitmaps)
+            // Bitmap scaling/compositing is CPU-heavy. Keep it off the UI thread,
+            // matching the fast render path used by RandomActivity.
+            val merged = withContext(Dispatchers.Default) { mergeBitmaps(bitmaps) }
 
             if (!isActive ||
                 !viewModel.isCurrentGeneration(item.generation) ||
@@ -332,16 +310,13 @@ class CosplayActivity : BaseActivity<ActivityCosplayBinding, CosplayViewModel>(
                 return@launch
             }
 
-            // ✅ Lưu vào cache
             viewModel.setCachedBitmap(merged, item.generation)
-
-            withContext(Dispatchers.Main) {
-                showBitmap(merged)
-            }
+            showBitmap(merged)
         }
     }
 
     private fun showLoading() {
+        binding.contrainFirst.gone()
         binding.imvImage.apply {
             setImageDrawable(null)
             gone()
@@ -356,6 +331,7 @@ class CosplayActivity : BaseActivity<ActivityCosplayBinding, CosplayViewModel>(
             setImageBitmap(bitmap)
             visible()
         }
+        binding.contrainFirst.gone()
         binding.imageGif.gone()
         setShowButtonEnabled(true)
         binding.root.post {
@@ -365,30 +341,46 @@ class CosplayActivity : BaseActivity<ActivityCosplayBinding, CosplayViewModel>(
         }
     }
 
+    private fun showRenderFailure(showNetworkDialog: Boolean) {
+        binding.contrainFirst.gone()
+        binding.imvImage.apply {
+            setImageDrawable(null)
+            gone()
+        }
+        binding.imageGif.gone()
+        setControlsEnabled(canShow = false, canRandom = true)
+        if (showNetworkDialog) showUnstableNetworkDialog() else showLoadingDataDialog()
+    }
+
     private fun setShowButtonEnabled(enabled: Boolean) {
         setControlsEnabled(canShow = enabled, canRandom = enabled)
     }
 
     private fun setControlsEnabled(canShow: Boolean, canRandom: Boolean) {
-        binding.show.isEnabled = canShow
-        binding.show.isClickable = canShow
-        binding.show.alpha = if (canShow) 1f else 0.5f
-        binding.random.isEnabled = canRandom
-        binding.random.isClickable = canRandom
-        binding.random.alpha = if (canRandom) 1f else 0.5f
+        binding.btnShow.isEnabled = canShow
+        binding.btnShow.isClickable = canShow
+        binding.btnShow.alpha = if (canShow) 1f else 0.5f
+        binding.btnRandom.isEnabled = canRandom
+        binding.btnRandom.isClickable = canRandom
+        binding.btnRandom.alpha = if (canRandom) 1f else 0.5f
     }
 
     private fun mergeBitmaps(bitmaps: List<Bitmap>): Bitmap {
-        val size = 512
-        val merged = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888)
+        val merged = Bitmap.createBitmap(RENDER_SIZE, RENDER_SIZE, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(merged)
         bitmaps.forEach { bmp ->
-            val scaled = if (bmp.width == size && bmp.height == size) bmp
-            else Bitmap.createScaledBitmap(bmp, size, size, true)
+            val scaled = if (bmp.width == RENDER_SIZE && bmp.height == RENDER_SIZE) bmp
+            else Bitmap.createScaledBitmap(bmp, RENDER_SIZE, RENDER_SIZE, true)
             canvas.drawBitmap(scaled, 0f, 0f, null)
             if (scaled != bmp) scaled.recycle()
         }
         return merged
+    }
+
+    override fun onDestroy() {
+        renderJob?.cancel()
+        renderJob = null
+        super.onDestroy()
     }
 
     override fun bindViewModel() {}

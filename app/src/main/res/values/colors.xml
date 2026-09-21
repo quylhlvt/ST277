@@ -22,6 +22,7 @@
     <color name="gray2">#A6A6A6</color>
     <color name="gray3">#CCCCCC</color>
     <color name="gray4">#E0E0E0</color>
+    <color name="gray5">#DFDFDF</color>
     <color name="brown">#978379</color>
     <color name="yellow_F6">#F6CD46</color>
     <color name="app_color">#60290E</color>
@@ -37,7 +38,7 @@
     <color name="app_color11">#FFF3DB</color>
     <color name="app_color12">#FFC687</color>
     <color name="app_color13">#58A0C4</color>
-    <color name="app_color14">#804000</color>
+    <color name="app_color14">#FFE8CE</color>
     <color name="app_color15">#BF6060</color>
     <color name="app_color16">#FF8080</color>
     <color name="app_color17">#663B00</color>

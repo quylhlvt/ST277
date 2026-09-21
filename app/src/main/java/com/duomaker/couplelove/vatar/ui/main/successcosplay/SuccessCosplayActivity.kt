@@ -9,6 +9,8 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.updateLayoutParams
 import com.duomaker.couplelove.vatar.R
 import com.duomaker.couplelove.vatar.core.base.BaseActivity
 import com.duomaker.couplelove.vatar.core.extention.checkPermissions
@@ -71,9 +73,8 @@ class SuccessCosplayActivity : BaseActivity<ActivitySuccessCosplayBinding, Succe
     }
     override fun initView() {
         binding.apply {
-            setImageActionBar(actionBar.btnActionBarLeft, R.drawable.back_app1)
             setImageActionBar(actionBar.btnActionBarRight, R.drawable.ic_home)
-            txtDownload.isSelected = true
+            txtTryAgain.isSelected = true
 
             val resultBitmap = appSession.userResultBitmap
                 ?.takeUnless { it.isRecycled }
@@ -82,38 +83,32 @@ class SuccessCosplayActivity : BaseActivity<ActivitySuccessCosplayBinding, Succe
                 resultImagePath = persistResultBitmap(it)
             }
 
-            updateOccupancy(appSession.cosplayPercent)
+            updateResult(appSession.cosplayPercent)
         }
     }
 
-    private fun updateOccupancy(percent: Int) {
+    private fun updateResult(percent: Int) {
         val safePercent = percent.coerceIn(0, 100)
-        val occupiedCount = when (safePercent) {
-            0 -> 0
-            in 1..33 -> 1
-            in 34..66 -> 2
-            else -> 3
-        }
-        val indicators = listOf(binding.occupy1, binding.occupy2, binding.occupy3)
+        val progress = safePercent / 100f
 
-        indicators.forEachIndexed { index, indicator ->
-            indicator.setImageResource(
-                if (index < occupiedCount) R.drawable.img_occupy
-                else R.drawable.img_unoccupy
-            )
+        binding.tvMatchPercent.text = "$safePercent%"
+
+        binding.imgStar2.updateLayoutParams<ConstraintLayout.LayoutParams> {
+            horizontalBias = progress
+        }
+        binding.imgStarHorizontalAnchor.updateLayoutParams<ConstraintLayout.LayoutParams> {
+            horizontalBias = progress
         }
     }
 
     override fun viewListener() {
 
         binding.apply {
-            actionBar.btnActionBarLeft.onClick {
-                replayShow()
-            }
+
             actionBar.btnActionBarRight.onClick {
                 openActivity(HomeActivity::class.java, clearTop = true)
             }
-            btnDownload.onClick { downloadImage() }
+            btnTryAgain.onClick { replayShow() }
         }
     }
 

@@ -215,6 +215,33 @@
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="@dimen/dimension_0"
+            android:id="@+id/constraintNav"
+            android:layout_height="@dimen/dimension_56"
+            android:background="@color/app_color13"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcvNav"
+                android:layout_width="@dimen/dimension_0"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:elevation="@dimen/dimension_1"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="@dimen/dimension_16"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+
+                tools:listitem="@layout/item_bottom_custom"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
         <FrameLayout
             android:id="@+id/frameScale"
             android:layout_width="@dimen/dimension_0"
@@ -465,33 +492,6 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </FrameLayout>
-
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="@dimen/dimension_0"
-            android:id="@+id/constraintNav"
-            android:layout_height="@dimen/dimension_56"
-            android:background="@color/app_color13"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rcvNav"
-                android:layout_width="@dimen/dimension_0"
-                android:layout_height="match_parent"
-                android:clipToPadding="false"
-                android:elevation="@dimen/dimension_1"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginStart="@dimen/dimension_16"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-
-                tools:listitem="@layout/item_bottom_custom"/>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

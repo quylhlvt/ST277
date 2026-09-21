@@ -85,7 +85,7 @@ class RateDialog(private val activity: Activity) :
                 0 -> setView(R.string.zero_star_title, R.string.zero_star, R.drawable.ic_rate_rero)
                 1 -> setView(R.string.one_star_title, R.string.one_star, R.drawable.ic_rate_one)
                 2 -> setView(R.string.two_star_title, R.string.two_star, R.drawable.ic_rate_two)
-                3 -> setView(R.string.three_star_title, R.string.three_star, R.drawable.ic_rate_three)
+                3 -> setView(R.string.two_star_title, R.string.two_star, R.drawable.ic_rate_three)
                 4 -> setView(R.string.four_star_title, R.string.four_star, R.drawable.ic_rate_four)
                 5 -> setView(R.string.five_star_title, R.string.five_star, R.drawable.ic_rate_five)
             }

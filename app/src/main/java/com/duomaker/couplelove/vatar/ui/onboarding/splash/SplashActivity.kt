@@ -1,13 +1,9 @@
 package com.duomaker.couplelove.vatar.ui.onboarding.splash
 
-import android.animation.ObjectAnimator
-import android.animation.ValueAnimator
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Bundle
-import android.view.View
-import android.view.animation.LinearInterpolator
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.lifecycleScope
 import com.duomaker.couplelove.vatar.R
@@ -34,8 +30,6 @@ class SplashActivity : BaseActivity<ActivitySplashBinding, SplashViewModel>(
     private var pendingNavigate = false
     private var navigateJob: Job? = null
 
-    private var progressAnimator: ValueAnimator? = null
-    private var currentOverlayFraction = 1f
     private var hasNavigated = false
 
     companion object {
@@ -46,17 +40,10 @@ class SplashActivity : BaseActivity<ActivitySplashBinding, SplashViewModel>(
     // ── INIT ──────────────────────────────────────────────────────────────────
 
     override fun initView() {
-        progressAnimator = ObjectAnimator.ofFloat(
-            binding.progressFill,
-            View.ROTATION,
-            0f,
-            -360f
-        ).apply {
-            duration = 1_600L
-            interpolator = LinearInterpolator()
-            repeatCount = ValueAnimator.INFINITE
-            start()
-        }
+        Glide.with(binding.progressFill)
+            .asGif()
+            .load(R.drawable.gif_loading)
+            .into(binding.progressFill)
 
         preloadHomeDrawables { appSession.notifyImagesReady() }
         // ✅ Warm up font — giữ nguyên, nhẹ
@@ -164,14 +151,11 @@ class SplashActivity : BaseActivity<ActivitySplashBinding, SplashViewModel>(
     // ── LIFECYCLE ─────────────────────────────────────────────────────────────
     override fun onPause() {
         super.onPause()
-        progressAnimator?.pause()
         navigateJob?.cancel()  // ✅ Cancel khi pause, onResume sẽ tạo lại
     }
 
     override fun onResume() {
         super.onResume()
-        progressAnimator?.resume()
-
         if (hasNavigated) return
 
         // ✅ Check ngay nếu đã ready
@@ -191,8 +175,6 @@ class SplashActivity : BaseActivity<ActivitySplashBinding, SplashViewModel>(
     override fun onDestroy() {
         navigateJob?.cancel()
         navigateJob = null
-        progressAnimator?.cancel()
-        progressAnimator = null
         super.onDestroy()
     }
 

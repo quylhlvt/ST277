@@ -1,15 +1,22 @@
 package com.duomaker.couplelove.vatar.ui.main.show
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.ValueAnimator
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.os.SystemClock
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.DecelerateInterpolator
 import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -60,17 +67,27 @@ class ShowActivity : BaseActivity<ActivityShowBinding, ShowViewModel>(
     private val adapterNav by lazy { NavAdapter() }
     private val adapterColor by lazy { ColorAdapter() }
     private val adapterPart by lazy { PartAdapter() }
+    private val horizontalProgressStar by lazy(LazyThreadSafetyMode.NONE) {
+        binding.root.findViewById<ConstraintLayout>(R.id.constrainStar)
+            .findViewById<ImageView>(R.id.imgStarHorizontalAnchor)
+    }
+    private val horizontalVisibleStar by lazy(LazyThreadSafetyMode.NONE) {
+        binding.root.findViewById<ImageView>(R.id.imgStar2)
+    }
 
     private val pendingLoads = AtomicInteger(0)
     private var renderGeneration = 0L
     private var timerJob: Job? = null
     private var countDownJob: Job? = null
-    private val totalSeconds = 10 * 60
+    private var starAnimator: ValueAnimator? = null
+    private val totalSeconds = 1 * 60
     private var remainingSeconds = totalSeconds
-
-    private var remainingSecondsOnPause: Int = totalSeconds
+    private var timerDeadlineMs: Long? = null
+    private var hasTimerStarted = false
     private var hasNavigatedToSuccess = false
+    private var isShowingResult = false
     private var scrollPartAfterRandom = false
+    private var lastDisplayedNavIndex: Int? = null
     // ── INFLATE ───────────────────────────────────────────────────────────────
     private fun isOnlineTemplate(): Boolean {
         val templateId = intent.extras?.getString(ARG_TEMPLATE_ID)
@@ -116,12 +133,14 @@ class ShowActivity : BaseActivity<ActivityShowBinding, ShowViewModel>(
         // Show dùng một nhân vật duy nhất, không chuyển/tách theo gender.
 //        binding.gender.gone()
 
+        updateTimerUI(totalSeconds / 60, totalSeconds % 60)
         startCountDown()
 
         val bitmap = appSession.cosplayBitmap
         if (bitmap != null && !bitmap.isRecycled) {
             binding.imvImage2.setImageBitmap(bitmap)
-            binding.imvImage.setImageBitmap(bitmap)
+            binding.imvImage3.setImageBitmap(bitmap)
+            binding.imvImage4.setImageBitmap(bitmap)
             binding.imvImage2.visibility = View.VISIBLE
         } else {
             binding.imvImage2.visibility = View.GONE
@@ -136,22 +155,29 @@ class ShowActivity : BaseActivity<ActivityShowBinding, ShowViewModel>(
         )
     }
     private fun startTimer(fromSeconds: Int = totalSeconds) {
+        if (isShowingResult || hasNavigatedToSuccess) return
         timerJob?.cancel()
-        remainingSeconds = fromSeconds
+        remainingSeconds = fromSeconds.coerceAtLeast(0)
+        hasTimerStarted = true
+        val deadline = SystemClock.elapsedRealtime() + remainingSeconds * 1_000L
+        timerDeadlineMs = deadline
 
         timerJob = this@ShowActivity.lifecycleScope.launch {
-            while (remainingSeconds >= 0) {
+            while (true) {
+                val remainingMillis = (deadline - SystemClock.elapsedRealtime()).coerceAtLeast(0L)
+                remainingSeconds = ((remainingMillis + 999L) / 1_000L).toInt()
                 val minutes = remainingSeconds / 60
                 val seconds = remainingSeconds % 60
                 updateTimerUI(minutes, seconds)
 
                 if (remainingSeconds == 0) {
-                    navigateToSuccess()
+                    timerDeadlineMs = null
+                    showResultOverlay()
                     break
                 }
 
-                delay(1000)
-                remainingSeconds--  // ← cập nhật liên tục
+                // Cập nhật theo mốc thời gian thực, tránh bị trôi giây khi UI bận.
+                delay(minOf(250L, remainingMillis.coerceAtLeast(1L)))
             }
         }
     }
@@ -210,6 +236,9 @@ class ShowActivity : BaseActivity<ActivityShowBinding, ShowViewModel>(
             binding.tvCountDown.alpha = 1f
             binding.tvCountDown.scaleX = 1f
             binding.tvCountDown.scaleY = 1f
+            if (!lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
+                return@launch
+            }
             startTimer()
         }
     }
@@ -247,12 +276,58 @@ class ShowActivity : BaseActivity<ActivityShowBinding, ShowViewModel>(
                 if (MyApplication.isTablet) 7 else 5
         }
     }
+
+    private fun showResultOverlay() {
+        if (isFinishing || isDestroyed || isShowingResult || hasNavigatedToSuccess) return
+        isShowingResult = true
+        timerJob?.cancel()
+        timerJob = null
+        timerDeadlineMs = null
+        countDownJob?.cancel()
+        countDownJob = null
+        binding.tvCountDown.animate().cancel()
+        binding.countDown.gone()
+
+        val safePercent = viewModel.state.value.matchPercent.coerceIn(0, 100)
+        val progress = safePercent / 100f
+        appSession.cosplayPercent = safePercent
+
+        binding.tvMatchPercent.text = "$safePercent%"
+        binding.imgNextStatus.setImageResource(
+            if (safePercent == 100) R.drawable.img_win else R.drawable.img_lost
+        )
+        horizontalProgressStar.updateLayoutParams<ConstraintLayout.LayoutParams> {
+            horizontalBias = progress
+        }
+        horizontalVisibleStar.updateLayoutParams<ConstraintLayout.LayoutParams> {
+            horizontalBias = progress
+        }
+        binding.btnNext.isEnabled = false
+        binding.imgShowBig.gone()
+        binding.imgShowNext.visible()
+
+        lifecycleScope.launch {
+            while (pendingLoads.get() > 0) {
+                delay(50)
+            }
+            if (isFinishing || isDestroyed) return@launch
+
+            val resultBitmap = renderLayersToBitmap()
+            appSession.userResultBitmap = resultBitmap
+            resultBitmap?.let(binding.imvImage::setImageBitmap)
+            binding.btnNext.isEnabled = true
+        }
+    }
+
     private fun navigateToSuccess() {
         if (isFinishing || isDestroyed) return
         if (hasNavigatedToSuccess) return
         hasNavigatedToSuccess = true
         timerJob?.cancel()
+        timerJob = null
+        timerDeadlineMs = null
         countDownJob?.cancel()
+        countDownJob = null
 
         // Nếu vẫn còn đang load ảnh → đợi
         if (pendingLoads.get() > 0) {
@@ -333,6 +408,7 @@ class ShowActivity : BaseActivity<ActivityShowBinding, ShowViewModel>(
                 imgShowBig.visible()
             }
             close.onClick { imgShowBig.gone() }
+            btnNext.onClick { navigateToSuccess() }
 
         }
 
@@ -399,9 +475,6 @@ class ShowActivity : BaseActivity<ActivityShowBinding, ShowViewModel>(
                     renderLayers(state)
                     updateAdapters(state)
                     updateMatchUI(state.matchPercent)
-                    if (state.matchPercent >= 100) {
-                        navigateToSuccess()
-                    }
                 }
             }
         }
@@ -505,6 +578,9 @@ class ShowActivity : BaseActivity<ActivityShowBinding, ShowViewModel>(
     // ── ADAPTERS (giống CustomizeActivity.updateAdapters) ────────────────────
 
     private fun updateAdapters(state: ShowState) {
+        val shouldScrollSelectionLists = lastDisplayedNavIndex != state.currentNavIndex
+        lastDisplayedNavIndex = state.currentNavIndex
+
         // Hiển thị toàn bộ bộ phận trong cùng một danh sách nhân vật.
         visibleNavIndices = state.listData.indices.toList()
         val visibleNavItems = visibleNavIndices.mapNotNull { state.listData.getOrNull(it) }
@@ -568,6 +644,15 @@ class ShowActivity : BaseActivity<ActivityShowBinding, ShowViewModel>(
             adapterPart.submitList(state.currentPaths)
         }
 
+        if (shouldScrollSelectionLists) {
+            if (state.currentColors.isNotEmpty()) {
+                scrollToSelectedPosition(binding.rcvColor, safeColorPosition)
+            }
+            if (state.currentPaths.isNotEmpty()) {
+                scrollToSelectedPosition(binding.rcvPart, safePartPosition)
+            }
+        }
+
 // Random dice
         if (scrollPartAfterRandom) {
             scrollPartAfterRandom = false
@@ -581,6 +666,17 @@ class ShowActivity : BaseActivity<ActivityShowBinding, ShowViewModel>(
 
         }
 
+    }
+
+    private fun scrollToSelectedPosition(recyclerView: RecyclerView, position: Int) {
+        recyclerView.stopScroll()
+        recyclerView.post {
+            if (isFinishing || isDestroyed) return@post
+            val lastPosition = (recyclerView.adapter?.itemCount ?: 0) - 1
+            if (lastPosition >= 0) {
+                recyclerView.scrollToPosition(position.coerceIn(0, lastPosition))
+            }
+        }
     }
 
     private fun ensurePositionVisible(recyclerView: RecyclerView, position: Int) {
@@ -627,26 +723,92 @@ class ShowActivity : BaseActivity<ActivityShowBinding, ShowViewModel>(
     // ── PROGRESS (giống ShowActivity.updateMatchUI) ───────────────────────────
 
     private fun updateMatchUI(percent: Int) {
-        val starCount = when (percent) {
-            0 -> 0
-            in 1..20 -> 1
-            in 21..40 -> 2
-            in 41..70 -> 3
-            in 71..98 -> 4
-            in 99..100 -> 5
-            else -> 0
-        }
-
+        val safePercent = percent.coerceIn(0, 100)
+        val targetBias = 1f - safePercent / 100f
+        val currentBias =
+            (binding.imgStar.layoutParams as ConstraintLayout.LayoutParams).verticalBias
+        val targetHorizontalBias = safePercent / 100f
+        val currentHorizontalBias =
+            (horizontalProgressStar.layoutParams as ConstraintLayout.LayoutParams).horizontalBias
+        val translationLimit = resources.getDimension(R.dimen.dimension_2)
+        val targetTranslationY = translationLimit * (1f - 2f * safePercent / 100f)
+        val currentTranslationY = binding.imgStar1.translationY
 
         val percentText = "$percent%"
         binding.tvPercent.text = percentText
-        binding.txtPercent2.text = percentText
+
+        starAnimator?.cancel()
+        starAnimator = ValueAnimator.ofFloat(currentBias, targetBias).apply {
+            duration = 400L
+            interpolator = DecelerateInterpolator()
+            var wasCancelled = false
+            addUpdateListener { animator ->
+                val animatedBias = animator.animatedValue as Float
+                val animatedTranslationY = currentTranslationY +
+                    (targetTranslationY - currentTranslationY) * animator.animatedFraction
+                val animatedHorizontalBias = currentHorizontalBias +
+                    (targetHorizontalBias - currentHorizontalBias) * animator.animatedFraction
+                binding.imgStar.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                    verticalBias = animatedBias
+                }
+                binding.imgStar1.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                    verticalBias = animatedBias
+                }
+                binding.imgStar1.translationY = animatedTranslationY
+                horizontalProgressStar.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                    horizontalBias = animatedHorizontalBias
+                }
+                horizontalVisibleStar.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                    horizontalBias = animatedHorizontalBias
+                }
+            }
+            addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationCancel(animation: Animator) {
+                    wasCancelled = true
+                }
+
+                override fun onAnimationEnd(animation: Animator) {
+                    if (wasCancelled || safePercent < 100) return
+
+                    // Giữ đúng frame cuối ở đỉnh thanh progress trước khi chuyển màn.
+                    binding.imgStar.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                        verticalBias = 0f
+                    }
+                    binding.imgStar1.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                        verticalBias = 0f
+                    }
+                    binding.imgStar1.translationY = -translationLimit
+                    horizontalProgressStar.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                        horizontalBias = 1f
+                    }
+                    horizontalVisibleStar.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                        horizontalBias = 1f
+                    }
+                    binding.layoutProgress.postDelayed(
+                        { showResultOverlay() },
+                        PROGRESS_COMPLETE_HOLD_MILLIS
+                    )
+                }
+            })
+            start()
+        }
     }
-    // onPause — lưu remainingSeconds thực tế
     override fun onPause() {
         super.onPause()
+        timerDeadlineMs?.let { deadline ->
+            val remainingMillis = (deadline - SystemClock.elapsedRealtime()).coerceAtLeast(0L)
+            remainingSeconds = ((remainingMillis + 999L) / 1_000L).toInt()
+        }
         timerJob?.cancel()
-        // remainingSeconds đã được cập nhật liên tục trong startTimer
+        timerJob = null
+        timerDeadlineMs = null
+
+        // Countdown không được tiếp tục trong nền rồi tự khởi động timer.
+        if (!hasTimerStarted) {
+            countDownJob?.cancel()
+            countDownJob = null
+            binding.tvCountDown.animate().cancel()
+        }
     }
     // ── RESUME ────────────────────────────────────────────────────────────────
 
@@ -654,12 +816,16 @@ class ShowActivity : BaseActivity<ActivityShowBinding, ShowViewModel>(
         super.onResume()
         pendingLoads.set(0)
 
-        // ← Resume timer nếu đang đếm (chưa win/fail)
-        if (remainingSeconds in 1 until totalSeconds
-            && !hasNavigatedToSuccess
-            && binding.countDown.visibility != View.VISIBLE
-        ) {
-            startTimer(remainingSeconds)
+        if (!hasNavigatedToSuccess && !isShowingResult) {
+            when {
+                hasTimerStarted && remainingSeconds > 0 && timerJob?.isActive != true -> {
+                    startTimer(remainingSeconds)
+                }
+
+                !hasTimerStarted && countDownJob?.isActive != true -> {
+                    startCountDown()
+                }
+            }
         }
 
         val currentState = viewModel.state.value
@@ -681,15 +847,22 @@ class ShowActivity : BaseActivity<ActivityShowBinding, ShowViewModel>(
         }
     }
     override fun onDestroy() {
-        super.onDestroy()
+        starAnimator?.cancel()
+        starAnimator = null
         timerJob?.cancel()
+        timerJob = null
+        timerDeadlineMs = null
         countDownJob?.cancel()
+        countDownJob = null
+        binding.tvCountDown.animate().cancel()
+        super.onDestroy()
     }
     override fun bindViewModel() {}
 
     // ── COMPANION ─────────────────────────────────────────────────────────────
 
     companion object {
+        private const val PROGRESS_COMPLETE_HOLD_MILLIS = 200L
         const val ARG_TEMPLATE_INDEX = "template_index"
         const val ARG_TEMPLATE_ID = "template_id"
         const val ARG_SELECTIONS = "selections"

@@ -2,6 +2,7 @@
 <resources>
     <dimen name="dimension_0">0dp</dimen>
     <dimen name="dimension_0_4">0.6dp</dimen>
+    <dimen name="dimension_0_5">0.8dp</dimen>
     <dimen name="dimension_1">1.5dp</dimen>
     <dimen name="dimension_1_3">1.95dp</dimen>
     <dimen name="dimension_1_5">2.25dp</dimen>

@@ -27,6 +27,7 @@ import com.duomaker.couplelove.vatar.core.extention.hideNavigation
 import com.duomaker.couplelove.vatar.core.extention.visible
 import com.duomaker.couplelove.vatar.core.helper.SharedPreferencesManager
 import com.duomaker.couplelove.vatar.databinding.DialogbaseBinding
+import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.analytics.FirebaseAnalytics
 import java.util.Locale
@@ -286,6 +287,10 @@ abstract class BaseActivity<VB : ViewBinding, VM : ViewModel>(
                 binding.btnNo.gone()
                 binding.btnOk.gone()
                 binding.txtContent.gone()
+                Glide.with(binding.progressBar)
+                    .asGif()
+                    .load(R.drawable.gif_loading)
+                    .into(binding.progressBar)
                 binding.progressBar.visible()
                 binding.txtPlease.visible()
             }

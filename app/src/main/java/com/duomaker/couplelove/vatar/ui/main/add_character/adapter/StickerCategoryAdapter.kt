@@ -29,7 +29,7 @@ class StickerCategoryAdapter :
                 frameTittle.background = ContextCompat.getDrawable(context, R.drawable.bg_8_title)
             } else {
                 txtTittle.setTextColor(ContextCompat.getColor(context,R.color.white))
-                frameTittle.background = null
+                frameTittle.background = ContextCompat.getDrawable(context, R.drawable.bg_8_title_null)
             }
         }
         binding.root.onClick { onCategoryClick(item, position) }

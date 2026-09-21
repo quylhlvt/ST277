@@ -16,14 +16,31 @@
             android:layout_marginHorizontal="@dimen/dimension_35"
             android:foreground="@color/transparent"
             app:cardBackgroundColor="@color/app_color2"
-            app:cardCornerRadius="@dimen/dimension_15"
+            app:cardCornerRadius="@dimen/dimension_10"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:strokeColor="@color/app_color"
             app:strokeWidth="@dimen/dimension_0">
-
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dimension_2"
+                app:cardBackgroundColor="@color/app_color3"
+                app:cardCornerRadius="@dimen/dimension_10">
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dimension_4"
+                app:cardBackgroundColor="@color/app_color14"
+                app:cardCornerRadius="@dimen/dimension_10">
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dimension_1"
+                app:cardBackgroundColor="@color/app_color7"
+                app:cardCornerRadius="@dimen/dimension_10">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/contrainRate"
         android:layout_width="wrap_content"
@@ -49,12 +66,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dimension_16"
-            android:fontFamily="@font/montserrat_bold"
+            android:fontFamily="@font/roboto_medium"
             android:freezesText="true"
             android:gravity="center"
 
             android:text="@string/zero_star_title"
-            android:textColor="#663300"
+            android:textColor="@color/app_color3"
             android:textSize="@dimen/text_size_16"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -66,11 +83,11 @@
             android:id="@+id/tv2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/montserrat_medium"
+            android:fontFamily="@font/roboto_regular"
             android:freezesText="true"
             android:gravity="center"
             android:text="@string/zero_star"
-            android:textColor="#836342"
+            android:textColor="@color/black5"
             android:textSize="@dimen/text_size_14"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -114,15 +131,15 @@
                 android:layout_height="@dimen/dimension_35"
                 android:layout_marginTop="@dimen/dimension_20"
                 app:strokeWidth="@dimen/dimension_0"
-                app:cardCornerRadius="@dimen/dimension_8"
-                app:cardBackgroundColor="#FF7F7F"
+                app:cardCornerRadius="@dimen/dimension_100"
+                app:cardBackgroundColor="@color/app_color3"
                 app:cardElevation="@dimen/dimension_0">
 
                 <TextView
                     android:id="@+id/btnVote"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:fontFamily="@font/montserrat_bold"
+                    android:fontFamily="@font/roboto_medium"
                     android:gravity="center"
                     android:paddingVertical="@dimen/dimension_5"
                     android:text="@string/rate"
@@ -147,18 +164,20 @@
                 android:id="@+id/btnExit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/montserrat_bold"
+                android:fontFamily="@font/roboto_medium"
                 android:gravity="center"
                 android:paddingHorizontal="@dimen/dimension_30"
                 android:paddingVertical="@dimen/dimension_10"
                 android:text="@string/exit"
                 android:textAllCaps="false"
-                android:textColor="#663300"
+                android:textColor="@color/app_color3"
                 android:textSize="@dimen/text_size_16" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
+            </androidx.cardview.widget.CardView>
+            </androidx.cardview.widget.CardView>
+            </androidx.cardview.widget.CardView>
         </com.google.android.material.card.MaterialCardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

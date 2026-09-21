@@ -73,14 +73,14 @@ class SuccessActivity : BaseActivity<ActivitySuccessBinding, SuccessViewModel>(
         binding.actionBar.root.isEnabled = true
         binding.actionBar.btnActionBarLeft.isEnabled = true
         binding.actionBar.btnActionBarLeft.isClickable = true
-        binding.actionBar.btnActionBarRight2.isEnabled = true
-        binding.actionBar.btnActionBarRight2.isClickable = true
+        binding.actionBar.btnActionBarNextToRight1.isEnabled = true
+        binding.actionBar.btnActionBarNextToRight1.isClickable = true
         binding.actionBar.btnActionBarRight1.isEnabled = true
         binding.actionBar.btnActionBarRight1.isClickable = true
-        binding.actionBar.btnActionBarRight.isEnabled = true
-        binding.actionBar.btnActionBarRight.isClickable = true
-        binding.btnDownload.isEnabled = true
-        binding.btnDownload.isClickable = true
+        binding.btnBottomLeft.isEnabled = true
+        binding.btnBottomLeft.isClickable = true
+        binding.btnBottomRight.isEnabled = true
+        binding.btnBottomRight.isClickable = true
         binding.root.requestLayout()
         binding.root.invalidate()
     }
@@ -95,11 +95,12 @@ class SuccessActivity : BaseActivity<ActivitySuccessBinding, SuccessViewModel>(
         currentImagePath = imagePath
         binding.apply {
             loadImage(this@SuccessActivity, imagePath, imvImage)
-            setImageActionBar(actionBar.btnActionBarLeft, R.drawable.back_app1)
-            setImageActionBar(actionBar.btnActionBarRight, R.drawable.ic_home)
-            setImageActionBar(actionBar.btnActionBarRight1, R.drawable.ic_mycreation)
-            setImageActionBar(actionBar.btnActionBarRight2, R.drawable.ic_share_all)
-            txtDownload.isSelected = true
+            setImageActionBar(actionBar.btnActionBarLeft, R.drawable.back_app)
+            setImageActionBar(actionBar.btnActionBarRight1, R.drawable.ic_home)
+            setImageActionBar(actionBar.btnActionBarNextToRight1, R.drawable.ic_share_all)
+            txtLeft.isSelected = true
+            txtRight.isSelected = true
+            txtSuccess.isSelected = true
         }
     }
     override fun viewListener() {
@@ -110,17 +111,17 @@ class SuccessActivity : BaseActivity<ActivitySuccessBinding, SuccessViewModel>(
                 openActivity(HomeActivity::class.java, clearTop = true)
             }
             // MyCreation
-            actionBar.btnActionBarRight1.onClick1 {
+            btnBottomLeft.onClick1 {
                 openActivity(HomeActivity::class.java, Bundle().apply {
                     putBoolean(HomeActivity.EXTRA_OPEN_ALBUM, true)
                 }, clearTop = true)
             }
             // Share
-            actionBar.btnActionBarRight2.onClick(1500) {
+            actionBar.btnActionBarNextToRight1.onClick(1500) {
                 shareImage()
             }
             // Download
-            btnDownload.onClick1 { downloadImage() }
+            btnBottomRight.onClick1 { downloadImage() }
         }
     }
     private fun logSocialShareEvent(socialName: String) {
