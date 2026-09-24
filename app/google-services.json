@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "893101365520",
-    "project_id": "st283-duo-maker-couple-avatar",
-    "storage_bucket": "st283-duo-maker-couple-avatar.firebasestorage.app"
+    "project_number": "3953460684",
+    "project_id": "st277-warrior-cat-oc-maker",
+    "storage_bucket": "st277-warrior-cat-oc-maker.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:893101365520:android:0bf6e6d3ffc491c1b52d95",
+        "mobilesdk_app_id": "1:3953460684:android:c23aedae4e32bba6a30969",
         "android_client_info": {
-          "package_name": "com.duomaker.couplelove.vatar"
+          "package_name": "com.warrior.oc.ca"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAFFDCZCdjOWLacw8Yc1q0c--NuijeurSo"
+          "current_key": "AIzaSyAwxWfk-N18dHykKGhHwHolkqRAJ01pJLk"
         }
       ],
       "services": {

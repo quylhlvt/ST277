@@ -7,7 +7,7 @@
     android:clipChildren="false"
     android:background="@drawable/img_bg_splash"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.duomaker.couplelove.vatar.ui.onboarding.intro.IntroActivity">
+    tools:context="com.warrior.oc.ca.ui.onboarding.intro.IntroActivity">
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager2"
@@ -27,34 +27,18 @@
         android:layout_marginBottom="@dimen/dimension_150"
         >
 
-        <LinearLayout
+        <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
             android:id="@+id/dotsIndicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <View
-                android:id="@+id/introDotFirst"
-                android:layout_width="@dimen/dimension_24"
-                android:layout_height="@dimen/dimension_6"
-                android:background="@drawable/bg_intro_dot_active" />
-
-            <View
-                android:id="@+id/introDotSecond"
-                android:layout_width="@dimen/dimension_24"
-                android:layout_height="@dimen/dimension_6"
-                android:layout_marginStart="@dimen/dimension_12"
-                android:background="@drawable/bg_intro_dot_inactive" />
-
-            <View
-                android:id="@+id/introDotThird"
-                android:layout_width="@dimen/dimension_24"
-                android:layout_height="@dimen/dimension_6"
-                android:layout_marginStart="@dimen/dimension_12"
-                android:background="@drawable/bg_intro_dot_inactive" />
-        </LinearLayout>
+            app:dotsColor="@color/white"
+            app:dotsCornerRadius="@dimen/dimension_8"
+            app:dotsSize="@dimen/dimension_8"
+            app:dotsSpacing="@dimen/dimension_3"
+            app:dotsWidthFactor="2.5"
+            app:progressMode="false"
+            app:selectedDotColor="@color/app_color" />
         <include
             android:id="@+id/btnNextPager"
             layout="@layout/bottom_bottom_view"

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/img_bg_splash"
-    tools:context="com.duomaker.couplelove.vatar.ui.language.LanguageActivity">
+    tools:context="com.warrior.oc.ca.ui.language.LanguageActivity">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimension_0"

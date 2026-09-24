@@ -62,7 +62,6 @@
         <attr name="borderAlpha" />
     </declare-styleable>
 
-
     <!-- ===================================================== -->
     <!-- STROKE TEXT VIEW                                      -->
     <!-- Dùng cho StrokeAppCompatTextView                      -->
@@ -78,6 +77,11 @@
         <attr name="gradientEndColor" />
         <attr name="useGradient" />
         <attr name="gradientOrientation" />
+    </declare-styleable>
+
+    <declare-styleable name="GradientTextView">
+        <attr name="gradientStartColor" />
+        <attr name="gradientEndColor" />
     </declare-styleable>
 
 

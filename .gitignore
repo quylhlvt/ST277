@@ -1,0 +1,37 @@
+# Gradle and Kotlin build state
+.gradle/
+.kotlin/
+**/build/
+
+# Local machine configuration
+local.properties
+
+# Android Studio generated files
+*.iml
+.idea/caches/
+.idea/libraries/
+.idea/.name
+.idea/AndroidProjectSystem.xml
+.idea/assetWizardSettings.xml
+.idea/deviceManager.xml
+.idea/modules.xml
+.idea/workspace.xml
+.idea/deploymentTargetSelector.xml
+
+# Native build output
+.cxx/
+.externalNativeBuild/
+
+# OS metadata
+.DS_Store
+
+# Packaged artifacts
+*.apk
+*.aab
+
+# Private signing keys
+*.jks
+*.keystore
+
+# Stray IDE project accidentally created outside the Gradle modules
+/rounded-frame-layout/

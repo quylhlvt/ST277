@@ -3,10 +3,10 @@
 -renamesourcefileattribute SourceFile
 
 # Gson serializes these local models by their field names.
--keepclassmembers class com.duomaker.couplelove.vatar.data.model.custom.** {
+-keepclassmembers class com.warrior.oc.ca.data.model.custom.** {
     <fields>;
 }
--keepclassmembers class com.duomaker.couplelove.vatar.data.model.api.** {
+-keepclassmembers class com.warrior.oc.ca.data.model.api.** {
     <fields>;
 }
 

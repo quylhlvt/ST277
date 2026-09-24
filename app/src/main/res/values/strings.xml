@@ -1,11 +1,11 @@
 <resources>
     <string name="size_slider">Size</string>
-    <string name="app_name">Duo Maker: Couple Avatar</string>
+    <string name="app_name">Warrior Cat: OC Maker &amp; Avatar</string>
     <string name="next">Next</string>
     <string name="language">Language</string>
-    <string name="title_1">\u00A0Create a fearless feline hero.\u00A0</string>
-    <string name="title_2">\u00A0Craft every detail your way.\u00A0</string>
-    <string name="title_3">\u00A0ABring your warrior legend to life.\u00A0</string>
+    <string name="title_1">\u00A0Brush The Cat\u00A0</string>
+    <string name="title_2">\u00A0BeCareful Of Their Claws\u00A0</string>
+    <string name="title_3">\u00A0Win The Mood\u00A0</string>
     <string name="not_select_lang">Please select a language</string>
     <string name="pony_maker">Cat Maker</string>
     <string name="cat_random">Cat Random</string>
@@ -23,12 +23,12 @@
     <string name="cancel">Cancel</string>
     <string name="add_image">Add image</string>
     <string name="text">Text</string>
-    <string name="type_your_content">Type_your_content</string>
+    <string name="type_your_content">Type Your Content</string>
     <string name="loading">Loading</string>
     <string name="haven_t_saved_it_yet_do_you_want_to_exit">Haven’t Saved It Yet, Do You Want To Exit?</string>
     <string name="no">No</string>
     <string name="yes">Yes</string>
-    <string name="null_edt">Please enter text</string>
+    <string name="null_edt">Please Enter Text</string>
     <string name="choose_color">Choose color</string>
     <string name="do_you_want_to_reset_all">Do You Want To Reset All?</string>
     <string name="reset">Reset</string>
@@ -37,8 +37,8 @@
     <string name="share_app">Share app</string>
     <string name="image_has_been_saved_successfully">Image has been saved successfully!</string>
     <string name="download">Download</string>
-    <string name="my_avatar">Character</string>
-    <string name="design">Design</string>
+    <string name="my_avatar">My Cat</string>
+    <string name="design">My Design</string>
     <string name="no_item_here">No item here</string>
     <string name="add_to_whatsapp">Add To WhatsApp</string>
     <string name="add_to_telegram">Add To Telegram</string>
@@ -104,7 +104,7 @@
     <string name="font">Font</string>
     <string name="done">Done</string>
     <string name="please_wait">Please Wait...</string>
-    <string name="watch_a_short_ad_to_generate_a_random_anime">Watch a short ad to generate a Random Anime</string>
+    <string name="watch_a_short_ad_to_generate_a_random_anime">Watch A Short Ad To Generate A Random Anime</string>
     <string name="players_receive_a_random">Cosplay Mode, players are randomly given one reference image to follow. Your task is to recreate that character as accurately as possible by choosing the right hairstyles, outfits, colors, and accessories. Every correct match increases your percentage score (%). The closer your character looks to the random image, the higher your final score will be. Pay attention to small details to achieve the best cosplay result.</string>
     <string name="click_the_random">Click the random button below to see what your character is!
     </string>
@@ -112,4 +112,6 @@
     <string name="two_star">Please give us some feedback</string>
     <string name="cosplay_results">Cosplay Results</string>
     <string name="you_ve_finished_this_cosplay_challenge">You\'ve finished this cosplay challenge.</string>
+    <string name="successful">Successful</string>
+    <string name="successfully">Successfully</string>
 </resources>

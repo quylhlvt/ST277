@@ -126,17 +126,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ll1">
 
-            <com.google.android.material.card.MaterialCardView
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimension_35"
+                android:elevation="@dimen/dimension_0"
                 android:layout_marginTop="@dimen/dimension_20"
                 app:strokeWidth="@dimen/dimension_0"
-                app:cardCornerRadius="@dimen/dimension_100"
-                app:cardBackgroundColor="@color/app_color3"
+                app:cardCornerRadius="@dimen/dimension_18"
+                app:cardBackgroundColor="@color/transparent"
                 app:cardElevation="@dimen/dimension_0">
 
                 <TextView
                     android:id="@+id/btnVote"
+                    android:background="@color/app_color3"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fontFamily="@font/roboto_medium"
@@ -146,7 +148,7 @@
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_size_16" />
-            </com.google.android.material.card.MaterialCardView>
+            </androidx.cardview.widget.CardView>
             <!--                <androidx.appcompat.widget.AppCompatButton-->
             <!--                    android:id="@+id/btnVote"-->
             <!--                    android:layout_width="match_parent"-->

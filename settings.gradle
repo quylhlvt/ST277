@@ -34,5 +34,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "ST283_Duo_Maker_Couple_Avatar"
+rootProject.name = "ST77 Warrior Cat OC Maker & Avatar"
 include ':app'

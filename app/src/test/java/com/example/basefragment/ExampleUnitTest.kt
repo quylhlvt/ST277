@@ -1,4 +1,4 @@
-package com.duomaker.couplelove.vatar
+package com.warrior.oc.ca
 
 import org.junit.Test
 

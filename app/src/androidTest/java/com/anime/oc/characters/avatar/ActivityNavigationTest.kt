@@ -1,8 +1,7 @@
-package com.duomaker.couplelove.vatar
+package com.warrior.oc.ca
 
 import android.app.Activity
 import android.content.Context
-import android.os.Bundle
 import android.os.SystemClock
 import androidx.lifecycle.ViewModelProvider
 import androidx.test.core.app.ActivityScenario
@@ -15,14 +14,12 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
 import androidx.test.runner.lifecycle.Stage
 import androidx.viewpager2.widget.ViewPager2
-import com.duomaker.couplelove.vatar.ui.language.LanguageActivity
-import com.duomaker.couplelove.vatar.ui.language.LanguageViewModel
-import com.duomaker.couplelove.vatar.ui.main.home.HomeActivity
-import com.duomaker.couplelove.vatar.ui.main.myPony.MyPonyActivity
-import com.duomaker.couplelove.vatar.ui.main.setting.SettingActivity
-import com.duomaker.couplelove.vatar.ui.main.success.SuccessActivity
-import com.duomaker.couplelove.vatar.ui.onboarding.intro.IntroActivity
-import com.duomaker.couplelove.vatar.ui.onboarding.permission.PermissionActivity
+import com.warrior.oc.ca.ui.language.LanguageActivity
+import com.warrior.oc.ca.ui.language.LanguageViewModel
+import com.warrior.oc.ca.ui.main.home.HomeActivity
+import com.warrior.oc.ca.ui.main.setting.SettingActivity
+import com.warrior.oc.ca.ui.onboarding.intro.IntroActivity
+import com.warrior.oc.ca.ui.onboarding.permission.PermissionActivity
 import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
@@ -83,27 +80,6 @@ class ActivityNavigationTest {
 
             scenario.recreate()
             assertSame(home.appSession, resumedActivity<HomeActivity>().appSession)
-        }
-    }
-
-    @Test
-    fun savedDesignOpensAlbumAndBackReturnsDirectlyHome() {
-        ActivityScenario.launch(HomeActivity::class.java).use {
-            val home = resumedActivity<HomeActivity>()
-            instrumentation.runOnMainSync {
-                home.openActivity(SuccessActivity::class.java, Bundle().apply {
-                    putString("imagePath", "migration-test.png")
-                    putString("avatarUrl", "test-avatar")
-                })
-            }
-            val success = resumedActivity<SuccessActivity>()
-            assertEquals("migration-test.png", success.intent.getStringExtra("imagePath"))
-            assertEquals("test-avatar", success.intent.getStringExtra("avatarUrl"))
-            onView(withId(R.id.btnBottomLeft)).perform(click())
-            resumedActivity<MyPonyActivity>()
-            pressBack()
-            assertSame(home, resumedActivity<HomeActivity>())
-            assertTrue(success.isFinishing || success.isDestroyed)
         }
     }
 
