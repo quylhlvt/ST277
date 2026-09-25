@@ -1,15 +1,21 @@
 package com.warrior.oc.ca.ui.main.home
 
 import android.app.Activity
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.warrior.oc.ca.core.base.BaseActivity
 import com.warrior.oc.ca.core.extention.InternetExtension
+import com.warrior.oc.ca.core.extention.goToSettings
 import com.warrior.oc.ca.core.extention.onClick
 import com.warrior.oc.ca.core.extention.setImageActionBar
+import com.warrior.oc.ca.core.extention.toCameraFromHome
 import com.warrior.oc.ca.core.extention.toSettingFromHome
 import com.warrior.oc.ca.core.helper.RateHelper
 import com.warrior.oc.ca.utils.state.RateState
@@ -25,11 +31,23 @@ class HomeActivity : BaseActivity<ActivityHomeBinding, HomeViewModel>(
 
     private var countRate = 0
 
+    private val cameraPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        if (granted) {
+            viewModel.onCameraPermissionGranted()
+            toCameraFromHome()
+        } else {
+            viewModel.onCameraPermissionDenied()
+        }
+    }
+
     companion object {
         const val EXTRA_OPEN_ALBUM = "open_album"
     }
 
     override fun initView() {
+        binding.txtPlay.isSelected = true
         binding.actionBar.apply {
             setImageActionBar(btnActionBarRight, R.drawable.ic_settings)
         }
@@ -48,6 +66,25 @@ class HomeActivity : BaseActivity<ActivityHomeBinding, HomeViewModel>(
 
     override fun viewListener() {
         binding.actionBar.btnActionBarRight.onClick { toSettingFromHome() }
+        binding.btnPlay.onClick(500) { openCamera() }
+    }
+
+    private fun openCamera() {
+        val cameraGranted = ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.CAMERA
+            ) == PackageManager.PERMISSION_GRANTED
+
+        when {
+            cameraGranted -> {
+                viewModel.onCameraPermissionGranted()
+                toCameraFromHome()
+            }
+
+            viewModel.shouldGoToCameraSettings() -> goToSettings()
+
+            else -> cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
+        }
     }
 
     private fun onHomeMenuClick(action: HomeMenuAction) {

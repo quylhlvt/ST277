@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/img_bg_splash"
-    tools:context="com.warrior.oc.ca.ui.main.setting.SettingActivity">
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   xmlns:tools="http://schemas.android.com/tools"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="match_parent"
+                                                   android:background="@drawable/img_bg_splash"
+                                                   tools:context="com.warrior.oc.ca.ui.main.setting.SettingActivity">
 
 
     <FrameLayout
@@ -16,7 +16,7 @@
 
         <include
             android:id="@+id/actionBar"
-            layout="@layout/layout_actionbar" />
+            layout="@layout/layout_actionbar"/>
     </FrameLayout>
 
 
@@ -29,419 +29,304 @@
         android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@id/layoutActionBar">
 
-        <com.google.android.material.card.MaterialCardView
+        <com.quylh.gradientstrokelayout.GradientStrokeFrameLayout
             android:id="@+id/btnLang"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:cardBackgroundColor="@color/app_color2"
-            app:cardCornerRadius="@dimen/dimension_10"
-            app:layout_constraintDimensionRatio="3.28:0.52"
             app:layout_constraintTop_toTopOf="parent"
-            app:strokeColor="@color/black"
-            app:strokeWidth="@dimen/dimension_0">
+            app:layout_constraintDimensionRatio="3.28:0.46"
+            app:gslCornerRadius="@dimen/dimension_14"
+            app:gslStrokeWidth="@dimen/dimension_1"
+            app:gslStartColor="@color/white"
+            app:gslCenterColor="@color/white"
+            app:gslEndColor="@color/white">
 
-            <com.google.android.material.card.MaterialCardView
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/dimension_1"
-                app:cardBackgroundColor="@color/app_color3"
-                app:cardCornerRadius="@dimen/dimension_10"
-                app:strokeWidth="@dimen/dimension_0">
+                android:background="@drawable/bg_linear_color"
+                android:layout_height="match_parent">
 
-                <com.google.android.material.card.MaterialCardView
+                <View
+                    android:id="@+id/top1"
                     android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimension_0"
+                    app:layout_constraintDimensionRatio="3.28:0.12"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <View
+                    android:id="@+id/bottom1"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimension_0"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="3.28:0.12"/>
+
+
+                <View
+                    android:id="@+id/start1"
+                    android:layout_width="@dimen/dimension_0"
                     android:layout_height="match_parent"
-                    android:layout_marginBottom="@dimen/dimension_3"
-                    app:cardBackgroundColor="@color/app_color4"
-                    app:cardCornerRadius="@dimen/dimension_10"
-                    app:strokeWidth="@dimen/dimension_0">
-
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginBottom="@dimen/dimension_1"
-                        app:cardBackgroundColor="@color/transparent"
-                        app:cardCornerRadius="@dimen/dimension_10"
-                        app:strokeWidth="@dimen/dimension_0">
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@color/app_color5">
-
-                            <View
-                                android:id="@+id/top1"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/dimension_0"
-                                app:layout_constraintDimensionRatio="3.28:0.12"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <View
-                                android:id="@+id/bottom1"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/dimension_0"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintDimensionRatio="3.28:0.12" />
+                    app:layout_constraintDimensionRatio="1.6:4.6"
+                    app:layout_constraintStart_toStartOf="parent"/>
 
 
-                            <View
-                                android:id="@+id/start1"
-                                android:layout_width="@dimen/dimension_0"
-                                android:layout_height="match_parent"
-                                app:layout_constraintDimensionRatio="1.2:4"
-                                app:layout_constraintStart_toStartOf="parent" />
-
-                            <View
-                                android:id="@+id/end1"
-                                android:layout_width="@dimen/dimension_0"
-                                android:layout_height="match_parent"
-                                app:layout_constraintDimensionRatio="1.2:4"
-                                app:layout_constraintEnd_toEndOf="parent" />
+                <ImageView
+                    android:id="@+id/ic_lang"
+                    android:layout_width="@dimen/dimension_0"
+                    android:layout_height="@dimen/dimension_0"
+                    android:src="@drawable/ic_lang_set"
+                    app:layout_constraintBottom_toTopOf="@+id/bottom1"
+                    app:layout_constraintDimensionRatio="1:1"
+                    app:layout_constraintStart_toEndOf="@+id/start1"
+                    app:layout_constraintTop_toBottomOf="@+id/top1"/>
 
 
-                            <ImageView
-                                android:id="@+id/ic_lang"
-                                android:layout_width="@dimen/dimension_0"
-                                android:layout_height="@dimen/dimension_0"
-                                android:src="@drawable/ic_lang_set"
-                                app:layout_constraintBottom_toTopOf="@+id/bottom1"
-                                app:layout_constraintDimensionRatio="1:1"
-                                app:layout_constraintStart_toEndOf="@+id/start1"
-                                app:layout_constraintTop_toBottomOf="@+id/top1" />
+                <TextView
+                    android:id="@+id/txt1"
+                    style="@style/single_marquee"
+                    android:layout_width="@dimen/dimension_0"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimension_12"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/lilita_one_regular"
+                    android:textSize="@dimen/text_size_16"
+                    android:gravity="start|center_vertical"
+                    android:text="@string/language"
+                    app:layout_constraintBottom_toTopOf="@+id/bottom1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/ic_lang"
+                    app:layout_constraintTop_toBottomOf="@+id/top1"
+                />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
+        </com.quylh.gradientstrokelayout.GradientStrokeFrameLayout>
 
-                            <TextView
-                                android:id="@+id/txt1"
-                                style="@style/single_marquee"
-                                android:layout_width="@dimen/dimension_0"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/dimension_12"
-                                android:fontFamily="@font/jockey_one_regular"
-                                android:textSize="@dimen/text_size_20"
-                                android:gravity="start|center_vertical"
-                                android:text="@string/language"
-                                android:textColor="@color/app_color"
-                                app:layout_constraintBottom_toTopOf="@+id/bottom1"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toEndOf="@+id/ic_lang"
-                                app:layout_constraintTop_toBottomOf="@+id/top1"
-                                app:outerStrokeColor="@color/app_color"
-                                app:outerStrokeWidth="@dimen/dimension_1" />
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-                    </com.google.android.material.card.MaterialCardView>
-                </com.google.android.material.card.MaterialCardView>
-            </com.google.android.material.card.MaterialCardView>
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
+        <com.quylh.gradientstrokelayout.GradientStrokeFrameLayout
             android:id="@+id/btnRate"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/dimension_16"
             app:cardBackgroundColor="@color/app_color2"
             app:cardCornerRadius="@dimen/dimension_10"
-            app:layout_constraintDimensionRatio="3.28:0.52"
             app:layout_constraintTop_toBottomOf="@+id/btnLang"
-            app:strokeWidth="@dimen/dimension_0">
+            app:layout_constraintDimensionRatio="3.28:0.46"
+            app:gslCornerRadius="@dimen/dimension_14"
+            app:gslStrokeWidth="@dimen/dimension_1"
+            app:gslStartColor="@color/white"
+            app:gslCenterColor="@color/white"
+            app:gslEndColor="@color/white">
 
-            <com.google.android.material.card.MaterialCardView
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/dimension_1"
-                app:cardBackgroundColor="@color/app_color3"
-                app:cardCornerRadius="@dimen/dimension_10"
-                app:strokeWidth="@dimen/dimension_0">
+                android:background="@drawable/bg_linear_color"
+                android:layout_height="match_parent">
 
-                <com.google.android.material.card.MaterialCardView
+                <View
+                    android:id="@+id/top2"
                     android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimension_0"
+                    app:layout_constraintDimensionRatio="3.28:0.12"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <View
+                    android:id="@+id/bottom2"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimension_0"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="3.28:0.12"/>
+
+
+                <View
+                    android:id="@+id/start2"
+                    android:layout_width="@dimen/dimension_0"
                     android:layout_height="match_parent"
-                    android:layout_marginBottom="@dimen/dimension_3"
-                    app:cardBackgroundColor="@color/app_color4"
-                    app:cardCornerRadius="@dimen/dimension_10"
-                    app:strokeWidth="@dimen/dimension_0">
-
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginBottom="@dimen/dimension_1"
-                        app:cardBackgroundColor="@color/transparent"
-                        app:cardCornerRadius="@dimen/dimension_10"
-                        app:strokeWidth="@dimen/dimension_0">
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@color/app_color5">
-
-                            <View
-                                android:id="@+id/top2"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/dimension_0"
-                                app:layout_constraintDimensionRatio="3.28:0.12"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <View
-                                android:id="@+id/bottom2"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/dimension_0"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintDimensionRatio="3.28:0.12" />
+                    app:layout_constraintDimensionRatio="1.6:4.6"
+                    app:layout_constraintStart_toStartOf="parent"/>
 
 
-                            <View
-                                android:id="@+id/start2"
-                                android:layout_width="@dimen/dimension_0"
-                                android:layout_height="match_parent"
-                                app:layout_constraintDimensionRatio="1.2:4"
-                                app:layout_constraintStart_toStartOf="parent" />
-
-                            <View
-                                android:id="@+id/end2"
-                                android:layout_width="@dimen/dimension_0"
-                                android:layout_height="match_parent"
-                                app:layout_constraintDimensionRatio="1.2:4"
-                                app:layout_constraintEnd_toEndOf="parent" />
+                <ImageView
+                    android:id="@+id/ic_rate"
+                    android:layout_width="@dimen/dimension_0"
+                    android:layout_height="@dimen/dimension_0"
+                    android:src="@drawable/ic_rate_set"
+                    app:layout_constraintBottom_toTopOf="@+id/bottom2"
+                    app:layout_constraintDimensionRatio="1:1"
+                    app:layout_constraintStart_toEndOf="@+id/start2"
+                    app:layout_constraintTop_toBottomOf="@+id/top2"/>
 
 
-                            <ImageView
-                                android:id="@+id/ic_rate"
-                                android:layout_width="@dimen/dimension_0"
-                                android:layout_height="@dimen/dimension_0"
-                                android:src="@drawable/ic_rate_set"
-                                app:layout_constraintBottom_toTopOf="@+id/bottom2"
-                                app:layout_constraintDimensionRatio="1:1"
-                                app:layout_constraintStart_toEndOf="@+id/start2"
-                                app:layout_constraintTop_toBottomOf="@+id/top2" />
+                <TextView
+                    android:id="@+id/txt2"
+                    style="@style/single_marquee"
+                    android:layout_width="@dimen/dimension_0"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimension_12"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/lilita_one_regular"
+                    android:textSize="@dimen/text_size_16"
+                    android:gravity="start|center_vertical"
+                    android:text="@string/rate_us"
+                    app:layout_constraintBottom_toTopOf="@+id/bottom2"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/ic_rate"
+                    app:layout_constraintTop_toBottomOf="@+id/top2"
+                />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
+        </com.quylh.gradientstrokelayout.GradientStrokeFrameLayout>
 
-                            <TextView
-                                android:id="@+id/txt2"
-                                style="@style/single_marquee"
-                                android:layout_width="@dimen/dimension_0"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/dimension_12"
-                                android:fontFamily="@font/jockey_one_regular"
-                                android:textSize="@dimen/text_size_20"
-                                android:gravity="start|center_vertical"
-                                android:text="@string/rate_us"
-                                android:textColor="@color/app_color"
-                                app:layout_constraintBottom_toTopOf="@+id/bottom2"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toEndOf="@+id/ic_rate"
-                                app:layout_constraintTop_toBottomOf="@+id/top2"
-                                app:outerStrokeColor="@color/app_color"
-                                app:outerStrokeWidth="@dimen/dimension_1" />
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-                    </com.google.android.material.card.MaterialCardView>
-                </com.google.android.material.card.MaterialCardView>
-            </com.google.android.material.card.MaterialCardView>
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
+        <com.quylh.gradientstrokelayout.GradientStrokeFrameLayout
             android:id="@+id/btnShare"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/dimension_16"
-            app:cardBackgroundColor="@color/app_color2"
+            app:cardBackgroundColor="@color/transparent"
             app:cardCornerRadius="@dimen/dimension_10"
-            app:layout_constraintDimensionRatio="3.28:0.52"
             app:layout_constraintTop_toBottomOf="@+id/btnRate"
-            app:strokeColor="@color/black"
-            app:strokeWidth="@dimen/dimension_0">
+            app:layout_constraintDimensionRatio="3.28:0.46"
+            app:gslCornerRadius="@dimen/dimension_14"
+            app:gslStrokeWidth="@dimen/dimension_1"
+            app:gslStartColor="@color/white"
+            app:gslCenterColor="@color/white"
+            app:gslEndColor="@color/white">
 
-            <com.google.android.material.card.MaterialCardView
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/dimension_3"
-                app:cardBackgroundColor="@color/app_color4"
-                app:cardCornerRadius="@dimen/dimension_10"
-                app:strokeWidth="@dimen/dimension_0">
+                android:background="@drawable/bg_linear_color"
+            >
 
-                <com.google.android.material.card.MaterialCardView
+                <View
+                    android:id="@+id/top3"
                     android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimension_0"
+                    app:layout_constraintDimensionRatio="3.28:0.12"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <View
+                    android:id="@+id/bottom3"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimension_0"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="3.28:0.12"/>
+
+
+                <View
+                    android:id="@+id/start3"
+                    android:layout_width="@dimen/dimension_0"
                     android:layout_height="match_parent"
-                    android:layout_marginBottom="@dimen/dimension_1"
-                    app:cardBackgroundColor="@color/transparent"
-                    app:cardCornerRadius="@dimen/dimension_10"
-                    app:strokeWidth="@dimen/dimension_0">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@color/app_color5">
-
-                        <View
-                            android:id="@+id/top3"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/dimension_0"
-                            app:layout_constraintDimensionRatio="3.28:0.12"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <View
-                            android:id="@+id/bottom3"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/dimension_0"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintDimensionRatio="3.28:0.12" />
+                    app:layout_constraintDimensionRatio="1.6:4.6"
+                    app:layout_constraintStart_toStartOf="parent"/>
 
 
-                        <View
-                            android:id="@+id/start3"
-                            android:layout_width="@dimen/dimension_0"
-                            android:layout_height="match_parent"
-                            app:layout_constraintDimensionRatio="1.2:4"
-                            app:layout_constraintStart_toStartOf="parent" />
-
-                        <View
-                            android:id="@+id/end3"
-                            android:layout_width="@dimen/dimension_0"
-                            android:layout_height="match_parent"
-                            app:layout_constraintDimensionRatio="1.2:4"
-                            app:layout_constraintEnd_toEndOf="parent" />
+                <ImageView
+                    android:id="@+id/ic_share"
+                    android:layout_width="@dimen/dimension_0"
+                    android:layout_height="@dimen/dimension_0"
+                    android:src="@drawable/ic_share_set"
+                    app:layout_constraintBottom_toTopOf="@+id/bottom3"
+                    app:layout_constraintDimensionRatio="1:1"
+                    app:layout_constraintStart_toEndOf="@+id/start3"
+                    app:layout_constraintTop_toBottomOf="@+id/top3"/>
 
 
-                        <ImageView
-                            android:id="@+id/ic_share"
-                            android:layout_width="@dimen/dimension_0"
-                            android:layout_height="@dimen/dimension_0"
-                            android:src="@drawable/ic_share_set"
-                            app:layout_constraintBottom_toTopOf="@+id/bottom3"
-                            app:layout_constraintDimensionRatio="1:1"
-                            app:layout_constraintStart_toEndOf="@+id/start3"
-                            app:layout_constraintTop_toBottomOf="@+id/top3" />
+                <TextView
+                    android:id="@+id/txt3"
+                    style="@style/single_marquee"
+                    android:layout_width="@dimen/dimension_0"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimension_12"
+                    android:fontFamily="@font/lilita_one_regular"
+                    android:textSize="@dimen/text_size_16"
+                    android:gravity="start|center_vertical"
+                    android:text="@string/share_app"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toTopOf="@+id/bottom3"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/ic_share"
+                    app:layout_constraintTop_toBottomOf="@+id/top3"
+                />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
+        </com.quylh.gradientstrokelayout.GradientStrokeFrameLayout>
 
-                        <TextView
-                            android:id="@+id/txt3"
-                            style="@style/single_marquee"
-                            android:layout_width="@dimen/dimension_0"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/dimension_12"
-                            android:fontFamily="@font/jockey_one_regular"
-                            android:textSize="@dimen/text_size_20"
-                            android:gravity="start|center_vertical"
-                            android:text="@string/share_app"
-                            android:textColor="@color/app_color"
-                            app:layout_constraintBottom_toTopOf="@+id/bottom3"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/ic_share"
-                            app:layout_constraintTop_toBottomOf="@+id/top3"
-                            app:outerStrokeColor="@color/app_color"
-                            app:outerStrokeWidth="@dimen/dimension_1" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </com.google.android.material.card.MaterialCardView>
-            </com.google.android.material.card.MaterialCardView>
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
+        <com.quylh.gradientstrokelayout.GradientStrokeFrameLayout
             android:id="@+id/btnPolicy"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/dimension_16"
-
             app:layout_constraintTop_toBottomOf="@+id/btnShare"
-            app:strokeColor="@color/black"
-            app:cardBackgroundColor="@color/app_color2"
+            app:cardBackgroundColor="@color/transparent"
             app:cardCornerRadius="@dimen/dimension_10"
-            app:layout_constraintDimensionRatio="3.28:0.52"
-            app:strokeWidth="@dimen/dimension_0"
-            >
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="@dimen/dimension_1"
-            app:cardBackgroundColor="@color/app_color3"
-            app:cardCornerRadius="@dimen/dimension_10"
-            app:strokeWidth="@dimen/dimension_0">
+            app:layout_constraintDimensionRatio="3.28:0.46"
+            app:gslCornerRadius="@dimen/dimension_14"
+            app:gslStrokeWidth="@dimen/dimension_1"
+            app:gslStartColor="@color/white"
+            app:gslCenterColor="@color/white"
+            app:gslEndColor="@color/white"
+        >
 
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="@dimen/dimension_3"
-            app:cardBackgroundColor="@color/app_color4"
-            app:cardCornerRadius="@dimen/dimension_10"
-            app:strokeWidth="@dimen/dimension_0">
-
-            <com.google.android.material.card.MaterialCardView
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/dimension_1"
-                app:cardBackgroundColor="@color/transparent"
-                app:cardCornerRadius="@dimen/dimension_10"
-                app:strokeWidth="@dimen/dimension_0">
+                android:background="@drawable/bg_linear_color"
+            >
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <View
+                    android:id="@+id/top4"
                     android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimension_0"
+                    app:layout_constraintDimensionRatio="3.28:0.12"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <View
+                    android:id="@+id/bottom4"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimension_0"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="3.28:0.12"/>
+
+
+                <View
+                    android:id="@+id/start4"
+                    android:layout_width="@dimen/dimension_0"
                     android:layout_height="match_parent"
-                    android:background="@color/app_color5">
-
-                    <View
-                        android:id="@+id/top4"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/dimension_0"
-                        app:layout_constraintDimensionRatio="3.28:0.12"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <View
-                        android:id="@+id/bottom4"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/dimension_0"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintDimensionRatio="3.28:0.12" />
+                    app:layout_constraintDimensionRatio="1.6:4.6"
+                    app:layout_constraintStart_toStartOf="parent"/>
 
 
-                    <View
-                        android:id="@+id/start4"
-                        android:layout_width="@dimen/dimension_0"
-                        android:layout_height="match_parent"
-                        app:layout_constraintDimensionRatio="1.2:4"
-                        app:layout_constraintStart_toStartOf="parent" />
-
-                    <View
-                        android:id="@+id/end4"
-                        android:layout_width="@dimen/dimension_0"
-                        android:layout_height="match_parent"
-                        app:layout_constraintDimensionRatio="1.2:4"
-                        app:layout_constraintEnd_toEndOf="parent" />
+                <ImageView
+                    android:id="@+id/ic_policy"
+                    android:layout_width="@dimen/dimension_0"
+                    android:layout_height="@dimen/dimension_0"
+                    android:src="@drawable/ic_policy_set"
+                    app:layout_constraintBottom_toTopOf="@+id/bottom4"
+                    app:layout_constraintDimensionRatio="1:1"
+                    app:layout_constraintStart_toEndOf="@+id/start4"
+                    app:layout_constraintTop_toBottomOf="@+id/top4"/>
 
 
-                    <ImageView
-                        android:id="@+id/ic_policy"
-                        android:layout_width="@dimen/dimension_0"
-                        android:layout_height="@dimen/dimension_0"
-                        android:src="@drawable/ic_policy_set"
-                        app:layout_constraintBottom_toTopOf="@+id/bottom4"
-                        app:layout_constraintDimensionRatio="1:1"
-                        app:layout_constraintStart_toEndOf="@+id/start4"
-                        app:layout_constraintTop_toBottomOf="@+id/top4" />
-
-
-                    <TextView
-                        android:id="@+id/txt4"
-                        style="@style/single_marquee"
-                        android:layout_width="@dimen/dimension_0"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimension_12"
-                        android:fontFamily="@font/jockey_one_regular"
-                        android:textSize="@dimen/text_size_20"
-                        android:gravity="start|center_vertical"
-                        android:text="@string/privacy_policy"
-                        android:textColor="@color/app_color"
-                        app:layout_constraintBottom_toTopOf="@+id/bottom4"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/ic_policy"
-                        app:layout_constraintTop_toBottomOf="@+id/top4"
-                        app:outerStrokeColor="@color/app_color"
-                        app:outerStrokeWidth="@dimen/dimension_1" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </com.google.android.material.card.MaterialCardView>
-            </com.google.android.material.card.MaterialCardView>
-            </com.google.android.material.card.MaterialCardView>
-
-        </com.google.android.material.card.MaterialCardView>
+                <TextView
+                    android:id="@+id/txt4"
+                    style="@style/single_marquee"
+                    android:layout_width="@dimen/dimension_0"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimension_12"
+                    android:fontFamily="@font/lilita_one_regular"
+                    android:textSize="@dimen/text_size_16"
+                    android:gravity="start|center_vertical"
+                    android:text="@string/privacy_policy"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toTopOf="@+id/bottom4"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/ic_policy"
+                    app:layout_constraintTop_toBottomOf="@+id/top4"
+                    app:outerStrokeColor="@color/app_color"
+                    app:outerStrokeWidth="@dimen/dimension_1"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.quylh.gradientstrokelayout.GradientStrokeFrameLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

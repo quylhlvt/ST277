@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import com.warrior.oc.ca.core.helper.NetworkMonitor
+import com.warrior.oc.ca.core.helper.PermissionDenialStore
 import com.warrior.oc.ca.core.helper.SharedPreferencesManager
 import dagger.Module
 import dagger.Provides
@@ -38,6 +39,20 @@ object DataLocalModule {
             this.sharedPreferences = sharedPreferences
             this.editor = editor
         }
+
+    @Provides
+    @Singleton
+    fun providePermissionDenialStore(
+        preferences: SharedPreferencesManager
+    ): PermissionDenialStore = object : PermissionDenialStore {
+        override fun storageDenials(): Int = preferences.isPermissionStorRequest()
+        override fun setStorageDenials(count: Int) = preferences.setPermissionStorRequest(count)
+        override fun notificationDenials(): Int = preferences.isPermissionNotiRequest()
+        override fun setNotificationDenials(count: Int) = preferences.setPermissionNotiRequest(count)
+        override fun cameraDenials(): Int = preferences.isPermissionCamRequest()
+        override fun setCameraDenials(count: Int) = preferences.setPermissionCamRequest(count)
+    }
+
     @Singleton
     @Provides
     fun provideNetworkMonitor(

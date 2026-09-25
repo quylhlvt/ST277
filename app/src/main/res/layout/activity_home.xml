@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/img_bg_splash"
-    tools:context="com.warrior.oc.ca.ui.main.home.HomeActivity">
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   xmlns:tools="http://schemas.android.com/tools"
+                                                   android:id="@+id/main"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="match_parent"
+                                                   android:background="@drawable/img_bg_splash"
+                                                   tools:context="com.warrior.oc.ca.ui.main.home.HomeActivity">
     <!--    layoutActionBar-->
     <FrameLayout
         android:id="@+id/layoutActionBar"
@@ -17,9 +17,8 @@
 
         <include
             android:id="@+id/actionBar"
-            layout="@layout/layout_actionbar" />
+            layout="@layout/layout_actionbar"/>
     </FrameLayout>
-
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -41,7 +40,7 @@
             app:layout_constraintDimensionRatio="3.6:1.5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <ImageView
             android:id="@+id/bottom_home"
@@ -51,11 +50,11 @@
             android:adjustViewBounds="true"
             android:elevation="3dp"
             android:src="@drawable/img_bottom_home"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/btnPlay"
             app:layout_constraintDimensionRatio="1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/title_home" />
+            app:layout_constraintTop_toBottomOf="@+id/title_home"/>
 
         <com.quylh.gradientstrokelayout.GradientStrokeFrameLayout
             android:layout_width="@dimen/dimension_0"
@@ -64,13 +63,64 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:gslStrokeWidth="0dp"
-            android:background="@color/app_color2"
             app:gslCornerRadius="@dimen/dimension_22"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginHorizontal="@dimen/dimension_72"
-            android:layout_marginBottom="@dimen/dimension_150"
+            android:layout_marginBottom="@dimen/dimension_100"
             android:id="@+id/btnPlay">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/app_color2"/>
+            <com.quylh.gradientstrokelayout.GradientStrokeFrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:gslStrokeWidth="@dimen/dimension_1"
+                android:layout_marginBottom="@dimen/dimension_4"
+                app:gslStartColor="@color/app_color3"
+                app:gslCenterColor="@color/app_color3"
+                app:gslEndColor="@color/app_color3"
+                app:gslCornerRadius="@dimen/dimension_22"
+            >
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_btn_play"/>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <ImageView
+                        android:id="@+id/imgStart"
+                        android:layout_width="@dimen/dimension_0"
+                        app:layout_constraintDimensionRatio="1"
+                        android:layout_marginVertical="@dimen/dimension_14"
+                        android:layout_marginStart="@dimen/dimension_28"
+                        android:layout_height="@dimen/dimension_0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                    android:src="@drawable/img_start_play"
+                    />
+                    <com.warrior.oc.ca.core.extention.OuterStrokeShadownTextView
+                        android:layout_width="@dimen/dimension_0"
+                        android:layout_height="match_parent"
+                        app:layout_constraintStart_toEndOf="@+id/imgStart"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:text="@string/play_game"
+                        android:gravity="center"
+                        android:id="@+id/txtPlay"
+                        style="@style/single_marquee"
+                        android:fontFamily="@font/lilita_one_regular"
+                        app:outerStrokeWidth="@dimen/dimension_3"
+                        app:outerStrokeColor="@color/app_color"
+                        android:layout_marginHorizontal="@dimen/dimension_2"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_24"/>
 
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </com.quylh.gradientstrokelayout.GradientStrokeFrameLayout>
         </com.quylh.gradientstrokelayout.GradientStrokeFrameLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

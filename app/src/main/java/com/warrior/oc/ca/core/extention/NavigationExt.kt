@@ -3,6 +3,7 @@ package com.warrior.oc.ca.core.extention
 import android.os.Bundle
 import com.warrior.oc.ca.core.base.BaseActivity
 import com.warrior.oc.ca.ui.language.LanguageActivity
+import com.warrior.oc.ca.ui.main.camera.CameraActivity
 import com.warrior.oc.ca.ui.main.home.HomeActivity
 import com.warrior.oc.ca.ui.main.setting.SettingActivity
 import com.warrior.oc.ca.ui.onboarding.intro.IntroActivity
@@ -42,3 +43,4 @@ fun BaseActivity<*, *>.toHomeFromLanguage(reverseAnimation: Boolean = false) {
     }
 }
 fun BaseActivity<*, *>.toSettingFromHome() = openActivity(SettingActivity::class.java)
+fun BaseActivity<*, *>.toCameraFromHome() = openActivity(CameraActivity::class.java)

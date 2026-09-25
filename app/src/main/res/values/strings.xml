@@ -35,8 +35,8 @@
     <string name="do_you_want_to_reset_all">Do You Want To Reset All?</string>
     <string name="reset">Reset</string>
     <string name="exit">Exit</string>
-    <string name="rate_us">Rate us</string>
-    <string name="share_app">Share app</string>
+    <string name="rate_us">Rate Us</string>
+    <string name="share_app">Share App</string>
     <string name="image_has_been_saved_successfully">Image has been saved successfully!</string>
     <string name="download">Download</string>
     <string name="my_avatar">My Cat</string>
@@ -116,4 +116,7 @@
     <string name="you_ve_finished_this_cosplay_challenge">You\'ve finished this cosplay challenge.</string>
     <string name="successful">Successful</string>
     <string name="successfully">Successfully</string>
+    <string name="play_game">Play Game</string>
+    <string name="camera_unavailable">Unable to open the camera</string>
+    <string name="back">Back</string>
 </resources>
