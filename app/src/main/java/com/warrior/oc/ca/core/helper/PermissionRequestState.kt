@@ -10,11 +10,15 @@ import javax.inject.Singleton
 class PermissionRequestState @Inject constructor() {
     private val storageDenials = MutableStateFlow(0)
     private val notificationDenials = MutableStateFlow(0)
+    private val cameraDenials = MutableStateFlow(0)
     val storageDenyCount = storageDenials.asStateFlow()
     val notificationDenyCount = notificationDenials.asStateFlow()
+    val cameraDenyCount = cameraDenials.asStateFlow()
 
     fun onStorageDenied() { storageDenials.value++ }
     fun onStorageGranted() { storageDenials.value = 0 }
     fun onNotificationDenied() { notificationDenials.value++ }
     fun onNotificationGranted() { notificationDenials.value = 0 }
+    fun onCameraDenied() { cameraDenials.value++ }
+    fun onCameraGranted() { cameraDenials.value = 0 }
 }

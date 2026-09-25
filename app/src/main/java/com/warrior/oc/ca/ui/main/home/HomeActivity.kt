@@ -30,7 +30,6 @@ class HomeActivity : BaseActivity<ActivityHomeBinding, HomeViewModel>(
     }
 
     override fun initView() {
-        binding.rcvMain.adapter = HomeMenuAdapter(::onHomeMenuClick)
         binding.actionBar.apply {
             setImageActionBar(btnActionBarRight, R.drawable.ic_settings)
         }

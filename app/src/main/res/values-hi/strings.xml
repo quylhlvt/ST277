@@ -14,11 +14,13 @@
     <string name="storage">स्टोरेज\u00A0</string>
     <string name="continue_per">\u00A0जारी रखें\u00A0</string>
     <string name="notification">नोटिफिकेशन\u00A0</string>
+    <string name="camera">कैमरा\u00A0</string>
     <string name="granted_notification">नोटिफिकेशन की अनुमति मिल गई</string>
     <string name="granted_storage">स्टोरेज की अनुमति मिल गई</string>
+    <string name="granted_camera">कैमरा की अनुमति मिल गई</string>
     <string name="allow">\u00A0अनुमति दें</string>
-    <string name="to_access">आपके डिवाइस की फ़ोटो देखने के लिए\u00A0</string>
-    <string name="to_access_13">आपके डिवाइस के नोटिफिकेशन देखने के लिए\u00A0</string>
+    <string name="to_access">आपके डिवाइस की फ़ोटो और कैमरा इस्तेमाल करने के लिए\u00A0</string>
+    <string name="to_access_13">आपके डिवाइस के नोटिफिकेशन और कैमरा इस्तेमाल करने के लिए\u00A0</string>
     <string name="go_to_setting_message">ऐप को इस अनुमति की आवश्यकता है।</string>
     <string name="settings">सेटिंग्स</string>
     <string name="cancel">रद्द करें</string>

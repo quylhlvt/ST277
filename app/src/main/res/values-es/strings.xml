@@ -14,11 +14,13 @@
     <string name="storage">Almacenamiento\u00A0</string>
     <string name="continue_per">\u00A0Continuar\u00A0</string>
     <string name="notification">Notificación\u00A0</string>
+    <string name="camera">Cámara\u00A0</string>
     <string name="granted_notification">Permiso de notificaciones concedido</string>
     <string name="granted_storage">Permiso de almacenamiento concedido</string>
+    <string name="granted_camera">Permiso de cámara concedido</string>
     <string name="allow">\u00A0Permitir</string>
-    <string name="to_access">para acceder a las fotos de tu dispositivo\u00A0</string>
-    <string name="to_access_13">para acceder a las notificaciones de tu dispositivo\u00A0</string>
+    <string name="to_access">para acceder a las fotos y a la cámara de tu dispositivo\u00A0</string>
+    <string name="to_access_13">para acceder a las notificaciones y a la cámara de tu dispositivo\u00A0</string>
     <string name="go_to_setting_message">La aplicación necesita este permiso.</string>
     <string name="settings">Ajustes</string>
     <string name="cancel">Cancelar</string>

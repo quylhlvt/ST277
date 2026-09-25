@@ -14,11 +14,13 @@
     <string name="storage">Penyimpanan\u00A0</string>
     <string name="continue_per">\u00A0Lanjutkan\u00A0</string>
     <string name="notification">Notifikasi\u00A0</string>
+    <string name="camera">Kamera\u00A0</string>
     <string name="granted_notification">Izin notifikasi diberikan</string>
     <string name="granted_storage">Izin penyimpanan diberikan</string>
+    <string name="granted_camera">Izin kamera diberikan</string>
     <string name="allow">\u00A0Izinkan</string>
-    <string name="to_access">untuk mengakses foto di perangkat Anda\u00A0</string>
-    <string name="to_access_13">untuk mengakses notifikasi di perangkat Anda\u00A0</string>
+    <string name="to_access">untuk mengakses foto dan kamera di perangkat Anda\u00A0</string>
+    <string name="to_access_13">untuk mengakses notifikasi dan kamera di perangkat Anda\u00A0</string>
     <string name="go_to_setting_message">Aplikasi memerlukan izin ini.</string>
     <string name="settings">Pengaturan</string>
     <string name="cancel">Batal</string>

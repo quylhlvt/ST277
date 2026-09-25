@@ -14,11 +14,13 @@
     <string name="storage">Stockage\u00A0</string>
     <string name="continue_per">\u00A0Continuer\u00A0</string>
     <string name="notification">Notification\u00A0</string>
+    <string name="camera">Appareil photo\u00A0</string>
     <string name="granted_notification">Autorisation de notification accordée</string>
     <string name="granted_storage">Autorisation de stockage accordée</string>
+    <string name="granted_camera">Autorisation de l’appareil photo accordée</string>
     <string name="allow">\u00A0Autoriser</string>
-    <string name="to_access">pour accéder aux photos de votre appareil\u00A0</string>
-    <string name="to_access_13">pour accéder aux notifications de votre appareil\u00A0</string>
+    <string name="to_access">pour accéder aux photos et à l’appareil photo de votre appareil\u00A0</string>
+    <string name="to_access_13">pour accéder aux notifications et à l’appareil photo de votre appareil\u00A0</string>
     <string name="go_to_setting_message">L’application a besoin de cette autorisation.</string>
     <string name="settings">Paramètres</string>
     <string name="cancel">Annuler</string>
