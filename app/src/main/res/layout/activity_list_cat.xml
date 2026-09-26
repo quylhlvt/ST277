@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/img_bg_splash"
+    android:clipChildren="false">
+    <!--    layoutActionBar-->
+    <FrameLayout
+        android:id="@+id/layoutActionBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/dimension_2"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <include
+            android:id="@+id/actionBar"
+            layout="@layout/layout_actionbar"/>
+    </FrameLayout>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/catPager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        app:layout_constraintBottom_toTopOf="@id/dotsIndicator"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layoutActionBar" />
+
+    <com.warrior.oc.ca.core.widget.PillDotsIndicator
+        android:id="@+id/dotsIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/catPager" />
+
+    <com.quylh.gradientstrokelayout.GradientStrokeFrameLayout
+        android:id="@+id/btnBrush"
+        android:layout_width="264dp"
+        android:layout_height="88dp"
+        android:layout_marginTop="72dp"
+        android:layout_marginBottom="100dp"
+        app:gslCornerRadius="32dp"
+        app:gslStrokeWidth="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dotsIndicator">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/app_color2" />
+
+        <com.quylh.gradientstrokelayout.GradientStrokeFrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="7dp"
+            app:gslCenterColor="@color/app_color3"
+            app:gslCornerRadius="32dp"
+            app:gslEndColor="@color/app_color3"
+            app:gslStartColor="@color/app_color3"
+            app:gslStrokeWidth="1dp">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_btn_play" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_brush" />
+
+                <com.warrior.oc.ca.core.extention.OuterStrokeShadownTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:fontFamily="@font/lilita_one_regular"
+                    android:text="@string/brush"
+                    android:textColor="@color/white"
+                    android:textSize="30sp"
+                    app:outerStrokeColor="@color/app_color"
+                    app:outerStrokeWidth="3dp" />
+            </LinearLayout>
+        </com.quylh.gradientstrokelayout.GradientStrokeFrameLayout>
+    </com.quylh.gradientstrokelayout.GradientStrokeFrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

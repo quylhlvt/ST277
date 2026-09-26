@@ -21,6 +21,7 @@ import com.warrior.oc.ca.core.helper.RateHelper
 import com.warrior.oc.ca.utils.state.RateState
 import com.warrior.oc.ca.R
 import com.warrior.oc.ca.databinding.ActivityHomeBinding
+import com.warrior.oc.ca.ui.main.listcat.ListCatActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -66,7 +67,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding, HomeViewModel>(
 
     override fun viewListener() {
         binding.actionBar.btnActionBarRight.onClick { toSettingFromHome() }
-        binding.btnPlay.onClick(500) { openCamera() }
+        binding.btnPlay.onClick(500) { openActivity(ListCatActivity::class.java) }
     }
 
     private fun openCamera() {

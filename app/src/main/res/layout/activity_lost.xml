@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/img_bg_splash">
+
+    <com.warrior.oc.ca.core.extention.OuterStrokeShadownTextViewPermission2
+        android:id="@+id/txtLost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="54dp"
+        android:fontFamily="@font/lilita_one_regular"
+        android:text="@string/you_lost"
+        android:textColor="@color/white"
+        android:textSize="46sp"
+        app:outerStrokeColor="@color/app_color"
+        app:outerStrokeWidth="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imgLostCat"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="28dp"
+        android:contentDescription="@string/cat_preview"
+        app:layout_constraintBottom_toTopOf="@id/txtScoreLabel"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtLost" />
+
+    <TextView
+        android:id="@+id/txtScoreLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/lilita_one_regular"
+        android:text="@string/fur_score"
+        android:textColor="@color/app_color"
+        android:textSize="26sp"
+        app:layout_constraintEnd_toStartOf="@id/txtFinalScore"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imgLostCat" />
+
+    <TextView
+        android:id="@+id/txtFinalScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:fontFamily="@font/lilita_one_regular"
+        android:textColor="@color/app_color"
+        android:textSize="30sp"
+        app:layout_constraintBaseline_toBaselineOf="@id/txtScoreLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/txtScoreLabel" />
+
+    <Button
+        android:id="@+id/btnRetry"
+        android:layout_width="220dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="28dp"
+        android:background="@drawable/bg_btn_play"
+        android:fontFamily="@font/lilita_one_regular"
+        android:text="@string/retry"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtScoreLabel" />
+
+    <Button
+        android:id="@+id/btnChooseCat"
+        android:layout_width="220dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginBottom="46dp"
+        android:background="@drawable/bg_btn_play"
+        android:fontFamily="@font/lilita_one_regular"
+        android:text="@string/choose_another_cat"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="21sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnRetry" />
+</androidx.constraintlayout.widget.ConstraintLayout>

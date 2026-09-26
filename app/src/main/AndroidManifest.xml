@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature
         android:name="android.hardware.camera.any"
@@ -10,7 +9,7 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
+<!--    <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>-->
     <queries>
         <package android:name="org.telegram.messenger" />
         <package android:name="org.telegram.messenger.web" />
@@ -57,12 +56,22 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
+            android:name="com.warrior.oc.ca.ui.main.listcat.ListCatActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
             android:name="com.warrior.oc.ca.ui.main.home.HomeActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name="com.warrior.oc.ca.ui.main.camera.CameraActivity"
+            android:name="com.warrior.oc.ca.ui.main.lost.LostActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name="com.warrior.oc.ca.ui.main.catplay.CatPlayActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />

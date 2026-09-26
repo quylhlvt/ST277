@@ -1,4 +1,10 @@
 <resources>
+    <string name="you_lost">You Lost!</string>
+    <string name="fur_score">Fur score:</string>
+    <string name="retry">Try Again</string>
+    <string name="choose_another_cat">Choose Another Cat</string>
+    <string name="brush">Brush</string>
+    <string name="cat_preview">Cat preview</string>
     <string name="size_slider">Size</string>
     <string name="app_name">Warrior Cat: OC Maker &amp; Avatar</string>
     <string name="next">Next</string>
@@ -119,4 +125,5 @@
     <string name="play_game">Play Game</string>
     <string name="camera_unavailable">Unable to open the camera</string>
     <string name="back">Back</string>
+    <string name="score_u0a00">Score:\u0A00</string>
 </resources>

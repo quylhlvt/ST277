@@ -3,6 +3,7 @@
 
     <color name="color_text_intro">#1F2F4F</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="list_cat_selected_dot">#16B5F5</color>
     <color name="white4">#80FFFFFF</color>
     <color name="white2">#FEFEF4</color>
     <color name="white3">#FFF9E5</color>

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                   xmlns:tools="http://schemas.android.com/tools"
-                                                   android:id="@+id/main"
-                                                   android:layout_width="match_parent"
-                                                   android:layout_height="match_parent"
-                                                   android:background="@drawable/img_bg_splash"
-                                                   tools:context="com.warrior.oc.ca.ui.main.home.HomeActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/img_bg_splash"
+    tools:context="com.warrior.oc.ca.ui.main.home.HomeActivity">
     <!--    layoutActionBar-->
     <FrameLayout
         android:id="@+id/layoutActionBar"
@@ -17,7 +17,7 @@
 
         <include
             android:id="@+id/actionBar"
-            layout="@layout/layout_actionbar"/>
+            layout="@layout/layout_actionbar" />
     </FrameLayout>
 
 
@@ -33,14 +33,14 @@
         <ImageView
             android:id="@+id/title_home"
             android:layout_width="0dp"
-            android:elevation="3dp"
             android:layout_height="0dp"
+            android:elevation="3dp"
             android:scaleType="fitXY"
             android:src="@drawable/img_title_home"
             app:layout_constraintDimensionRatio="3.6:1.5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/bottom_home"
@@ -54,68 +54,72 @@
             app:layout_constraintDimensionRatio="1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/title_home"/>
+            app:layout_constraintTop_toBottomOf="@+id/title_home" />
 
         <com.quylh.gradientstrokelayout.GradientStrokeFrameLayout
+            android:id="@+id/btnPlay"
             android:layout_width="@dimen/dimension_0"
             android:layout_height="@dimen/dimension_0"
-            app:layout_constraintDimensionRatio="2.1:0.6"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:gslStrokeWidth="0dp"
-            app:gslCornerRadius="@dimen/dimension_22"
-            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginHorizontal="@dimen/dimension_72"
             android:layout_marginBottom="@dimen/dimension_100"
-            android:id="@+id/btnPlay">
+            app:gslCornerRadius="@dimen/dimension_22"
+            app:gslStrokeWidth="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="2.1:0.6"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/app_color2"/>
+                android:background="@color/app_color2" />
+
             <com.quylh.gradientstrokelayout.GradientStrokeFrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:gslStrokeWidth="@dimen/dimension_1"
                 android:layout_marginBottom="@dimen/dimension_4"
-                app:gslStartColor="@color/app_color3"
                 app:gslCenterColor="@color/app_color3"
-                app:gslEndColor="@color/app_color3"
                 app:gslCornerRadius="@dimen/dimension_22"
-            >
+                app:gslEndColor="@color/app_color3"
+                app:gslStartColor="@color/app_color3"
+                app:gslStrokeWidth="@dimen/dimension_1">
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/bg_btn_play"/>
+                    android:background="@drawable/bg_btn_play" />
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
+
                     <ImageView
                         android:id="@+id/imgStart"
                         android:layout_width="@dimen/dimension_0"
-                        app:layout_constraintDimensionRatio="1"
+                        android:layout_height="@dimen/dimension_0"
                         android:layout_marginVertical="@dimen/dimension_14"
                         android:layout_marginStart="@dimen/dimension_28"
-                        android:layout_height="@dimen/dimension_0"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
+                        android:src="@drawable/img_start_play"
                         app:layout_constraintBottom_toBottomOf="parent"
-                    android:src="@drawable/img_start_play"
-                    />
+                        app:layout_constraintDimensionRatio="1"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
                     <com.warrior.oc.ca.core.extention.OuterStrokeShadownTextView
-                        android:layout_width="@dimen/dimension_0"
-                        android:layout_height="match_parent"
-                        app:layout_constraintStart_toEndOf="@+id/imgStart"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        android:text="@string/play_game"
-                        android:gravity="center"
                         android:id="@+id/txtPlay"
                         style="@style/single_marquee"
-                        android:fontFamily="@font/lilita_one_regular"
-                        app:outerStrokeWidth="@dimen/dimension_3"
-                        app:outerStrokeColor="@color/app_color"
+                        android:layout_width="@dimen/dimension_0"
+                        android:layout_height="match_parent"
                         android:layout_marginHorizontal="@dimen/dimension_2"
+                        android:fontFamily="@font/lilita_one_regular"
+                        android:gravity="center"
+                        android:text="@string/play_game"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/text_size_24"/>
+                        android:textSize="@dimen/text_size_24"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/imgStart"
+                        app:outerStrokeColor="@color/app_color"
+                        app:outerStrokeWidth="@dimen/dimension_3" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
