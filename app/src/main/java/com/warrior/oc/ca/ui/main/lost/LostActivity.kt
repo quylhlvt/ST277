@@ -12,23 +12,23 @@ import dagger.hilt.android.AndroidEntryPoint
 class LostActivity : BaseActivity<ActivityLostBinding, LostViewModel>(
     ActivityLostBinding::inflate, LostViewModel::class.java
 ) {
-    private val selectedCat by lazy {
-        intent.getIntExtra(EXTRA_SELECTED_CAT, 1).coerceIn(1, 5)
-    }
-
     override fun initView() {
-        binding.txtFinalScore.text = intent.getIntExtra(EXTRA_SCORE, 0).toString()
-        Glide.with(binding.imgLostCat)
-            .load("file:///android_asset/listcat/cat$selectedCat/3.webp")
-            .fitCenter()
-            .into(binding.imgLostCat)
+        viewModel.initialize(
+            score = intent.getIntExtra(EXTRA_SCORE, 0),
+            selectedCat = intent.getIntExtra(EXTRA_SELECTED_CAT, 1)
+        )
+        val state = viewModel.uiState.value
+        binding.txtTryAgain.isSelected = true
+        binding.txtChoose.isSelected = true
+        binding.txtFinalScore.text = state.score.toString()
+
     }
 
     override fun viewListener() {
         binding.btnRetry.onClick(500) {
             openActivity(
                 CatPlayActivity::class.java,
-                Bundle().apply { putInt(EXTRA_SELECTED_CAT, selectedCat) },
+                Bundle().apply { putInt(EXTRA_SELECTED_CAT, viewModel.uiState.value.selectedCat) },
                 finishCurrent = true
             )
         }

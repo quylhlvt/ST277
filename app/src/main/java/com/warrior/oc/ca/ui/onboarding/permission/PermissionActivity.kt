@@ -1,11 +1,7 @@
 package com.warrior.oc.ca.ui.onboarding.permission
 
 import android.content.pm.PackageManager
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 import android.os.Build
-import android.view.ViewGroup
-import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import com.warrior.oc.ca.core.base.BaseActivity
 import com.warrior.oc.ca.core.extention.checkPermissions
@@ -16,8 +12,6 @@ import com.warrior.oc.ca.core.extention.requestPermission
 import com.warrior.oc.ca.core.extention.setTextActionBar
 import com.warrior.oc.ca.core.extention.toHomeFromPermission
 import com.warrior.oc.ca.core.extention.visible
-import com.warrior.oc.ca.core.helper.PermissionHelper
-import com.warrior.oc.ca.core.helper.StringHelper
 import com.warrior.oc.ca.utils.key.RequestKey
 import com.warrior.oc.ca.R
 import com.warrior.oc.ca.databinding.ActivityPermissionBinding
@@ -44,32 +38,7 @@ class PermissionActivity : BaseActivity<ActivityPermissionBinding, PermissionVie
         binding.tvContinue.onClick(1000) {
                     handleContinue()}
     }
-    private fun isNetworkAvailable(): Boolean {
-        val cm = this@PermissionActivity.getSystemService(CONNECTIVITY_SERVICE)
-                as ConnectivityManager
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val network = cm.activeNetwork ?: return false
-            val caps = cm.getNetworkCapabilities(network) ?: return false
-            caps.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
-        } else {
-            @Suppress("DEPRECATION")
-            cm.activeNetworkInfo?.isConnected == true
-        }
-    }
-    private fun updateContinueMargin() {
-        val marginPx = if (!isNetworkAvailable()) {
-            resources.getDimensionPixelSize(R.dimen.dimension_200)
-        } else {
-            resources.getDimensionPixelSize(R.dimen.dimension_10)
-        }
-        val params = binding.tvContinue.layoutParams as? ViewGroup.MarginLayoutParams
-        params?.bottomMargin = marginPx  // hoặc topMargin tuỳ layout
-        binding.tvContinue.layoutParams = params
-    }
-
     override fun initView() {
-//        updateContinueMargin()
-
         binding.setupActionBar()
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
             binding.btnStorage.visible()
@@ -81,10 +50,10 @@ class PermissionActivity : BaseActivity<ActivityPermissionBinding, PermissionVie
             binding.space.gone()
         }
         // cập nhật UI switch khi vào màn
-        updatePermissionUI(this@PermissionActivity.checkPermissions(PermissionHelper.storagePermission), true)
-        updatePermissionUI(this@PermissionActivity.checkPermissions(PermissionHelper.notificationPermission), false)
+        updatePermissionUI(this@PermissionActivity.checkPermissions(viewModel.getStoragePermissions()), true)
+        updatePermissionUI(this@PermissionActivity.checkPermissions(viewModel.getNotificationPermissions()), false)
         updateCameraPermissionUI(
-            this@PermissionActivity.checkPermissions(PermissionHelper.cameraPermission)
+            this@PermissionActivity.checkPermissions(viewModel.getCameraPermissions())
         )
     }
 
@@ -114,12 +83,7 @@ class PermissionActivity : BaseActivity<ActivityPermissionBinding, PermissionVie
         }
     }
 
-    private fun permissionsFor(requestCode: Int): Array<String> = when (requestCode) {
-        RequestKey.STORAGE_PERMISSION_CODE -> PermissionHelper.storagePermission
-        RequestKey.NOTIFICATION_PERMISSION_CODE -> PermissionHelper.notificationPermission
-        RequestKey.CAMERA_PERMISSION_CODE -> PermissionHelper.cameraPermission
-        else -> emptyArray()
-    }
+    private fun permissionsFor(requestCode: Int): Array<String> = viewModel.permissionsFor(requestCode)
 
     @StringRes
     private fun grantedMessageFor(requestCode: Int): Int = when (requestCode) {
@@ -129,43 +93,27 @@ class PermissionActivity : BaseActivity<ActivityPermissionBinding, PermissionVie
         else -> R.string.go_to_setting_message
     }
 
-    private fun onPermissionDenied(requestCode: Int) {
-        when (requestCode) {
-            RequestKey.STORAGE_PERMISSION_CODE -> viewModel.onStorageDenied()
-            RequestKey.NOTIFICATION_PERMISSION_CODE -> viewModel.onNotificationDenied()
-            RequestKey.CAMERA_PERMISSION_CODE -> viewModel.onCameraDenied()
-        }
-    }
-
-    private fun onPermissionGranted(requestCode: Int) {
-        when (requestCode) {
-            RequestKey.STORAGE_PERMISSION_CODE -> viewModel.onStorageGranted()
-            RequestKey.NOTIFICATION_PERMISSION_CODE -> viewModel.onNotificationGranted()
-            RequestKey.CAMERA_PERMISSION_CODE -> viewModel.onCameraGranted()
-        }
-    }
-
     override fun onResume() {
         super.onResume()
         // A dismissed system popup may not invoke onRequestPermissionsResult.
         pendingPermissionRequestCode?.let { requestCode ->
             val permissions = permissionsFor(requestCode)
             if (!this@PermissionActivity.checkPermissions(permissions)) {
-                onPermissionDenied(requestCode)
+                viewModel.onPermissionResult(requestCode, granted = false)
             }
             pendingPermissionRequestCode = null
         }
         // ✅ Cập nhật lại UI khi quay về từ Settings hoặc sau khi grant
         updatePermissionUI(
-            this@PermissionActivity.checkPermissions(PermissionHelper.storagePermission),
+            this@PermissionActivity.checkPermissions(viewModel.getStoragePermissions()),
             true
         )
         updatePermissionUI(
-            this@PermissionActivity.checkPermissions(PermissionHelper.notificationPermission),
+            this@PermissionActivity.checkPermissions(viewModel.getNotificationPermissions()),
             false
         )
         updateCameraPermissionUI(
-            this@PermissionActivity.checkPermissions(PermissionHelper.cameraPermission)
+            this@PermissionActivity.checkPermissions(viewModel.getCameraPermissions())
         )
     }
     @Deprecated("Deprecated in Java")
@@ -181,27 +129,27 @@ class PermissionActivity : BaseActivity<ActivityPermissionBinding, PermissionVie
         when (requestCode) {
             RequestKey.STORAGE_PERMISSION_CODE -> {
                 if (granted) {
-                    onPermissionGranted(requestCode)
+                    viewModel.onPermissionResult(requestCode, granted = true)
                 } else if (requestWasPending) {
-                    onPermissionDenied(requestCode)
+                    viewModel.onPermissionResult(requestCode, granted = false)
                 }
                 // ✅ Luôn update UI dù granted hay denied
                 updatePermissionUI(granted, true)
             }
             RequestKey.NOTIFICATION_PERMISSION_CODE -> {
                 if (granted) {
-                    onPermissionGranted(requestCode)
+                    viewModel.onPermissionResult(requestCode, granted = true)
                 } else if (requestWasPending) {
-                    onPermissionDenied(requestCode)
+                    viewModel.onPermissionResult(requestCode, granted = false)
                 }
                 // ✅ Luôn update UI dù granted hay denied
                 updatePermissionUI(granted, false)
             }
             RequestKey.CAMERA_PERMISSION_CODE -> {
                 if (granted) {
-                    onPermissionGranted(requestCode)
+                    viewModel.onPermissionResult(requestCode, granted = true)
                 } else if (requestWasPending) {
-                    onPermissionDenied(requestCode)
+                    viewModel.onPermissionResult(requestCode, granted = false)
                 }
                 updateCameraPermissionUI(granted)
             }
@@ -235,17 +183,11 @@ class PermissionActivity : BaseActivity<ActivityPermissionBinding, PermissionVie
     }
 
     private fun handleContinue() {
-        sharedPreferences.setPermissionScreen(true)
+        viewModel.onContinue()
         toHomeFromPermission()
     }
 
     override fun bindViewModel() {}
-
-    private fun createColoredText(
-        @StringRes textRes: Int,
-        @ColorRes colorRes: Int,
-        font: Int = R.font.baloo2_bold
-    ) = StringHelper.changeColor(this@PermissionActivity, getString(textRes), colorRes, font)
 
     override fun handleBackPressed(): Boolean {
         this@PermissionActivity.finishAffinity()

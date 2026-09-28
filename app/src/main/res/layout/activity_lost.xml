@@ -1,49 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/img_bg_splash">
-
-    <com.warrior.oc.ca.core.extention.OuterStrokeShadownTextViewPermission2
-        android:id="@+id/txtLost"
-        android:layout_width="wrap_content"
+    android:background="@color/black0">
+    <FrameLayout
+        android:id="@+id/layoutActionBar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="54dp"
-        android:fontFamily="@font/lilita_one_regular"
-        android:text="@string/you_lost"
-        android:textColor="@color/white"
-        android:textSize="46sp"
-        app:outerStrokeColor="@color/app_color"
-        app:outerStrokeWidth="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:elevation="@dimen/dimension_2"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <ImageView
-        android:id="@+id/imgLostCat"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginHorizontal="28dp"
-        android:contentDescription="@string/cat_preview"
-        app:layout_constraintBottom_toTopOf="@id/txtScoreLabel"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txtLost" />
+        <include
+            android:id="@+id/actionBar"
+            layout="@layout/layout_actionbar"/>
+    </FrameLayout>
 
+    <TextView
+
+        android:id="@+id/txtYouDie"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/pangolin_regular"
+        android:gravity="center"
+        android:text="@string/you_died"
+        android:textColor="#B5372D"
+        android:textSize="@dimen/text_size_50"
+        android:textStyle="bold"
+        android:layout_marginBottom="@dimen/dimension_64"
+        app:layout_constraintBottom_toTopOf="@+id/view"
+        app:layout_constraintTop_toBottomOf="@+id/layoutActionBar"/>
     <TextView
         android:id="@+id/txtScoreLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/lilita_one_regular"
-        android:text="@string/fur_score"
-        android:textColor="@color/app_color"
-        android:textSize="26sp"
+        android:text="@string/your_score"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_20"
+        app:layout_constraintBottom_toTopOf="@+id/txtYouDie"
         app:layout_constraintEnd_toStartOf="@id/txtFinalScore"
         app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imgLostCat" />
+        app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@id/layoutActionBar"/>
 
     <TextView
         android:id="@+id/txtFinalScore"
@@ -51,41 +50,164 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:fontFamily="@font/lilita_one_regular"
-        android:textColor="@color/app_color"
-        android:textSize="30sp"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_20"
         app:layout_constraintBaseline_toBaselineOf="@id/txtScoreLabel"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/txtScoreLabel" />
-
-    <Button
-        android:id="@+id/btnRetry"
-        android:layout_width="220dp"
-        android:layout_height="58dp"
-        android:layout_marginTop="28dp"
-        android:background="@drawable/bg_btn_play"
-        android:fontFamily="@font/lilita_one_regular"
-        android:text="@string/retry"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txtScoreLabel" />
-
-    <Button
-        android:id="@+id/btnChooseCat"
-        android:layout_width="220dp"
-        android:layout_height="58dp"
-        android:layout_marginTop="14dp"
-        android:layout_marginBottom="46dp"
-        android:background="@drawable/bg_btn_play"
-        android:fontFamily="@font/lilita_one_regular"
-        android:text="@string/choose_another_cat"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textSize="21sp"
+        app:layout_constraintStart_toEndOf="@id/txtScoreLabel"/>
+    <View
+        android:id="@+id/view4"
+        android:layout_width="@dimen/dimension_0"
+        android:layout_height="@dimen/dimension_0"
+        app:layout_constraintDimensionRatio="3.6:1.24"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnRetry" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="@dimen/dimension_50"/>
+    <View
+        android:id="@+id/view"
+        android:layout_width="@dimen/dimension_0"
+        android:layout_height="@dimen/dimension_0"
+        app:layout_constraintDimensionRatio="1.63:1.24"
+        app:layout_constraintBottom_toBottomOf="@+id/view4"
+        app:layout_constraintTop_toTopOf="@+id/view4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+
+    <com.quylh.gradientstrokelayout.GradientStrokeFrameLayout
+        android:id="@+id/btnRetry"
+        android:layout_width="@dimen/dimension_0"
+        android:layout_height="@dimen/dimension_0"
+        app:gslCornerRadius="@dimen/dimension_28_"
+        app:gslStrokeWidth="0dp"
+        app:layout_constraintDimensionRatio="1.62:0.54"
+        app:layout_constraintTop_toTopOf="@+id/view"
+        app:layout_constraintBottom_toTopOf="@+id/btnChooseCat"
+        app:layout_constraintEnd_toEndOf="@+id/view"
+        app:layout_constraintStart_toStartOf="@+id/view">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/app_color2"/>
+        <com.quylh.gradientstrokelayout.GradientStrokeFrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/dimension_4"
+            app:gslCenterColor="@color/app_color3"
+            android:layout_marginHorizontal="@dimen/dimension_1"
+
+            app:gslCornerRadius="@dimen/dimension_28_"
+            app:gslEndColor="@color/app_color3"
+            app:gslStartColor="@color/app_color3"
+            app:gslStrokeWidth="@dimen/dimension_1">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_btn_play"/>
+        </com.quylh.gradientstrokelayout.GradientStrokeFrameLayout>
+        <com.quylh.gradientstrokelayout.GradientStrokeFrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/dimension_4"
+            android:layout_marginHorizontal="@dimen/dimension_1"
+            app:gslCenterColor="@color/app_color3"
+            app:gslCornerRadius="@dimen/dimension_28_"
+            app:gslEndColor="@color/app_color3"
+            app:gslStartColor="@color/app_color3"
+            app:gslStrokeWidth="@dimen/dimension_2">
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="@dimen/dimension_0"
+                    android:layout_height="@dimen/dimension_0"
+                    android:layout_marginVertical="@dimen/dimension_13"
+                    android:layout_marginStart="@dimen/dimension_24"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_try"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="1"
+                    app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"/>
+
+                <com.warrior.oc.ca.core.extention.OuterStrokeShadownTextView
+                    android:layout_width="@dimen/dimension_0"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/lilita_one_regular"
+                    android:gravity="center"
+                    android:id="@+id/txtTryAgain"
+                    style="@style/single_marquee"
+                    android:layout_marginEnd="@dimen/dimension_12"
+                    android:text="@string/retry"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_16"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/imageView" app:outerStrokeColor="@color/app_color"
+                    app:outerStrokeWidth="@dimen/dimension_2"
+                />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.quylh.gradientstrokelayout.GradientStrokeFrameLayout>
+    </com.quylh.gradientstrokelayout.GradientStrokeFrameLayout>
+    <com.quylh.gradientstrokelayout.GradientStrokeFrameLayout
+        android:id="@+id/btnChooseCat"
+        android:layout_width="@dimen/dimension_0"
+        android:layout_height="@dimen/dimension_0"
+        app:gslCornerRadius="@dimen/dimension_28_"
+        app:gslStrokeWidth="0dp"
+        app:layout_constraintTop_toBottomOf="@id/btnRetry"
+        app:layout_constraintDimensionRatio="1.62:0.54"
+        app:layout_constraintBottom_toBottomOf="@+id/view"
+        app:layout_constraintEnd_toEndOf="@+id/view"
+        app:layout_constraintStart_toStartOf="@+id/view">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/app_color2"/>
+        <com.quylh.gradientstrokelayout.GradientStrokeFrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="@dimen/dimension_1"
+            android:layout_marginBottom="@dimen/dimension_4"
+            app:gslCenterColor="@color/app_color3"
+            app:gslCornerRadius="@dimen/dimension_28_"
+            app:gslEndColor="@color/app_color3"
+            app:gslStartColor="@color/app_color3"
+            app:gslStrokeWidth="@dimen/dimension_1">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_btn_play"/>
+        </com.quylh.gradientstrokelayout.GradientStrokeFrameLayout>
+        <com.quylh.gradientstrokelayout.GradientStrokeFrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/dimension_4"
+            android:layout_marginHorizontal="@dimen/dimension_1"
+            app:gslCenterColor="@color/app_color3"
+            app:gslCornerRadius="@dimen/dimension_28_"
+            app:gslEndColor="@color/app_color3"
+            app:gslStartColor="@color/app_color3"
+            app:gslStrokeWidth="@dimen/dimension_2">
+            <com.warrior.oc.ca.core.extention.OuterStrokeShadownTextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/lilita_one_regular"
+                android:gravity="center"
+                android:id="@+id/txtChoose"
+                style="@style/single_marquee"
+                android:text="@string/choose_another_cat"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_16"
+                app:outerStrokeColor="@color/app_color"
+                app:outerStrokeWidth="@dimen/dimension_2"/>
+        </com.quylh.gradientstrokelayout.GradientStrokeFrameLayout>
+    </com.quylh.gradientstrokelayout.GradientStrokeFrameLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

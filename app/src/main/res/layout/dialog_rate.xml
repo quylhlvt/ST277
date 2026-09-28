@@ -8,7 +8,7 @@
         android:layout_height="match_parent">
 
 
-        <com.google.android.material.card.MaterialCardView
+        <com.quylh.gradientstrokelayout.GradientStrokeFrameLayout
             android:id="@+id/material"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -16,37 +16,20 @@
             android:layout_marginHorizontal="@dimen/dimension_35"
             android:foreground="@color/transparent"
             app:cardBackgroundColor="@color/app_color2"
-            app:cardCornerRadius="@dimen/dimension_10"
+            app:gslCornerRadius="@dimen/dimension_16"
+            app:gslStrokeWidth="@dimen/dimension_0"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:strokeColor="@color/app_color"
-            app:strokeWidth="@dimen/dimension_0">
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dimension_2"
-                app:cardBackgroundColor="@color/app_color3"
-                app:cardCornerRadius="@dimen/dimension_10">
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dimension_4"
-                app:cardBackgroundColor="@color/app_color14"
-                app:cardCornerRadius="@dimen/dimension_10">
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dimension_1"
-                app:cardBackgroundColor="@color/app_color7"
-                app:cardCornerRadius="@dimen/dimension_10">
+           >
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/contrainRate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:foreground="@color/transparent"
+        android:background="@color/white"
         android:paddingHorizontal="@dimen/dimension_20"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -66,13 +49,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dimension_16"
-            android:fontFamily="@font/roboto_medium"
+            android:fontFamily="@font/nunito_bold"
             android:freezesText="true"
             android:gravity="center"
-
             android:text="@string/zero_star_title"
-            android:textColor="@color/app_color3"
-            android:textSize="@dimen/text_size_16"
+            android:textColor="@color/black7"
+            android:textSize="@dimen/text_size_18"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/imvAvtRate"
@@ -83,7 +65,7 @@
             android:id="@+id/tv2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_regular"
+            android:fontFamily="@font/nunito_medium"
             android:freezesText="true"
             android:gravity="center"
             android:text="@string/zero_star"
@@ -126,19 +108,20 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ll1">
 
-            <androidx.cardview.widget.CardView
+            <com.quylh.gradientstrokelayout.GradientStrokeFrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimension_35"
+                app:gslStrokeWidth="@dimen/dimension_0"
+                app:gslCornerRadius="@dimen/dimension_8"
                 android:elevation="@dimen/dimension_0"
                 android:layout_marginTop="@dimen/dimension_20"
-                app:strokeWidth="@dimen/dimension_0"
                 app:cardCornerRadius="@dimen/dimension_18"
                 app:cardBackgroundColor="@color/transparent"
                 app:cardElevation="@dimen/dimension_0">
 
                 <TextView
                     android:id="@+id/btnVote"
-                    android:background="@color/app_color3"
+                    android:background="@drawable/bg_linear_color"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fontFamily="@font/roboto_medium"
@@ -148,7 +131,7 @@
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_size_16" />
-            </androidx.cardview.widget.CardView>
+            </com.quylh.gradientstrokelayout.GradientStrokeFrameLayout>
             <!--                <androidx.appcompat.widget.AppCompatButton-->
             <!--                    android:id="@+id/btnVote"-->
             <!--                    android:layout_width="match_parent"-->
@@ -172,15 +155,12 @@
                 android:paddingVertical="@dimen/dimension_10"
                 android:text="@string/exit"
                 android:textAllCaps="false"
-                android:textColor="@color/app_color3"
+                android:textColor="@color/black7"
                 android:textSize="@dimen/text_size_16" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-            </androidx.cardview.widget.CardView>
-            </androidx.cardview.widget.CardView>
-            </androidx.cardview.widget.CardView>
-        </com.google.android.material.card.MaterialCardView>
+        </com.quylh.gradientstrokelayout.GradientStrokeFrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

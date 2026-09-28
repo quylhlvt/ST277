@@ -46,6 +46,7 @@
     <dimen name="dimension_26">39dp</dimen>
     <dimen name="dimension_27">40.5dp</dimen>
     <dimen name="dimension_28">42dp</dimen>
+    <dimen name="dimension_28_">63dp</dimen>
     <dimen name="dimension_28_draw">42dp</dimen>
     <dimen name="dimension_30">45dp</dimen>
     <dimen name="dimension_minus_30">-45dp</dimen>
@@ -80,6 +81,7 @@
     <dimen name="dimension_110">165dp</dimen>
     <dimen name="dimension_111">166.5dp</dimen>
     <dimen name="dimension_120">180dp</dimen>
+    <dimen name="dimension_125">188dp</dimen>
     <dimen name="dimension_140">210dp</dimen>
     <dimen name="dimension_150">225dp</dimen>
     <dimen name="dimension_160">240dp</dimen>

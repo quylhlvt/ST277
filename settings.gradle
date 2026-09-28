@@ -34,5 +34,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "ST77 Warrior Cat OC Maker & Avatar"
+rootProject.name = "ST259 Brush Jiaemu Cat"
 include ':app'

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -44,6 +45,8 @@
         android:layout_width="@dimen/dimension_0"
         android:elevation="@dimen/dimension_3"
         android:layout_height="@dimen/dimension_0"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/toggle_theme"
         android:src="@drawable/ic_light"
         app:layout_constraintTop_toBottomOf="@+id/view3"
         app:layout_constraintDimensionRatio="3.4:6.8"
@@ -56,7 +59,7 @@
         android:elevation="@dimen/dimension_3"
         android:layout_marginEnd="@dimen/dimension_16"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:visibility="invisible"
+        android:contentDescription="@string/camera"
         app:layout_constraintBottom_toTopOf="@+id/view2"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
@@ -73,21 +76,26 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:scaleType="fillCenter" />
-
+        app:scaleType="fillCenter"/>
+    <View
+        android:id="@+id/view4"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimension_0"
+        app:layout_constraintTop_toTopOf="@+id/view2"
+        app:layout_constraintDimensionRatio="3.6:0.38"/>
     <com.quylh.gradientstrokelayout.GradientStrokeFrameLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:elevation="@dimen/dimension_3"
-        android:layout_marginHorizontal="@dimen/dimension_120"
         app:gslCornerRadius="@dimen/dimension_12"
         app:gslStrokeWidth="@dimen/dimension_1"
         app:gslStartColor="@color/app_color2"
         app:gslCenterColor="@color/app_color2"
         app:gslEndColor="@color/app_color2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/view2"
+        app:layout_constraintStart_toStartOf="@id/view4"
+        app:layout_constraintEnd_toEndOf="@id/view4"
+        app:layout_constraintTop_toTopOf="@+id/view4"
+        app:layout_constraintBottom_toBottomOf="@id/view4"
         app:layout_constraintDimensionRatio="1.1:0.38">
         <LinearLayout
             android:gravity="center"
@@ -131,7 +139,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1"
-            />
+        />
         <FrameLayout
             android:id="@+id/furLayer"
             android:layout_width="0dp"
@@ -141,15 +149,30 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"/>
         <ImageView
             android:id="@+id/comb"
-            android:layout_width="94dp"
-            android:layout_height="98dp"
+            android:layout_width="@dimen/dimension_120"
+            android:layout_height="@dimen/dimension_125"
             android:contentDescription="@string/brush"
             android:src="@drawable/comb"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/lostFadeOverlay"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:alpha="0"
+        android:background="@android:color/black"
+        android:clickable="true"
+        android:elevation="100dp"
+        android:focusable="false"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

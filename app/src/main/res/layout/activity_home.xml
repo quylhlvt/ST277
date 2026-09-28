@@ -55,19 +55,25 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title_home" />
-
+        <View
+            android:id="@+id/view4"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimension_0"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="@dimen/dimension_100"
+            app:layout_constraintDimensionRatio="3.6:0.6"/>
         <com.quylh.gradientstrokelayout.GradientStrokeFrameLayout
             android:id="@+id/btnPlay"
             android:layout_width="@dimen/dimension_0"
             android:layout_height="@dimen/dimension_0"
-            android:layout_marginHorizontal="@dimen/dimension_72"
-            android:layout_marginBottom="@dimen/dimension_100"
-            app:gslCornerRadius="@dimen/dimension_22"
+            app:gslCornerRadius="@dimen/dimension_28_"
             app:gslStrokeWidth="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="2.1:0.6"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintBottom_toBottomOf="@+id/view4"
+            app:layout_constraintDimensionRatio="2.1:0.6"
+        app:layout_constraintTop_toTopOf="@+id/view4"
+        >
 
             <View
                 android:layout_width="match_parent"
@@ -78,16 +84,30 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="@dimen/dimension_4"
+                android:layout_marginHorizontal="@dimen/dimension_1"
                 app:gslCenterColor="@color/app_color3"
-                app:gslCornerRadius="@dimen/dimension_22"
+                app:gslCornerRadius="@dimen/dimension_28_"
                 app:gslEndColor="@color/app_color3"
                 app:gslStartColor="@color/app_color3"
                 app:gslStrokeWidth="@dimen/dimension_1">
-
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/bg_btn_play" />
+            </com.quylh.gradientstrokelayout.GradientStrokeFrameLayout>
+
+            <com.quylh.gradientstrokelayout.GradientStrokeFrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/dimension_4"
+                android:layout_marginHorizontal="@dimen/dimension_1"
+                app:gslCenterColor="@color/app_color3"
+                app:gslCornerRadius="@dimen/dimension_28_"
+                app:gslEndColor="@color/app_color3"
+                app:gslStartColor="@color/app_color3"
+                app:gslStrokeWidth="@dimen/dimension_2">
+
+
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -119,7 +139,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/imgStart"
                         app:outerStrokeColor="@color/app_color"
-                        app:outerStrokeWidth="@dimen/dimension_3" />
+                        app:outerStrokeWidth="@dimen/dimension_2" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

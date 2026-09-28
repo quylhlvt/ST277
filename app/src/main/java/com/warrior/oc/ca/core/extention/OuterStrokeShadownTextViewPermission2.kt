@@ -6,7 +6,6 @@ import android.graphics.Paint.Join
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
 import com.warrior.oc.ca.R
-import ir.kotlin.quyhcolorpicker.dp
 class OuterStrokeShadownTextViewPermission2 : AppCompatTextView {
 
     private var outerStrokeWidth = 0f
@@ -15,6 +14,8 @@ class OuterStrokeShadownTextViewPermission2 : AppCompatTextView {
     private var strokeMiter = 2f
     private var extraPadding = 0
     private var isDrawingStroke = false
+
+    private fun dp(value: Int): Float = value * resources.displayMetrics.density
 
     constructor(context: Context) : super(context) { init(null) }
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) { init(attrs) }

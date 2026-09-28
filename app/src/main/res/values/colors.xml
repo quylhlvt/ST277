@@ -3,7 +3,8 @@
 
     <color name="color_text_intro">#1F2F4F</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="list_cat_selected_dot">#16B5F5</color>
+    <color name="list_cat_selected_dot_top">#32D3F5</color>
+    <color name="list_cat_selected_dot_bottom">#0DA1FF</color>
     <color name="white4">#80FFFFFF</color>
     <color name="white2">#FEFEF4</color>
     <color name="white3">#FFF9E5</color>
@@ -13,6 +14,7 @@
     <color name="language_stroke_end">#0DA1FF</color>
     <color name="language_stroke_end2">#00C3D0</color>
     <color name="gray1">#999999</color>
+    <color name="black0">#000000</color>
     <color name="black">#80000000</color>
     <color name="gray">#99363636</color>
     <color name="black1">#4D4D4D</color>
@@ -21,6 +23,7 @@
     <color name="black4">#333333</color>
     <color name="black5">#99242424</color>
     <color name="black6">#4D000000</color>
+    <color name="black7">#4B4B4B</color>
     <color name="transparent">#00FFFFFF</color>
     <color name="orange_F6">#F68300</color>
     <color name="purple_F0">#F091F5</color>

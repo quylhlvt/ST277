@@ -1,20 +1,17 @@
 package com.warrior.oc.ca.ui.language
 
-import android.content.SharedPreferences
-import android.util.Log
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.warrior.oc.ca.data.model.language.LanguageModel
+import com.warrior.oc.ca.core.helper.SharedPreferencesManager
 import com.warrior.oc.ca.utils.DataLocal
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LanguageViewModel @Inject constructor( sharedPreferences: SharedPreferences) : ViewModel() {
+class LanguageViewModel @Inject constructor() : ViewModel() {
     private val _languageList = MutableStateFlow<List<LanguageModel>>(emptyList())
     val languageList: StateFlow<List<LanguageModel>> = _languageList.asStateFlow()
 
@@ -24,19 +21,21 @@ class LanguageViewModel @Inject constructor( sharedPreferences: SharedPreference
     private val _isFirstLanguage = MutableStateFlow(false)
     val isFirstLanguage: StateFlow<Boolean> = _isFirstLanguage.asStateFlow()
 
-    fun loadLanguages(currentLang: String) {
-        viewModelScope.launch {
-            val list = DataLocal.getLanguageList().toMutableList()
-            Log.d("LANG", "List size = ${list.size}, data = $list")
+    fun initialize() {
+        val isFirst = !SharedPreferencesManager.isLanuageScreen()
+        _isFirstLanguage.value = isFirst
+        loadLanguages(SharedPreferencesManager.isLanguageKey())
+    }
 
-            val index = list.indexOfFirst { it.code == currentLang }
-            if (index != -1) {
-                val selected = list.removeAt(index)
-                list.add(0, selected.apply { if (!isFirstLanguage.value) activate = true })
-            }
-            _codeLang.value = currentLang
-            _languageList.value = list
+    fun loadLanguages(currentLang: String) {
+        val list = DataLocal.getLanguageList().map { it.copy(activate = false) }.toMutableList()
+        val index = list.indexOfFirst { it.code == currentLang }
+        if (index != -1) {
+            val selected = list.removeAt(index)
+            list.add(0, selected.copy(activate = !isFirstLanguage.value))
         }
+        _codeLang.value = currentLang
+        _languageList.value = list
     }
 
     fun selectLanguage(code: String) {
@@ -47,7 +46,18 @@ class LanguageViewModel @Inject constructor( sharedPreferences: SharedPreference
         _languageList.value = updatedList
     }
 
-    fun setFirstLanguage(isFirst: Boolean){
-        _isFirstLanguage.value = isFirst
+    fun hasCompletedLanguageSelection(): Boolean = SharedPreferencesManager.isLanuageScreen()
+
+    /** Persists a valid choice and reports which destination the screen should open. */
+    fun completeSelection(): LanguageCompletion? {
+        val code = _codeLang.value
+        if (code.isBlank()) return null
+
+        val isFirstLanguage = _isFirstLanguage.value
+        SharedPreferencesManager.setLanguageKey(code)
+        if (isFirstLanguage) SharedPreferencesManager.setLanuageScreen(true)
+        return LanguageCompletion(code, isFirstLanguage)
     }
 }
+
+data class LanguageCompletion(val code: String, val isFirstLanguage: Boolean)

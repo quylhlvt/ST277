@@ -19,9 +19,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewbinding.ViewBinding
-import com.warrior.oc.ca.AppSession
 import com.warrior.oc.ca.R
-import com.warrior.oc.ca.core.extention.InternetExtension
 import com.warrior.oc.ca.core.extention.gone
 import com.warrior.oc.ca.core.extention.hideNavigation
 import com.warrior.oc.ca.core.extention.visible
@@ -32,7 +30,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.analytics.FirebaseAnalytics
 import java.util.Locale
 import javax.inject.Inject
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 
 abstract class BaseActivity<VB : ViewBinding, VM : ViewModel>(
@@ -42,7 +39,6 @@ abstract class BaseActivity<VB : ViewBinding, VM : ViewModel>(
     protected lateinit var binding: VB
         private set
     protected val viewModel: VM by lazy { ViewModelProvider(this)[viewModelClass] }
-    @Inject lateinit var appSession: AppSession
     @Inject lateinit var sharedPreferences: SharedPreferencesManager
     protected var toast: Toast? = null
     private var navigationPending = false
@@ -72,15 +68,6 @@ abstract class BaseActivity<VB : ViewBinding, VM : ViewModel>(
         viewListener()
         bindViewModel()
         observeData()
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                appSession.networkOnline.filter { it }.collect {
-                    if (appSession.templates.value.none { it.id.startsWith("online_") }) {
-                        appSession.fetchOnlineTemplates()
-                    }
-                }
-            }
-        }
     }
 
     /** Each screen is a real Activity. Guard repeated taps until it resumes. */
@@ -368,36 +355,6 @@ abstract class BaseActivity<VB : ViewBinding, VM : ViewModel>(
             yesText = yesText,
             noText = noText
         )
-    }
-    fun showNoInternetDialog(onOk: (() -> Unit)? = null) {
-        showOkDialog(
-            title = getString(R.string.no_internet),
-            message = getString(R.string.please_connect_to_the_internet_to_download_more_data),
-            onOk = onOk
-        )
-    }
-    fun showLoadingDataDialog(onOk: (() -> Unit)? = null) {
-        showOkDialog(
-            title = getString(R.string.internet),
-            message = getString(R.string.please_wait_a_few_seconds_for_data_to_load),
-            onOk = onOk
-        )
-    }
-    fun showUnstableNetworkDialog(onOk: (() -> Unit)? = null) {
-        showOkDialog(
-            title = getString(R.string.internet),
-            message = getString(R.string.unstable_connection_please_check_your_network_connection),
-            onOk = onOk
-        )
-    }
-
-    fun checkNetworkAndShowDialog() {
-        val context = this
-        when {
-            !InternetExtension.isInternetAvailable(context) -> showNoInternetDialog()
-            !InternetExtension.isNetworkConnected(context) -> showUnstableNetworkDialog()
-            else -> {}
-        }
     }
     fun showOkDialog(
         message: String,

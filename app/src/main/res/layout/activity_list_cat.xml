@@ -20,10 +20,11 @@
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/catPager"
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/dimension_0"
         android:layout_height="0dp"
         android:clipChildren="false"
         android:clipToPadding="false"
+        android:layout_marginBottom="@dimen/dimension_20"
         app:layout_constraintBottom_toTopOf="@id/dotsIndicator"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
@@ -34,67 +35,92 @@
         android:id="@+id/dotsIndicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="@dimen/dimension_14"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/catPager" />
-
+        app:layout_constraintBottom_toTopOf="@+id/btnBrush" />
+    <View
+        android:id="@+id/view4"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimension_0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="@dimen/dimension_100"
+        app:layout_constraintDimensionRatio="3.6:0.54"/>
     <com.quylh.gradientstrokelayout.GradientStrokeFrameLayout
         android:id="@+id/btnBrush"
-        android:layout_width="264dp"
-        android:layout_height="88dp"
-        android:layout_marginTop="72dp"
-        android:layout_marginBottom="100dp"
-        app:gslCornerRadius="32dp"
+        android:layout_width="@dimen/dimension_0"
+        android:layout_height="@dimen/dimension_0"
+        app:gslCornerRadius="@dimen/dimension_28_"
         app:gslStrokeWidth="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1.62:0.54"
+        app:layout_constraintTop_toTopOf="@+id/view4"
+        app:layout_constraintBottom_toBottomOf="@+id/view4"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dotsIndicator">
+        app:layout_constraintStart_toStartOf="parent">
 
         <View
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/app_color2" />
-
         <com.quylh.gradientstrokelayout.GradientStrokeFrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="7dp"
+            android:layout_marginBottom="@dimen/dimension_4"
+            android:layout_marginHorizontal="@dimen/dimension_1"
             app:gslCenterColor="@color/app_color3"
-            app:gslCornerRadius="32dp"
+            app:gslCornerRadius="@dimen/dimension_28_"
             app:gslEndColor="@color/app_color3"
             app:gslStartColor="@color/app_color3"
-            app:gslStrokeWidth="1dp">
-
+            app:gslStrokeWidth="@dimen/dimension_1">
             <View
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/bg_btn_play" />
+        </com.quylh.gradientstrokelayout.GradientStrokeFrameLayout>
+        <com.quylh.gradientstrokelayout.GradientStrokeFrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/dimension_4"
+            app:gslCenterColor="@color/app_color3"
+            app:gslCornerRadius="@dimen/dimension_28_"
+            android:layout_marginHorizontal="@dimen/dimension_1"
+            app:gslEndColor="@color/app_color3"
+            app:gslStartColor="@color/app_color3"
+            app:gslStrokeWidth="@dimen/dimension_2">
 
-            <LinearLayout
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="horizontal">
+                android:gravity="center">
 
                 <ImageView
-                    android:layout_width="44dp"
-                    android:layout_height="44dp"
+                    android:id="@+id/imageView"
+                    android:layout_width="@dimen/dimension_0"
+                    android:layout_height="@dimen/dimension_0"
+                    android:layout_marginVertical="@dimen/dimension_11"
+                    android:layout_marginStart="@dimen/dimension_34"
                     android:contentDescription="@null"
-                    android:src="@drawable/ic_brush" />
+                    android:src="@drawable/ic_brush"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="1"
+                    app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"/>
 
                 <com.warrior.oc.ca.core.extention.OuterStrokeShadownTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
+                    android:layout_width="@dimen/dimension_0"
+                    android:layout_height="match_parent"
                     android:fontFamily="@font/lilita_one_regular"
+                    android:gravity="center"
+                    android:id="@+id/txtBrush"
+                    style="@style/single_marquee"
+                    android:layout_marginEnd="@dimen/dimension_12"
                     android:text="@string/brush"
                     android:textColor="@color/white"
-                    android:textSize="30sp"
-                    app:outerStrokeColor="@color/app_color"
-                    app:outerStrokeWidth="3dp" />
-            </LinearLayout>
+                    android:textSize="@dimen/text_size_20"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/imageView" app:outerStrokeColor="@color/app_color"
+                    app:outerStrokeWidth="@dimen/dimension_2"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </com.quylh.gradientstrokelayout.GradientStrokeFrameLayout>
     </com.quylh.gradientstrokelayout.GradientStrokeFrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

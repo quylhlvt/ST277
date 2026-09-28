@@ -2,6 +2,9 @@ package com.warrior.oc.ca.ui.main.setting
 
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.warrior.oc.ca.core.base.BaseActivity
 import com.warrior.oc.ca.core.extention.gone
 import com.warrior.oc.ca.core.extention.onClick
@@ -16,6 +19,7 @@ import com.warrior.oc.ca.utils.state.RateState
 import com.warrior.oc.ca.R
 import com.warrior.oc.ca.databinding.ActivitySettingBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SettingActivity : BaseActivity<ActivitySettingBinding, SettingViewModel>(
@@ -44,7 +48,6 @@ class SettingActivity : BaseActivity<ActivitySettingBinding, SettingViewModel>(
 
             setupActionBar()
             setupActionTiltleBar()
-            setupRateButton()
         }
     }
 
@@ -73,14 +76,6 @@ class SettingActivity : BaseActivity<ActivitySettingBinding, SettingViewModel>(
 
     }
 
-    private fun ActivitySettingBinding.setupRateButton() {
-        if (sharedPreferences.isRateRequest()) {
-            btnRate.gone()
-        } else {
-            btnRate.visible()
-        }
-    }
-
     override fun viewListener() {
         binding.apply {
             setupActionBarListeners()
@@ -106,7 +101,7 @@ class SettingActivity : BaseActivity<ActivitySettingBinding, SettingViewModel>(
         btnRate.onClick {
             RateHelper.showRateDialog(this@SettingActivity, sharedPreferences) { state ->
                 if (state != RateState.CANCEL) {
-                    btnRate.gone()
+                    viewModel.onRateRequestCompleted()
                     showToast(R.string.have_rated)
                 }
             }
@@ -117,7 +112,15 @@ class SettingActivity : BaseActivity<ActivitySettingBinding, SettingViewModel>(
         }
     }
 
-    override fun observeData() {}
+    override fun observeData() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.isRateButtonVisible.collect { visible ->
+                    if (visible) binding.btnRate.visible() else binding.btnRate.gone()
+                }
+            }
+        }
+    }
 
     override fun bindViewModel() {}
 }

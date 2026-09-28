@@ -6,9 +6,9 @@ import com.warrior.oc.ca.utils.DataLocal
 import com.warrior.oc.ca.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 @HiltViewModel
@@ -18,8 +18,8 @@ class IntroViewModel @Inject constructor( private val sharedPreferences: SharedP
     private val _uiState = MutableStateFlow(IntroUiState())
     val uiState: StateFlow<IntroUiState> get() = _uiState
 
-    private val _singleEvent = MutableStateFlow<IntroSingleEvent?>(null)
-    val singleEvent: Flow<IntroSingleEvent> get() = _singleEvent.filterNotNull()
+    private val _singleEvent = MutableSharedFlow<IntroSingleEvent>(extraBufferCapacity = 1)
+    val singleEvent: Flow<IntroSingleEvent> get() = _singleEvent
 
     init {
         getData()
@@ -31,42 +31,38 @@ class IntroViewModel @Inject constructor( private val sharedPreferences: SharedP
         _uiState.update { state ->
             state.copy(pagesSplash = list)
         }
-        getPage(currentPage = 0, totalPages = list.size)
+        onPageChanged(currentPage = 0)
     }
 
 
     private fun navigateToNextScreen() {
-        _singleEvent.value = IntroSingleEvent.NavigateToNextScreen
+        _singleEvent.tryEmit(IntroSingleEvent.NavigateToNextScreen)
     }
 
-    fun getPage(currentPage: Int, totalPages: Int) {
-        val textRes =
-            if (currentPage >= totalPages - 1)
-                R.string.next
-//                R.string.continue_per
-            else
-                R.string.next
-
+    fun onPageChanged(currentPage: Int) {
         _uiState.update {
             it.copy(
                 page = currentPage,
-                textButtonRes = textRes
+                textButtonRes = R.string.next
             )
         }
     }
 
-    fun nextPage(currentPage: Int, totalPages: Int) {
-        val isLastPage = currentPage >= totalPages - 1
+    fun nextPage() {
+        val state = _uiState.value
+        val isLastPage = state.page >= state.pagesSplash.lastIndex
         if (isLastPage) {
             navigateToNextScreen()
         } else {
             _uiState.update { state ->
                 state.copy(
-                    page = currentPage + 1
+                    page = state.page + 1
                 )
             }
         }
     }
+
+    fun shouldOpenHomeAfterIntro(): Boolean = sharedPreferences.isPermissionScreen()
 
 
 }

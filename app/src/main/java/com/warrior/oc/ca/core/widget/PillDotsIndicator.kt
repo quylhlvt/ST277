@@ -1,12 +1,12 @@
 package com.warrior.oc.ca.core.widget
 
 import android.content.Context
+import android.graphics.drawable.GradientDrawable.Orientation
 import android.graphics.drawable.GradientDrawable
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.View
 import android.widget.LinearLayout
-import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.warrior.oc.ca.R
@@ -49,12 +49,7 @@ class PillDotsIndicator @JvmOverloads constructor(
             val selected = position == selectedPosition
             getChildAt(position).apply {
                 layoutParams = dotLayoutParams(selected)
-                background = pillBackground(
-                    ContextCompat.getColor(
-                        context,
-                        if (selected) R.color.list_cat_selected_dot else R.color.white
-                    )
-                )
+                background = pillBackground(selected)
             }
         }
     }
@@ -67,10 +62,18 @@ class PillDotsIndicator @JvmOverloads constructor(
         marginEnd = dp(DOT_SPACING_DP)
     }
 
-    private fun pillBackground(@ColorInt color: Int) = GradientDrawable().apply {
+    private fun pillBackground(selected: Boolean) = GradientDrawable().apply {
         shape = GradientDrawable.RECTANGLE
         cornerRadius = dp(DOT_SIZE_DP) / 2f
-        setColor(color)
+        if (selected) {
+            orientation = Orientation.TOP_BOTTOM
+            colors = intArrayOf(
+                ContextCompat.getColor(context, R.color.list_cat_selected_dot_top),
+                ContextCompat.getColor(context, R.color.list_cat_selected_dot_bottom)
+            )
+        } else {
+            setColor(ContextCompat.getColor(context, R.color.white))
+        }
     }
 
     override fun onDetachedFromWindow() {

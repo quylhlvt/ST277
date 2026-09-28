@@ -3,13 +3,9 @@ package com.warrior.oc.ca.utils
 import com.warrior.oc.ca.data.model.intro.IntroModel
 import com.warrior.oc.ca.data.model.language.LanguageModel
 import com.warrior.oc.ca.R
-import com.facebook.shimmer.Shimmer
 
 object DataLocal {
     val KEY_LAST_CLICK_TIME = -101
-    val shimmer =
-        Shimmer.AlphaHighlightBuilder().setDuration(1000).setBaseAlpha(0.8f).setHighlightAlpha(1f)
-            .setDirection(Shimmer.Direction.LEFT_TO_RIGHT).setAutoStart(true).build()
     fun getLanguageList(): ArrayList<LanguageModel> {
         return arrayListOf(
             LanguageModel("hi", "Hindi", R.drawable.ic_flag_hindi),

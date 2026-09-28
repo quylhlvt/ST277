@@ -3,6 +3,7 @@ package com.warrior.oc.ca.ui.onboarding.permission
 import androidx.lifecycle.ViewModel
 import com.warrior.oc.ca.core.helper.PermissionHelper
 import com.warrior.oc.ca.core.helper.PermissionRequestState
+import com.warrior.oc.ca.core.helper.SharedPreferencesManager
 import com.warrior.oc.ca.utils.key.RequestKey
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -14,12 +15,16 @@ class PermissionViewModel @Inject constructor(
     val notificationDenyCount = permissionState.notificationDenyCount
     val cameraDenyCount = permissionState.cameraDenyCount
 
-    fun onStorageDenied() = permissionState.onStorageDenied()
-    fun onStorageGranted() = permissionState.onStorageGranted()
-    fun onNotificationDenied() = permissionState.onNotificationDenied()
-    fun onNotificationGranted() = permissionState.onNotificationGranted()
-    fun onCameraDenied() = permissionState.onCameraDenied()
-    fun onCameraGranted() = permissionState.onCameraGranted()
+    fun onPermissionResult(requestCode: Int, granted: Boolean) {
+        when (requestCode) {
+            RequestKey.STORAGE_PERMISSION_CODE ->
+                if (granted) permissionState.onStorageGranted() else permissionState.onStorageDenied()
+            RequestKey.NOTIFICATION_PERMISSION_CODE ->
+                if (granted) permissionState.onNotificationGranted() else permissionState.onNotificationDenied()
+            RequestKey.CAMERA_PERMISSION_CODE ->
+                if (granted) permissionState.onCameraGranted() else permissionState.onCameraDenied()
+        }
+    }
 
     fun shouldGoToSettings(requestCode: Int): Boolean {
         val count = when (requestCode) {
@@ -31,7 +36,16 @@ class PermissionViewModel @Inject constructor(
         return count >= 2
     }
 
+    fun permissionsFor(requestCode: Int): Array<String> = when (requestCode) {
+        RequestKey.STORAGE_PERMISSION_CODE -> getStoragePermissions()
+        RequestKey.NOTIFICATION_PERMISSION_CODE -> getNotificationPermissions()
+        RequestKey.CAMERA_PERMISSION_CODE -> getCameraPermissions()
+        else -> emptyArray()
+    }
+
     fun getStoragePermissions()      = PermissionHelper.storagePermission
     fun getNotificationPermissions() = PermissionHelper.notificationPermission
     fun getCameraPermissions()       = PermissionHelper.cameraPermission
+
+    fun onContinue() = SharedPreferencesManager.setPermissionScreen(true)
 }

@@ -22,8 +22,9 @@
     <View
         android:id="@+id/view1"
         android:layout_width="@dimen/dimension_0"
+        android:layout_marginBottom="@dimen/dimension_6"
         android:layout_height="@dimen/dimension_0"
-        app:layout_constraintDimensionRatio="3.28:1.04"
+        app:layout_constraintDimensionRatio="3.28:1.2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/tvContinue"/>
@@ -236,11 +237,11 @@
                                     android:layout_height="wrap_content"
                                     android:layout_centerVertical="true"
 
-                                    android:fontFamily="@font/jockey_one_regular"
+                                    android:fontFamily="@font/lilita_one_regular"
                                     android:gravity="center_vertical"
                                     android:text="@string/notification"
                                     android:textColor="@color/app_color"
-                                    android:textSize="@dimen/text_size_20"
+                                    android:textSize="@dimen/text_size_16"
                                     app:layout_constraintBottom_toTopOf="@+id/bottom3"
                                     app:layout_constraintStart_toEndOf="@+id/start3"
                                     app:layout_constraintTop_toBottomOf="@+id/top3"/>

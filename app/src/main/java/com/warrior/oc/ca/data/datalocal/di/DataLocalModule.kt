@@ -3,15 +3,12 @@ package com.warrior.oc.ca.data.datalocal.di
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
-import com.warrior.oc.ca.core.helper.NetworkMonitor
 import com.warrior.oc.ca.core.helper.PermissionDenialStore
 import com.warrior.oc.ca.core.helper.SharedPreferencesManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Singleton
 
 
@@ -26,18 +23,11 @@ object DataLocalModule {
 
     @Provides
     @Singleton
-    fun provideSharedPreferencesEditor(sharedPreferences: SharedPreferences): SharedPreferences.Editor =
-        sharedPreferences.edit()
-
-    @Provides
-    @Singleton
     fun provideSharedPreferencesManager(
-        sharedPreferences: SharedPreferences,
-        editor: SharedPreferences.Editor
+        sharedPreferences: SharedPreferences
     ): SharedPreferencesManager =
         SharedPreferencesManager.apply {
             this.sharedPreferences = sharedPreferences
-            this.editor = editor
         }
 
     @Provides
@@ -52,15 +42,4 @@ object DataLocalModule {
         override fun cameraDenials(): Int = preferences.isPermissionCamRequest()
         override fun setCameraDenials(count: Int) = preferences.setPermissionCamRequest(count)
     }
-
-    @Singleton
-    @Provides
-    fun provideNetworkMonitor(
-        @ApplicationContext context: Context
-    ): NetworkMonitor = NetworkMonitor(context)
-
-    @Provides
-    fun provideNetworkFlow(
-        networkMonitor: NetworkMonitor
-    ): Flow<Boolean> = networkMonitor.isOnline
 }

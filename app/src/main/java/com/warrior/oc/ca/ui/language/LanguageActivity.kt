@@ -1,7 +1,6 @@
 package com.warrior.oc.ca.ui.language
 
 import android.content.res.Configuration
-import android.util.Log
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -14,7 +13,6 @@ import com.warrior.oc.ca.core.extention.toIntroFromLanguage
 import com.warrior.oc.ca.core.extention.toSettingFromLang
 import com.warrior.oc.ca.core.extention.visible
 import com.warrior.oc.ca.core.helper.LanguageHelper
-import com.warrior.oc.ca.core.helper.SharedPreferencesManager
 import com.warrior.oc.ca.utils.LanguageManager
 import com.warrior.oc.ca.R
 import com.warrior.oc.ca.databinding.ActivityLanguageBinding
@@ -39,7 +37,7 @@ class LanguageActivity : BaseActivity<ActivityLanguageBinding, LanguageViewModel
             isFromSetting -> {
                 toSettingFromLang()
             }
-            SharedPreferencesManager.isLanuageScreen() -> {
+            viewModel.hasCompletedLanguageSelection() -> {
                 finish()
             }
             else -> {
@@ -51,16 +49,12 @@ class LanguageActivity : BaseActivity<ActivityLanguageBinding, LanguageViewModel
     }
     override fun setupPreViews() {
 
-        val isFirst = !SharedPreferencesManager.isLanuageScreen()
-
         binding.recycleLanguage.apply {
             adapter = languageAdapter
             itemAnimator = null
         }
 
-        val currentLang = SharedPreferencesManager.isLanguageKey()
-        viewModel.setFirstLanguage(isFirst = isFirst)
-        viewModel.loadLanguages(currentLang)
+        viewModel.initialize()
 
         val list = viewModel.languageList.value
         if (list.isNotEmpty()) {
@@ -148,13 +142,6 @@ class LanguageActivity : BaseActivity<ActivityLanguageBinding, LanguageViewModel
     override fun bindViewModel() {
     }
 
-    private fun initRcv() {
-        binding.recycleLanguage.apply {
-            adapter = languageAdapter
-            itemAnimator = null
-
-        }
-    }
     private fun handleRcv() {
         binding.apply {
             languageAdapter.onItemClick = { code ->
@@ -165,19 +152,17 @@ class LanguageActivity : BaseActivity<ActivityLanguageBinding, LanguageViewModel
     }
 
     private fun handleDone() {
-        val code = viewModel.codeLang.value
-        if (code.isEmpty()) {
+        val completion = viewModel.completeSelection()
+        if (completion == null) {
             showToast(R.string.not_select_lang)
             return
         }
+        val code = completion.code
 
-        sharedPreferences.setLanguageKey(code)
         LanguageHelper.setLocale(this@LanguageActivity, code)
         LanguageManager.updateLanguage(code)
 
-        if (viewModel.isFirstLanguage.value) {
-            sharedPreferences.setLanuageScreen(true)
-            Log.d("LANG", "Navigating to Intro")
+        if (completion.isFirstLanguage) {
             toIntroFromLanguage()
         } else {
         // Update locale cho Activity context ngay lập tức

@@ -23,7 +23,7 @@ class IntroActivity : BaseActivity<ActivityIntroBinding, IntroViewModel>(
     override fun viewListener() {
         binding.btnNextPager.root.onClick(200) {
             Log.d("PERF", "1. Button clicked: ${System.currentTimeMillis()}")
-            viewModel.nextPage(binding.viewPager2.currentItem, introAdapter.itemCount)
+            viewModel.nextPage()
         }
     }
 
@@ -55,7 +55,7 @@ class IntroActivity : BaseActivity<ActivityIntroBinding, IntroViewModel>(
             viewModel.singleEvent.collect { event ->
                 when (event) {
                     is IntroSingleEvent.NavigateToNextScreen ->
-                        if (sharedPreferences.isPermissionScreen())
+                        if (viewModel.shouldOpenHomeAfterIntro())
                             toHome()
                         else
                             toPermission()
@@ -69,7 +69,7 @@ class IntroActivity : BaseActivity<ActivityIntroBinding, IntroViewModel>(
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
 
-                viewModel.getPage(binding.viewPager2.currentItem, introAdapter.itemCount)
+                viewModel.onPageChanged(position)
             }
         })
     }
